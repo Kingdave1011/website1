@@ -6,65 +6,226 @@
     
     <!-- SEO Meta Tags -->
     <title>Space Shooter V2 - Epic Space Combat Game | NEXO GAMING</title>
-    <meta name="description" content="Play Space Shooter V2 - An epic space shooter game with multiple ships, wave-based combat, and touch controls for mobile. Download for Windows, Linux or play in browser!">
-    <meta name="keywords" content="space shooter, space game, shooter game, mobile game, browser game, touch controls, indie game, free game, NEXO GAMING">
+    <meta name="description" content="Experience the ultimate interstellar challenge. Navigate through unique maps, face escalating enemies, and survive in the most beautiful corners of the galaxy.">
+    <meta name="keywords" content="space shooter, space game, shooter game, mobile game, browser game, touch controls, indie game, free game, NEXO GAMING, galaxy game">
     <meta name="author" content="NEXO GAMING">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Space Shooter V2 - Epic Space Combat Game">
-    <meta property="og:description" content="Play Space Shooter V2 with multiple ships, wave-based combat, and mobile touch controls!">
-    <meta property="og:url" content="https://website-oj4khrcdt-hide-dashboards-projects.vercel.app">
+    <meta property="og:title" content="Space Shooter V2 - Enter the Galaxy">
+    <meta property="og:description" content="Experience the ultimate interstellar challenge with fast-paced action and endless replayability!">
+    <meta property="og:url" content="https://website-pi-orpin-96.vercel.app">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Space Shooter V2 - Epic Space Combat Game">
-    <meta property="twitter:description" content="Play Space Shooter V2 with multiple ships and mobile touch controls!">
+    <meta property="twitter:title" content="Space Shooter V2 - Enter the Galaxy">
+    <meta property="twitter:description" content="Navigate through unique maps and face escalating enemies!">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://website-oj4khrcdt-hide-dashboards-projects.vercel.app">
+    <link rel="canonical" href="https://website-pi-orpin-96.vercel.app">
     
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #f5f5f5;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(180deg, #0a0e27 0%, #1a1042 50%, #2d1b4e 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .title {
+            font-size: 5em;
+            font-weight: bold;
+            color: #00e5ff;
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+            margin-bottom: 20px;
+            letter-spacing: 8px;
+        }
+        
+        .subtitle {
+            font-size: 2.5em;
+            color: #b794f6;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .description {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 900px;
+            margin: 0 auto 60px;
+            line-height: 1.6;
+        }
+        
+        .game-title {
+            font-size: 3em;
+            color: #b794f6;
+            margin: 40px 0 10px;
+            font-weight: bold;
+        }
+        
+        .game-subtitle {
+            font-size: 1.3em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+        }
+        
+        .play-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6ec7 0%, #ff1493 100%);
+            color: white;
+            padding: 25px 80px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.8em;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4);
+            transition: all 0.3s;
+            margin-bottom: 40px;
+        }
+        
+        .play-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 20, 147, 0.6);
+        }
+        
+        .download-text {
+            font-size: 1.3em;
+            margin: 40px 0 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .download-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 80px;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 20px 50px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-size: 1.4em;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .windows-btn {
+            background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+            color: white;
+        }
+        
+        .linux-btn {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #1a1042;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature {
+            font-size: 1.2em;
+            color: #00e5ff;
+        }
+        
+        .feature::before {
+            content: "● ";
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3em;
+                letter-spacing: 4px;
+            }
+            .subtitle {
+                font-size: 1.8em;
+            }
+            .game-title {
+                font-size: 2em;
+            }
+            .play-button {
+                padding: 20px 50px;
+                font-size: 1.4em;
+            }
+            .download-btn {
+                padding: 15px 30px;
+                font-size: 1.2em;
+            }
         }
     </style>
 </head>
 <body>
 
-<div style="max-width: 900px; margin: 40px auto; font-family: 'Segoe UI', Arial, sans-serif;">
+<div class="container">
+    <!-- Main Title -->
+    <h1 class="title">SPACE SHOOTER</h1>
     
-    <!-- Hero Section -->
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                border-radius: 20px; padding: 60px 40px; text-align: center; color: white;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
-        <h1 style="font-size: 3em; margin: 0 0 10px 0;">🚀 Space Shooter V2</h1>
-        <p style="font-size: 1.3em; margin: 10px 0;">By NEXO GAMING</p>
-        <p style="font-size: 1.1em; opacity: 0.9;">Epic space combat • Multiple ships • Touch controls for mobile!</p>
-    </div>
-
-    <!-- Play in Browser Button -->
-    <div style="text-align: center; margin: 40px 0;">
-        <a href="https://space-shooter-lhbuc6u7d-hide-dashboards-projects.vercel.app" 
-           style="display: inline-block; 
-                  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-                  color: white; 
-                  padding: 25px 60px; 
-                  border-radius: 12px; 
-                  text-decoration: none; 
-                  font-size: 1.5em; 
-                  font-weight: bold;
-                  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.5);
-                  transition: transform 0.2s;">
-            🌐 Play in Browser (Works on Mobile!)
+    <!-- Subtitle -->
+    <h2 class="subtitle">Enter the Galaxy</h2>
+    
+    <!-- Description -->
+    <p class="description">
+        Experience the ultimate interstellar challenge. Navigate through unique maps, face 
+        escalating enemies, and survive in the most beautiful corners of the galaxy.
+    </p>
+    
+    <!-- Game Title -->
+    <h3 class="game-title">🚀 Space Shooter V2</h3>
+    <p class="game-subtitle">GAMING</p>
+    
+    <!-- Play Button -->
+    <a href="https://space-shooter-lhbuc6u7d-hide-dashboards-projects.vercel.app" class="play-button">
+        🌐 Play in Browser
+    </a>
+    
+    <!-- Download Section -->
+    <p class="download-text">Or download for:</p>
+    
+    <div class="download-buttons">
+        <a href="https://nexo-gaming.itch.io/space-shooter" class="download-btn windows-btn">
+            💻 Windows
         </a>
-        <p style="margin-top: 15px; color: #666;">
-            No download needed • Works on all devices • Instant play!
-        </p>
+        <a href="https://nexo-gaming.itch.io/space-shooter" class="download-btn linux-btn">
+            🐧 Linux
+        </a>
+    </div>
+    
+    <!-- Features -->
+    <div class="features">
+        <div class="feature">Fast-Paced Action</div>
+        <div class="feature">Unique Maps</div>
+        <div class="feature">Endless Replayability</div>
     </div>
 
     <!-- Mobile Instructions -->
