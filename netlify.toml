@@ -1,25 +1,63 @@
+# Netlify Configuration for Space Shooter Web Game
+# Human verification with Cloudflare Turnstile + hCaptcha
+
 [build]
   publish = "."
-  command = "echo 'No build required - static site'"
+  command = "echo 'Static site - no build needed'"
 
+# Environment variables (set in Netlify dashboard)
+# TURNSTILE_SITE_KEY = your_turnstile_site_key
+# TURNSTILE_SECRET = your_turnstile_secret_key
+# HCAPTCHA_SITE_KEY = your_hcaptcha_site_key
+# HCAPTCHA_SECRET = your_hcaptcha_secret_key
+
+# Protect all routes with verification
+[[edge_functions]]
+  function = "verify"
+  path = "/*"
+
+# Gate page (Turnstile verification)
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/gate"
+  to = "/verification/gate.html"
   status = 200
-  force = false
 
-[build.environment]
-  NODE_VERSION = "18"
+# CAPTCHA page (hCaptcha escalation)
+[[redirects]]
+  from = "/captcha"
+  to = "/verification/captcha.html"
+  status = 200
 
+# Headers for security
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "no-referrer-when-downgrade"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
 
+# Game assets caching
 [[headers]]
   for = "/game/*"
   [headers.values]
-    Cross-Origin-Embedder-Policy = "require-corp"
-    Cross-Origin-Opener-Policy = "same-origin"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.wasm"
+  [headers.values]
+    Content-Type = "application/wasm"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.pck"
+  [headers.values]
+    Content-Type = "application/octet-stream"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Prevent direct access to edge functions
+[[headers]]
+  for = "/.netlify/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

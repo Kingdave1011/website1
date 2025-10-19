@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controls - Space Shooter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a15 0%, #1a1a2e 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid #00ffff;
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #aaaaaa;
+        }
+
+        .platform-section {
+            margin: 40px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .platform-section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #00ffff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .platform-icon {
+            font-size: 1.5em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(0, 255, 255, 0.2);
+            color: #00ffff;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        tr:hover {
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .key-button {
+            display: inline-block;
+            background: linear-gradient(145deg, #2a2a3e, #1a1a2e);
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 2px solid #00ffff;
+            font-weight: bold;
+            color: #00ffff;
+            margin: 0 5px;
+            box-shadow: 0 4px 8px rgba(0, 255, 255, 0.3);
+        }
+
+        .diagram {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 2px dashed rgba(0, 255, 255, 0.5);
+        }
+
+        .diagram-title {
+            font-size: 1.3em;
+            color: #ff00ff;
+            margin-bottom: 15px;
+        }
+
+        .controller-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .controller-side {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .tips {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ff00ff;
+            margin: 20px 0;
+        }
+
+        .tips h3 {
+            color: #ff00ff;
+            margin-bottom: 10px;
+        }
+
+        .tips ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .tips li:before {
+            content: "→ ";
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 2px solid #00ffff;
+            color: #aaaaaa;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .platform-section {
+                padding: 20px;
+            }
+
+            .controller-layout {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 CONTROLS GUIDE</h1>
+            <p class="subtitle">Master every platform with complete control documentation</p>
+        </header>
+
+        <!-- PC Keyboard & Mouse -->
+        <div class="platform-section">
+            <h2><span class="platform-icon">⌨️</span>PC (Keyboard & Mouse)</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Control</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Move</td>
+                        <td><span class="key-button">W</span> <span class="key-button">A</span> <span class="key-button">S</span> <span class="key-button">D</span></td>
+                        <td>Move your ship in all directions</td>
+                    </tr>
+                    <tr>
+                        <td>Shoot</td>
+                        <td><span class="key-button">Left Mouse</span> or <span class="key-button">Space</span></td>
+                        <td>Fire primary weapon</td>
+                    </tr>
+                    <tr>
+                        <td>Special Ability</td>
+                        <td><span class="key-button">Right Mouse</span> or <span class="key-button">Shift</span></td>
+                        <td>Activate special ship ability</td>
+                    </tr>
+                    <tr>
+                        <td>Secondary Weapon</td>
+                        <td><span class="key-button">Q</span> or <span class="key-button">E</span></td>
+                        <td>Use secondary weapon/power-up</td>
+                    </tr>
+                    <tr>
+                        <td>Chat (Multiplayer)</td>
+                        <td><span class="key-button">Enter</span></td>
+                        <td>Open chat to send messages</td>
+                    </tr>
+                    <tr>
+                        <td>Pause Menu</td>
+                        <td><span class="key-button">Esc</span></td>
+                        <td>Pause game and access menu</td>
+                    </tr>
+                    <tr>
+                        <td>Map</td>
+                        <td><span class="key-button">M</span></td>
+                        <td>View full map (if available)</td>
+                    </tr>
+                    <tr>
+                        <td>Scoreboard</td>
+                        <td><span class="key-button">Tab</span></td>
+                        <td>View scores and player list</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tips">
+                <h3>💡 PC Tips:</h3>
+                <ul>
+                    <li>Adjust mouse sensitivity in Settings for better aim</li>
+                    <li>Use WASD for precise movement control</li>
+                    <li>Mouse aiming provides the most accuracy</li>
+                    <li>Hold Space for continuous fire</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PC Controller -->
+        <div class="platform-section">
+            <h2><span class="platform-icon">🎮</span>PC (Controller)</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Control</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Move</td>
+                        <td><span class="key-button">Left Stick</span></td>
+                        <td>Move your ship</td>
+                    </tr>
+                    <tr>
+                        <td>Aim (if available)</td>
+                        <td><span class="key-button">Right Stick</span></td>
+                        <td>Aim your shots</td>
+                    </tr>
+                    <tr>
+                        <td>Shoot</td>
+                        <td><span class="key-button">RT / R2</span></td>
+                        <td>Fire primary weapon</td>
+                    </tr>
+                    <tr>
+                        <td>Special Ability</td>
+                        <td><span class="key-button">LT / L2</span></td>
+                        <td>Activate special ability</td>
+                    </tr>
+                    <tr>
+                        <td>Secondary Weapon</td>
+                        <td><span class="key-button">RB / R1</span></td>
+                        <td>Use secondary weapon</td>
+                    </tr>
+                    <tr>
+                        <td>Dodge/Roll</td>
+                        <td><span class="key-button">LB / L1</span></td>
+                        <td>Quick evasive maneuver</td>
+                    </tr>
+                    <tr>
+                        <td>Menu/Select</td>
+                        <td><span class="key-button">A / X</span></td>
+                        <td>Select menu options</td>
+                    </tr>
+                    <tr>
+                        <td>Pause</td>
+                        <td><span class="key-button">Start</span></td>
+                        <td>Pause menu</td>
+                    </tr>
+                    <tr>
+                        <td>Back</td>
+                        <td><span class="key-button">Select / Back</span></td>
+                        <td>Go back in menus</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="diagram">
+                <div class="diagram-title">Controller Layout</div>
+                <div class="controller-layout">
+                    <div class="controller-side">
+                        <h4>Left Side</h4>
+                        <p>👆 Left Stick: Movement</p>
+                        <p>🔘 D-Pad: Quick commands</p>
+                        <p>🔘 LB/L1: Dodge</p>
+                        <p>🔘 LT/L2: Special Ability</p>
+                    </div>
+                    <div class="controller-side">
+                        <h4>Right Side</h4>
+                        <p>👆 Right Stick: Aim (optional)</p>
+                        <p>🔘 A/X: Select</p>
+                        <p>🔘 RB/R1: Secondary Weapon</p>
+                        <p>🔘 RT/R2: Shoot</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile/Tablet -->
+        <div class="platform-section">
+            <h2><span class="platform-icon">📱</span>Mobile & Tablet</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Control</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Move</td>
+                        <td><span class="key-button">Virtual Joystick (Left)</span></td>
+                        <td>Drag to move your ship</td>
+                    </tr>
+                    <tr>
+                        <td>Shoot</td>
+                        <td><span class="key-button">Tap Screen / Auto-fire</span></td>
+                        <td>Tap anywhere or enable auto-fire</td>
+                    </tr>
+                    <tr>
+                        <td>Aim</td>
+                        <td><span class="key-button">Tap Direction</span></td>
+                        <td>Tap where you want to shoot</td>
+                    </tr>
+                    <tr>
+                        <td>Special Ability</td>
+                        <td><span class="key-button">Ability Button (Right)</span></td>
+                        <td>Tap ability icon</td>
+                    </tr>
+                    <tr>
+                        <td>Secondary Weapon</td>
+                        <td><span class="key-button">Weapon Button</span></td>
+                        <td>Tap weapon icon</td>
+                    </tr>
+                    <tr>
+                        <td>Pause</td>
+                        <td><span class="key-button">Pause Icon (Top)</span></td>
+                        <td>Tap pause button</td>
+                    </tr>
+                    <tr>
+                        <td>Chat</td>
+                        <td><span class="key-button">Chat Icon</span></td>
+                        <td>Open chat overlay</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tips">
+                <h3>💡 Mobile Tips:</h3>
+                <ul>
+                    <li>Enable auto-fire in Settings for easier gameplay</li>
+                    <li>Use two thumbs for better control</li>
+                    <li>Adjust touch sensitivity in Settings</li>
+                    <li>Play in landscape mode for best experience</li>
+                    <li>Connect Bluetooth controller for console-like controls</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Console -->
+        <div class="platform-section">
+            <h2><span class="platform-icon">🎯</span>Console (PlayStation / Xbox)</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>PlayStation</th>
+                        <th>Xbox</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Move</td>
+                        <td><span class="key-button">Left Stick</span></td>
+                        <td><span class="key-button">Left Stick</span></td>
+                    </tr>
+                    <tr>
+                        <td>Shoot</td>
+                        <td><span class="key-button">R2</span></td>
+                        <td><span class="key-button">RT</span></td>
+                    </tr>
+                    <tr>
+                        <td>Special Ability</td>
+                        <td><span class="key-button">L2</span></td>
+                        <td><span class="key-button">LT</span></td>
+                    </tr>
+                    <tr>
+                        <td>Secondary Weapon</td>
+                        <td><span class="key-button">R1</span></td>
+                        <td><span class="key-button">RB</span></td>
+                    </tr>
+                    <tr>
+                        <td>Dodge</td>
+                        <td><span class="key-button">L1</span></td>
+                        <td><span class="key-button">LB</span></td>
+                    </tr>
+                    <tr>
+                        <td>Select</td>
+                        <td><span class="key-button">X</span></td>
+                        <td><span class="key-button">A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Back</td>
+                        <td><span class="key-button">Circle</span></td>
+                        <td><span class="key-button">B</span></td>
+                    </tr>
+                    <tr>
+                        <td>Pause</td>
+                        <td><span class="key-button">Options</span></td>
+                        <td><span class="key-button">Menu</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- General Tips -->
+        <div class="platform-section">
+            <h2><span class="platform-icon">⚡</span>General Tips & Strategies</h2>
+            
+            <div class="tips">
+                <h3>🎯 Combat Tips:</h3>
+                <ul>
+                    <li>Keep moving - stationary targets are easy to hit</li>
+                    <li>Use cover when available (destructible objects)</li>
+                    <li>Save special abilities for tough enemies or bosses</li>
+                    <li>Watch enemy attack patterns and dodge accordingly</li>
+                    <li>Prioritize dangerous enemies (Bombers, Elites)</li>
+                </ul>
+            </div>
+
+            <div class="tips">
+                <h3>🏆 Multiplayer Tips:</h3>
+                <ul>
+                    <li>Communicate with teammates using chat</li>
+                    <li>Stick together - teamwork wins matches</li>
+                    <li>Spread out to cover more ground</li>
+                    <li>Share power-ups with teammates</li>
+                    <li>Watch the mini-map for enemy positions</li>
+                </ul>
+            </div>
+
+            <div class="tips">
+                <h3>🗺️ Map Knowledge:</h3>
+                <ul>
+                    <li>Learn spawn points on each map</li>
+                    <li>Use map hazards to your advantage</li>
+                    <li>Find the best vantage points</li>
+                    <li>Know where cover is located</li>
+                    <li>Adapt strategy to map layout</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Remapping -->
+        <div class="platform-section">
+            <h2><span class="platform-icon">⚙️</span>Remapping Controls</h2>
+            
+            <p style="margin: 20px 0;">All controls can be customized in the Settings menu:</p>
+            
+            <ol style="margin-left: 40px; line-height: 2;">
+                <li>Go to <strong>Main Menu → Settings</strong></li>
+                <li>Select <strong>Controls</strong> tab</li>
+                <li>Click on any action to rebind</li>
+                <li>Press the new key/button you want to use</li>
+                <li>Click <strong>Apply</strong> to save changes</li>
+                <li>Click <strong>Reset to Defaults</strong> to restore original controls</li>
+            </ol>
+
+            <div class="tips">
+                <h3>⚠️ Remapping Notes:</h3>
+                <ul>
+                    <li>Some keys may be reserved for system functions</li>
+                    <li>Changes are saved per-platform (PC, Controller, Mobile)</li>
+                    <li>Test new bindings in Practice Mode first</li>
+                    <li>Export your custom layout to share with friends</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>🚀 <strong>Space Shooter V2</strong> - Full Controls Documentation</p>
+            <p>For more help, visit our <a href="index.html" style="color: #00ffff;">website</a> or join our community</p>
+            <p style="margin-top: 10px; color: #666;">Last Updated: 2025</p>
+        </footer>
+    </div>
+</body>
+</html>
