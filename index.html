@@ -324,7 +324,23 @@
 <body>
     <canvas id="starfield"></canvas>
     
-    <div class="content">
+    <!-- Navigation Header -->
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5, 5, 10, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 198, 255, 0.3); padding: 15px 0;">
+        <nav style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; flex-wrap: wrap;">
+            <a href="index.html" style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #00C6FF; text-decoration: none; text-shadow: 0 0 10px #00C6FF;">SPACE SHOOTER</a>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <a href="about.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">About</a>
+                <a href="features.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Features</a>
+                <a href="controls.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Controls</a>
+                <a href="how-to-play.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">How to Play</a>
+                <a href="screenshots.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Screenshots</a>
+                <a href="faq.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">FAQ</a>
+                <a href="bug-report.html" style="color: #FF007F; text-decoration: none; transition: color 0.3s;">Report Bug</a>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="content" style="padding-top: 80px;">
         <!-- Hero Section -->
         <section class="hero">
             <h1>SPACE SHOOTER</h1>
