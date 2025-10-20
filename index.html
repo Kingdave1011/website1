@@ -53,7 +53,16 @@
             color: #00C6FF;
             text-shadow: 0 0 20px #00C6FF, 0 0 40px #00C6FF;
             margin-bottom: 20px;
-            animation: fadeInDown 1s ease-out;
+            animation: fadeInDown 1s ease-out, glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px #00C6FF, 0 0 40px #00C6FF;
+            }
+            to {
+                text-shadow: 0 0 30px #00C6FF, 0 0 60px #00C6FF, 0 0 80px #8A2BE2;
+            }
         }
 
         .hero .tagline {
@@ -222,6 +231,16 @@
             border-radius: 10px;
             box-shadow: 0 0 30px rgba(0, 198, 255, 0.5);
             overflow: hidden;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(0, 198, 255, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(0, 198, 255, 0.8), 0 0 70px rgba(138, 43, 226, 0.6);
+            }
         }
 
         .game-container iframe {
@@ -241,14 +260,26 @@
                 font-size: 1.2rem;
             }
             
-            section h2 {
-                font-size: 2rem;
+        section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: #00C6FF;
+            text-shadow: 0 0 15px #00C6FF;
+            margin-bottom: 30px;
+            text-align: center;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
             }
-            
-            .button-group {
-                flex-direction: column;
-                align-items: center;
+            to {
+                opacity: 1;
+                transform: translateX(0);
             }
+        }
             
             .game-container iframe {
                 height: 400px;
@@ -337,7 +368,8 @@
 
         <!-- Footer -->
         <footer>
-            <p>© 2025 Galactic Combat | Version 2.5 Beta | Made with 💜 by King_davezz</p>
+            <p>© 2025 Galactic Combat | Version 2.5 Beta</p>
+            <p style="margin-top: 10px;">Developed by <span style="color: #00C6FF; text-shadow: 0 0 10px #00C6FF;">NEXO GAMES</span> | Made with 💜 by King_davezz</p>
         </footer>
     </div>
 
