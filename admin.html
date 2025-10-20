@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Galactic Combat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(138, 43, 226, 0.3);
+            border: 2px solid #8A2BE2;
+            border-radius: 8px;
+            color: #E0E0E0;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(138, 43, 226, 0.5);
+            box-shadow: 0 0 20px #8A2BE2;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(0, 198, 255, 0.05);
+            border: 2px solid #00C6FF;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.5);
+        }
+
+        .card h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .stat {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FF007F;
+            text-shadow: 0 0 10px #FF007F;
+        }
+
+        .section {
+            background: rgba(138, 43, 226, 0.05);
+            border: 2px solid #8A2BE2;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .section h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #8A2BE2;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .control-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid #00C6FF;
+            border-radius: 8px;
+            color: #E0E0E0;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.3);
+        }
+
+        .control-btn:hover {
+            background: rgba(0, 198, 255, 0.2);
+            box-shadow: 0 0 20px #00C6FF;
+            transform: scale(1.05);
+        }
+
+        .control-btn.danger {
+            border-color: #FF007F;
+        }
+
+        .control-btn.danger:hover {
+            background: rgba(255, 0, 127, 0.2);
+            box-shadow: 0 0 20px #FF007F;
+        }
+
+        .control-btn.success {
+            border-color: #00FF00;
+        }
+
+        .control-btn.success:hover {
+            background: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 20px #00FF00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 198, 255, 0.3);
+        }
+
+        th {
+            background: rgba(0, 198, 255, 0.1);
+            color: #00C6FF;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        tr:hover {
+            background: rgba(0, 198, 255, 0.05);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00C6FF;
+            border-radius: 5px;
+            color: #E0E0E0;
+            font-family: 'Rajdhani', sans-serif;
+            margin-bottom: 15px;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+        }
+
+        .log-entry {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid #00C6FF;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .log-entry.error {
+            border-left-color: #FF007F;
+        }
+
+        .log-entry.success {
+            border-left-color: #00FF00;
+        }
+
+        .log-entry .timestamp {
+            color: #8A2BE2;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Site</a>
+        
+        <h1>⚙️ ADMIN CONTROL PANEL</h1>
+
+        <!-- Statistics Dashboard -->
+        <div class="dashboard">
+            <div class="card">
+                <h2>👥 Total Players</h2>
+                <div class="stat" id="total-players">1,247</div>
+                <p>Active this month</p>
+            </div>
+            
+            <div class="card">
+                <h2>🎮 Active Servers</h2>
+                <div class="stat" id="active-servers">8/9</div>
+                <p>Running smoothly</p>
+            </div>
+            
+            <div class="card">
+                <h2>📊 Games Played</h2>
+                <div class="stat" id="games-played">5,892</div>
+                <p>Total matches</p>
+            </div>
+            
+            <div class="card">
+                <h2>💾 Downloads</h2>
+                <div class="stat" id="downloads">3,456</div>
+                <p>All platforms</p>
+            </div>
+        </div>
+
+        <!-- Server Management -->
+        <div class="section">
+            <h3>🖥️ Server Management</h3>
+            <div class="controls">
+                <button class="control-btn success" onclick="alert('All servers started!')">Start All Servers</button>
+                <button class="control-btn danger" onclick="alert('All servers stopped!')">Stop All Servers</button>
+                <button class="control-btn" onclick="alert('Servers restarted!')">Restart Servers</button>
+                <button class="control-btn" onclick="alert('Backup created!')">Backup Data</button>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Server ID</th>
+                        <th>Status</th>
+                        <th>Players</th>
+                        <th>Uptime</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Server-01</td>
+                        <td style="color: #00FF00;">Online</td>
+                        <td>28/32</td>
+                        <td>47h 23m</td>
+                        <td><button class="control-btn danger" style="padding: 5px 10px;">Stop</button></td>
+                    </tr>
+                    <tr>
+                        <td>Server-02</td>
+                        <td style="color: #00FF00;">Online</td>
+                        <td>31/32</td>
+                        <td>52h 15m</td>
+                        <td><button class="control-btn danger" style="padding: 5px 10px;">Stop</button></td>
+                    </tr>
+                    <tr>
+                        <td>Server-03</td>
+                        <td style="color: #FF007F;">Offline</td>
+                        <td>0/32</td>
+                        <td>-</td>
+                        <td><button class="control-btn success" style="padding: 5px 10px;">Start</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Content Management -->
+        <div class="section">
+            <h3>📝 Content Management</h3>
+            <form onsubmit="event.preventDefault(); alert('News posted!');">
+                <label style="display: block; margin-bottom: 10px; color: #00C6FF;">Post News Update:</label>
+                <input type="text" placeholder="News Title" required>
+                <textarea placeholder="News Content" rows="4" required></textarea>
+                <button type="submit" class="control-btn success">Publish News</button>
+            </form>
+        </div>
+
+        <!-- User Management -->
+        <div class="section">
+            <h3>👤 User Management</h3>
+            <input type="text" placeholder="Search user by username or email...">
+            <div class="controls">
+                <button class="control-btn">View All Users</button>
+                <button class="control-btn">Ban User</button>
+                <button class="control-btn">Unban User</button>
+                <button class="control-btn danger">Clear All Bans</button>
+            </div>
+        </div>
+
+        <!-- File Management -->
+        <div class="section">
+            <h3>📁 File Management</h3>
+            <div class="controls">
+                <button class="control-btn" onclick="alert('Update uploaded!')">Upload Game Update</button>
+                <button class="control-btn" onclick="alert('Files synced!')">Sync Files</button>
+                <button class="control-btn danger" onclick="alert('Cache cleared!')">Clear Cache</button>
+            </div>
+        </div>
+
+        <!-- System Logs -->
+        <div class="section">
+            <h3>📋 System Logs</h3>
+            <div id="logs">
+                <div class="log-entry success">
+                    <span class="timestamp">[2025-01-19 19:43:12]</span> Server-01 started successfully
+                </div>
+                <div class="log-entry">
+                    <span class="timestamp">[2025-01-19 19:40:05]</span> Player King_davezz joined Server-02
+                </div>
+                <div class="log-entry">
+                    <span class="timestamp">[2025-01-19 19:38:47]</span> Database backup completed
+                </div>
+                <div class="log-entry error">
+                    <span class="timestamp">[2025-01-19 19:35:22]</span> Server-03 connection timeout
+                </div>
+                <div class="log-entry success">
+                    <span class="timestamp">[2025-01-19 19:30:10]</span> Game update v2.5 deployed
+                </div>
+            </div>
+            <button class="control-btn" style="margin-top: 15px;" onclick="alert('Logs cleared!')">Clear Logs</button>
+        </div>
+
+        <!-- Analytics -->
+        <div class="section">
+            <h3>📈 Analytics</h3>
+            <div class="controls">
+                <button class="control-btn">View Player Stats</button>
+                <button class="control-btn">Download Reports</button>
+                <button class="control-btn">Revenue Analytics</button>
+                <button class="control-btn">Performance Metrics</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh stats every 30 seconds
+        setInterval(() => {
+            const players = document.getElementById('total-players');
+            const current = parseInt(players.textContent.replace(',', ''));
+            players.textContent = (current + Math.floor(Math.random() * 10)).toLocaleString();
+        }, 30000);
+
+        // Add log entry
+        function addLog(message, type = '') {
+            const logsContainer = document.getElementById('logs');
+            const timestamp = new Date().toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.innerHTML = `
+                <span class="timestamp">[${timestamp}]</span> ${message}
+            `;
+            
+            logsContainer.insertBefore(logEntry, logsContainer.firstChild);
+            
+            // Keep only last 10 logs
+            while (logsContainer.children.length > 10) {
+                logsContainer.removeChild(logsContainer.lastChild);
+            }
+        }
+
+        // Simulate random log entries
+        setInterval(() => {
+            const events = [
+                'Player joined game',
+                'Achievement unlocked',
+                'Server health check passed',
+                'Cache cleaned',
+                'Database synced'
+            ];
+            const randomEvent = events[Math.floor(Math.random() * events.length)];
+            addLog(randomEvent);
+        }, 45000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Report - Galactic Combat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(138, 43, 226, 0.3);
+            border: 2px solid #8A2BE2;
+            border-radius: 8px;
+            color: #E0E0E0;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(138, 43, 226, 0.5);
+            box-shadow: 0 0 20px #8A2BE2;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+
+        .description {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #8A2BE2;
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            background: rgba(0, 198, 255, 0.05);
+            border: 2px solid #00C6FF;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.3);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #00C6FF;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00C6FF;
+            border-radius: 8px;
+            color: #E0E0E0;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 2px solid #00C6FF;
+            border-radius: 8px;
+            color: #E0E0E0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.3);
+        }
+
+        .submit-btn:hover {
+            background: rgba(0, 198, 255, 0.2);
+            box-shadow: 0 0 30px #00C6FF;
+            transform: scale(1.05);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .success-message, .error-message {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            font-size: 1.1rem;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00FF00;
+            color: #00FF00;
+        }
+
+        .error-message {
+            background: rgba(255, 0, 127, 0.1);
+            border: 2px solid #FF007F;
+            color: #FF007F;
+        }
+
+        .required {
+            color: #FF007F;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Home</a>
+        
+        <h1>🐛 Report a Bug</h1>
+        <p class="description">
+            Found a bug? Help us improve Galactic Combat by reporting it here.<br>
+            Your report will be sent directly to our development team on Discord.
+        </p>
+
+        <div class="form-container">
+            <form id="bugReportForm" onsubmit="return submitBugReport(event)">
+                <label for="name">Your Name <span class="required">*</span></label>
+                <input type="text" id="name" placeholder="Enter your name or username" required maxlength="100">
+
+                <label for="email">Email (Optional)</label>
+                <input type="email" id="email" placeholder="your.email@example.com" maxlength="100">
+
+                <label for="bugType">Bug Type <span class="required">*</span></label>
+                <select id="bugType" required>
+                    <option value="">Select bug type...</option>
+                    <option value="Gameplay">Gameplay Issue</option>
+                    <option value="Graphics">Graphics/Visual Issue</option>
+                    <option value="Audio">Audio Issue</option>
+                    <option value="Performance">Performance Issue</option>
+                    <option value="Crash">Game Crash</option>
+                    <option value="UI">UI/Menu Issue</option>
+                    <option value="Multiplayer">Multiplayer Issue</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="title">Bug Title <span class="required">*</span></label>
+                <input type="text" id="title" placeholder="Brief description of the bug" required maxlength="200">
+
+                <label for="description">Detailed Description <span class="required">*</span></label>
+                <textarea id="description" placeholder="Please describe the bug in detail. Include steps to reproduce if possible." required maxlength="2000"></textarea>
+
+                <label for="platform">Platform <span class="required">*</span></label>
+                <select id="platform" required>
+                    <option value="">Select platform...</option>
+                    <option value="Windows">Windows</option>
+                    <option value="Linux">Linux</option>
+                    <option value="Web Browser">Web Browser</option>
+                    <option value="Mobile">Mobile</option>
+                </select>
+
+                <button type="submit" class="submit-btn" id="submitBtn">🚀 Submit Bug Report</button>
+            </form>
+
+            <div id="successMessage" class="success-message">
+                ✓ Bug report submitted successfully! Thank you for helping us improve the game.
+            </div>
+
+            <div id="errorMessage" class="error-message">
+                ✗ Failed to submit bug report. Please try again or contact us on Discord directly.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function submitBugReport(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            // Hide previous messages
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Submitting...';
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value || 'Not provided',
+                bugType: document.getElementById('bugType').value,
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                platform: document.getElementById('platform').value,
+                timestamp: new Date().toLocaleString()
+            };
+            
+            // Discord Webhook URL
+            const webhookURL = 'https://discord.com/api/webhooks/1429618355840745553/v1NtRD9s_jrxzrC2PL-CY4quSWaFI2wLvyLFTo7cWA5oxhqnnUSCX3fqHIliCdhMGecp';
+            
+            // Content Moderation - Filter inappropriate content
+            const bannedWords = ['spam', 'test123', 'asdf', 'hack', 'cheat', 'exploit'];
+            const minDescriptionLength = 20;
+            
+            // Validate content
+            const description = formData.description.toLowerCase();
+            const title = formData.title.toLowerCase();
+            
+            // Check for banned words
+            for (const word of bannedWords) {
+                if (description.includes(word) || title.includes(word)) {
+                    errorMsg.textContent = '⚠️ Your report contains inappropriate content. Please provide a legitimate bug description.';
+                    errorMsg.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '🚀 Submit Bug Report';
+                    return false;
+                }
+            }
+            
+            // Check minimum length
+            if (formData.description.length < minDescriptionLength) {
+                errorMsg.textContent = '⚠️ Bug description is too short. Please provide more details (minimum 20 characters).';
+                errorMsg.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🚀 Submit Bug Report';
+                return false;
+            }
+            
+            // Check for spam (repeated characters)
+            if (/(.)\1{10,}/.test(formData.description)) {
+                errorMsg.textContent = '⚠️ Your report appears to be spam. Please provide a legitimate bug description.';
+                errorMsg.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🚀 Submit Bug Report';
+                return false;
+            }
+            
+            // Create Discord embed
+            const discordPayload = {
+                embeds: [{
+                    title: '🐛 New Bug Report',
+                    color: 0x00C6FF,
+                    fields: [
+                        { name: '📋 Title', value: formData.title, inline: false },
+                        { name: '👤 Reporter', value: formData.name, inline: true },
+                        { name: '📧 Email', value: formData.email, inline: true },
+                        { name: '🏷️ Type', value: formData.bugType, inline: true },
+                        { name: '💻 Platform', value: formData.platform, inline: true },
+                        { name: '📝 Description', value: formData.description, inline: false },
+                        { name: '🕐 Submitted', value: formData.timestamp, inline: false }
+                    ],
+                    footer: { text: 'Galactic Combat Bug Report System' }
+                }]
+            };
+            
+            try {
+                const response = await fetch(webhookURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(discordPayload)
+                });
+                
+                if (response.ok) {
+                    successMsg.style.display = 'block';
+                    document.getElementById('bugReportForm').reset();
+                    
+                    // Re-enable button after 3 seconds
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = '🚀 Submit Bug Report';
+                    }, 3000);
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (error) {
+                errorMsg.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🚀 Submit Bug Report';
+            }
+            
+            return false;
+        }
+    </script>
+</body>
+</html>
