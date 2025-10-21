@@ -391,6 +391,7 @@
                 <a href="faq.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">FAQ</a>
                 <a href="changelog.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">Changelog</a>
                 <a href="bug-report.html" style="color: #FF007F; text-decoration: none; transition: color 0.3s;">Report Bug</a>
+                <a href="user-auth.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">👤 Sign In</a>
             </div>
         </nav>
     </header>
@@ -402,7 +403,7 @@
             <p class="tagline">🚀 Epic Space Battles Await 🌌</p>
             
             <div class="button-group">
-                <a href="SpaceShooter-Latest.exe" class="button" download>💻 Download for PC</a>
+                <a href="SpaceShooter-Windows-v2.5.zip" class="button" download>💻 Download for PC</a>
                 <a href="SpaceShooterLinux.zip" class="button" download>🐧 Download for Linux</a>
                 <a href="#play" class="button secondary">🌐 Play in Browser</a>
             </div>
@@ -422,6 +423,20 @@
             <p>
                 Features 20 unlockable maps, multiple game modes, achievements, daily challenges, and multiplayer battles with up to 32 players!
             </p>
+            
+            <!-- Star Rating Widget -->
+            <div style="margin-top: 40px; padding: 30px; background: rgba(0, 198, 255, 0.1); border: 2px solid #00C6FF; border-radius: 15px; text-align: center;">
+                <h3 style="color: #00C6FF; font-family: 'Orbitron', sans-serif; margin-bottom: 15px;">⭐ Rate Our Game!</h3>
+                <div id="star-rating" style="font-size: 2.5rem; margin: 20px 0; cursor: pointer;">
+                    <span class="star" data-value="1">☆</span>
+                    <span class="star" data-value="2">☆</span>
+                    <span class="star" data-value="3">☆</span>
+                    <span class="star" data-value="4">☆</span>
+                    <span class="star" data-value="5">☆</span>
+                </div>
+                <p id="rating-display" style="color: #8A2BE2; font-size: 1.1rem; margin-top: 10px;">Average Rating: <span id="avg-rating">4.8</span>/5 (<span id="total-ratings">1247</span> ratings)</p>
+                <p id="thanks-message" style="color: #00FF00; font-size: 0.9rem; margin-top: 10px; display: none;">✨ Thanks for your rating!</p>
+            </div>
         </section>
 
         <!-- Play Browser Section -->
@@ -470,6 +485,110 @@
     </div>
 
     <script>
+        // Theme System
+        const themes = {
+            cosmic: {
+                name: 'Cosmic Blue',
+                primary: '#00C6FF',
+                secondary: '#8A2BE2',
+                accent: '#FF007F',
+                bg: '#05050A'
+            },
+            neon: {
+                name: 'Neon Green',
+                primary: '#00FF00',
+                secondary: '#FF00FF',
+                accent: '#FFFF00',
+                bg: '#000000'
+            },
+            sunset: {
+                name: 'Sunset Orange',
+                primary: '#FF6B35',
+                secondary: '#F7931E',
+                accent: '#FDC830',
+                bg: '#1A0A00'
+            },
+            matrix: {
+                name: 'Matrix Green',
+                primary: '#00FF41',
+                secondary: '#00D936',
+                accent: '#39FF14',
+                bg: '#000000'
+            },
+            purple: {
+                name: 'Purple Galaxy',
+                primary: '#9D4EDD',
+                secondary: '#C77DFF',
+                accent: '#E0AAFF',
+                bg: '#10002B'
+            }
+        };
+
+        let currentTheme = localStorage.getItem('siteTheme') || 'cosmic';
+
+        function applyTheme(themeName) {
+            const theme = themes[themeName];
+            if (!theme) return;
+
+            document.documentElement.style.setProperty('--primary-color', theme.primary);
+            document.documentElement.style.setProperty('--secondary-color', theme.secondary);
+            document.documentElement.style.setProperty('--accent-color', theme.accent);
+            document.documentElement.style.setProperty('--bg-color', theme.bg);
+
+            // Update all elements with primary color
+            document.querySelectorAll('[style*="color: #00C6FF"], [style*="color:#00C6FF"]').forEach(el => {
+                el.style.color = theme.primary;
+            });
+
+            // Update borders
+            document.querySelectorAll('[style*="border-color: #00C6FF"]').forEach(el => {
+                el.style.borderColor = theme.primary;
+            });
+
+            localStorage.setItem('siteTheme', themeName);
+            currentTheme = themeName;
+        }
+
+        function cycleTheme() {
+            const themeKeys = Object.keys(themes);
+            const currentIndex = themeKeys.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themeKeys.length;
+            const nextTheme = themeKeys[nextIndex];
+            
+            applyTheme(nextTheme);
+            
+            // Show theme notification
+            showThemeNotification(themes[nextTheme].name);
+        }
+
+        function showThemeNotification(themeName) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: rgba(0, 198, 255, 0.9);
+                color: #fff;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-family: 'Orbitron', sans-serif;
+                z-index: 10002;
+                animation: slideIn 0.3s ease-out;
+                box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+            `;
+            notification.textContent = `Theme: ${themeName}`;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        // Apply saved theme on load
+        applyTheme(currentTheme);
+
         // Starfield Animation
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
@@ -603,6 +722,50 @@
                 document.getElementById('update-notification').style.display = 'block';
                 localStorage.setItem('lastSeenVersion', currentVersion);
             }, 2000);
+        }
+
+        // Star Rating System
+        const ratingStars = document.querySelectorAll('.star');
+        let userRating = localStorage.getItem('userRating');
+        
+        function updateStarDisplay(rating) {
+            ratingStars.forEach((star, index) => {
+                star.textContent = index < rating ? '⭐' : '☆';
+            });
+        }
+        
+        function submitRating(rating) {
+            localStorage.setItem('userRating', rating);
+            userRating = rating;
+            updateStarDisplay(rating);
+            document.getElementById('thanks-message').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('thanks-message').style.display = 'none';
+            }, 3000);
+        }
+        
+        ratingStars.forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = parseInt(star.getAttribute('data-value'));
+                submitRating(rating);
+            });
+            
+            star.addEventListener('mouseenter', () => {
+                const rating = parseInt(star.getAttribute('data-value'));
+                updateStarDisplay(rating);
+            });
+        });
+        
+        document.getElementById('star-rating').addEventListener('mouseleave', () => {
+            if (userRating) {
+                updateStarDisplay(parseInt(userRating));
+            } else {
+                updateStarDisplay(0);
+            }
+        });
+        
+        if (userRating) {
+            updateStarDisplay(parseInt(userRating));
         }
     </script>
 </body>
