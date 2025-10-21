@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - Space Shooter | Top Players & High Scores</title>
+    <meta name="description" content="View the top Space Shooter players worldwide. Check rankings, high scores, kills, and player statistics on the official leaderboard.">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            min-height: 100vh;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(5, 5, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 198, 255, 0.3);
+            padding: 15px 0;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #00C6FF;
+            text-decoration: none;
+            text-shadow: 0 0 10px #00C6FF;
+        }
+
+        .nav-links a {
+            color: #E0E0E0;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00C6FF;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 40px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8A2BE2;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        .leaderboard-filters {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(0, 198, 255, 0.2);
+            border: 2px solid #00C6FF;
+            border-radius: 8px;
+            color: #E0E0E0;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(0, 198, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+        }
+
+        .leaderboard-table {
+            background: rgba(0, 198, 255, 0.05);
+            border: 2px solid #00C6FF;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #00C6FF 0%, #8A2BE2 100%);
+        }
+
+        th {
+            padding: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            text-align: left;
+            color: #fff;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(0, 198, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 198, 255, 0.1);
+        }
+
+        td {
+            padding: 15px;
+            font-size: 1rem;
+        }
+
+        .rank {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .rank-1 { color: #FFD700; }
+        .rank-2 { color: #C0C0C0; }
+        .rank-3 { color: #CD7F32; }
+
+        .player-name {
+            font-weight: 600;
+            color: #00C6FF;
+        }
+
+        .stat-high {
+            color: #00FF00;
+            font-weight: bold;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #8A2BE2;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            table { font-size: 0.9rem; }
+            th, td { padding: 10px 5px; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starfield"></canvas>
+
+    <header>
+        <nav>
+            <a href="index.html">SPACE SHOOTER</a>
+            <div class="nav-links" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="how-to-play.html">How to Play</a>
+                <a href="leaderboard.html" style="color: #FFD700;">Leaderboard</a>
+                <a href="changelog.html">Changelog</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="content">
+        <div class="container">
+            <h1>🏆 LEADERBOARD</h1>
+            <p class="subtitle">Top Space Shooters Worldwide</p>
+
+            <div class="leaderboard-filters">
+                <button class="filter-btn active" onclick="filterLeaderboard('all')">All Time</button>
+                <button class="filter-btn" onclick="filterLeaderboard('daily')">Daily</button>
+                <button class="filter-btn" onclick="filterLeaderboard('weekly')">Weekly</button>
+                <button class="filter-btn" onclick="filterLeaderboard('monthly')">Monthly</button>
+            </div>
+
+            <div class="leaderboard-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>High Score</th>
+                            <th>Kills</th>
+                            <th>Deaths</th>
+                            <th>Level</th>
+                            <th>Win Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                        <!-- Data populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="last-updated" id="last-updated">Last updated: <span id="update-time"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Leaderboard data (would normally come from a server)
+        const leaderboardData = [
+            { rank: 1, player: "SkyCommander_99", score: 458920, kills: 15847, deaths: 234, level: 47, wins: 892, games: 1126 },
+            { rank: 2, player: "NovaHunter", score: 423850, kills: 14203, deaths: 189, level: 45, wins: 845, games: 1034 },
+            { rank: 3, player: "GalaxyGazer", score: 398740, kills: 13564, deaths: 267, level: 43, wins: 789, games: 1056 },
+            { rank: 4, player: "StarPilot_7", score: 375920, kills: 12890, deaths: 298, level: 41, wins: 734, games: 1032 },
+            { rank: 5, player: "CometRider", score: 352800, kills: 11947, deaths: 312, level: 39, wins: 698, games: 1010 },
+            { rank: 6, player: "AstroAce", score: 338450, kills: 11234, deaths: 289, level: 38, wins: 672, games: 961 },
+            { rank: 7, player: "NebulaKnight", score: 325100, kills: 10876, deaths: 334, level: 37, wins: 645, games: 979 },
+            { rank: 8, player: "VoidWalker", score: 312850, kills: 10459, deaths: 301, level: 36, wins: 621, games: 922 },
+            { rank: 9, player: "CosmicFury", score: 298760, kills: 9987, deaths: 356, level: 35, wins: 589, games: 945 },
+            { rank: 10, player: "OrionWarrior", score: 285920, kills: 9543, deaths: 378, level: 34, wins: 567, games: 945 },
+            { rank: 11, player: "MeteorStrike", score: 274380, kills: 9178, deaths: 392, level: 33, wins: 541, games: 933 },
+            { rank: 12, player: "Eclipse_Shadow", score: 263450, kills: 8845, deaths: 405, level: 32, wins: 523, games: 928 },
+            { rank: 13, player: "Supernova_X", score: 252890, kills: 8534, deaths: 421, level: 31, wins: 498, games: 919 },
+            { rank: 14, player: "AlphaPhoenix", score: 242760, kills: 8201, deaths: 438, level: 30, wins: 476, games: 914 },
+            { rank: 15, player: "BetaDragon", score: 233120, kills: 7893, deaths: 456, level: 29, wins: 455, games: 911 },
+            { rank: 16, player: "PlasmaRider", score: 224560, kills: 7612, deaths: 472, level: 28, wins: 434, games: 906 },
+            { rank: 17, player: "QuasarBlast", score: 216340, kills: 7345, deaths: 489, level: 27, wins: 418, games: 907 },
+            { rank: 18, player: "StellarGuardian", score: 208790, kills: 7098, deaths: 503, level: 26, wins: 401, games: 904 },
+            { rank: 19, player: "DarkMatterPro", score: 201580, kills: 6867, deaths: 521, level: 25, wins: 385, games: 906 },
+            { rank: 20, player: "Andromeda_89", score: 194820, kills: 6654, deaths: 537, level: 24, wins: 371, games: 908 }
+        ];
+
+        function populateLeaderboard(data) {
+            const tbody = document.getElementById('leaderboard-body');
+            tbody.innerHTML = '';
+
+            data.forEach(player => {
+                const winRate = ((player.wins / player.games) * 100).toFixed(1);
+                const rankClass = player.rank <= 3 ? `rank-${player.rank}` : '';
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="rank ${rankClass}">#${player.rank}</td>
+                    <td class="player-name">${player.player}</td>
+                    <td class="stat-high">${player.score.toLocaleString()}</td>
+                    <td>${player.kills.toLocaleString()}</td>
+                    <td>${player.deaths.toLocaleString()}</td>
+                    <td>${player.level}</td>
+                    <td>${winRate}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Update timestamp
+            const now = new Date();
+            document.getElementById('update-time').textContent = now.toLocaleString();
+        }
+
+        function filterLeaderboard(filter) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            // For demo, we'll just re-populate with the same data
+            // In a real app, this would fetch different data from the server
+            populateLeaderboard(leaderboardData);
+        }
+
+        // Initialize leaderboard
+        populateLeaderboard(leaderboardData);
+
+        // Auto-update every 30 seconds
+        setInterval(() => {
+            // Slightly randomize some values for demo
+            leaderboardData.forEach(player => {
+                player.score += Math.floor(Math.random() * 1000);
+                player.kills += Math.floor(Math.random() * 10);
+                if (Math.random() > 0.7) player.deaths++;
+            });
+            populateLeaderboard(leaderboardData);
+        }, 30000);
+
+        // Starfield animation
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const stars = [];
+        const numStars = 150;
+        
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * canvas.width;
+                this.speed = 0.5;
+            }
+            
+            update() {
+                this.z -= this.speed;
+                if (this.z <= 0) {
+                    this.z = canvas.width;
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                }
+            }
+            
+            draw() {
+                const x = (this.x - canvas.width / 2) * (canvas.width / this.z) + canvas.width / 2;
+                const y = (this.y - canvas.height / 2) * (canvas.width / this.z) + canvas.height / 2;
+                const size = (1 - this.z / canvas.width) * 2;
+                const brightness = (1 - this.z / canvas.width) * 255;
+                
+                ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness}, ${1 - this.z / canvas.width})`;
+                ctx.fillRect(x, y, size, size);
+            }
+        }
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 10, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
