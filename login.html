@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Space Shooter Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0A0A2E 0%, #1a1a3e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .container {
+            background: rgba(26, 26, 62, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 191, 255, 0.3);
+            border: 2px solid #00BFFF;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00BFFF;
+            margin-bottom: 10px;
+            font-size: 32px;
+            text-shadow: 0 0 10px #00BFFF;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #333;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #00BFFF;
+            border-bottom: 3px solid #00BFFF;
+        }
+
+        .tab:hover {
+            color: #00BFFF;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00BFFF;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #00BFFF;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00BFFF, #1E90FF);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.5);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .guest-btn {
+            background: linear-gradient(135deg, #666, #888);
+        }
+
+        .error {
+            color: #FF4444;
+            font-size: 13px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .success {
+            color: #44FF44;
+            font-size: 13px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        .link a {
+            color: #00BFFF;
+            text-decoration: none;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background: rgba(0, 191, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #00BFFF;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 SPACE SHOOTER</h1>
+        <p class="subtitle">Login to save your progress</p>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('guest')">Guest</button>
+            <button class="tab" onclick="switchTab('login')">Login</button>
+            <button class="tab" onclick="switchTab('signup')">Sign Up</button>
+        </div>
+
+        <!-- Guest Tab -->
+        <div id="guest-tab" class="tab-content active">
+            <div class="info-box">
+                ⚡ Play instantly without creating an account. Progress won't be saved.
+            </div>
+            <button class="guest-btn" onclick="playAsGuest()">PLAY AS GUEST</button>
+        </div>
+
+        <!-- Login Tab -->
+        <div id="login-tab" class="tab-content">
+            <form onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="login-username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" placeholder="Enter password" required>
+                </div>
+                <div id="login-error" class="error"></div>
+                <button type="submit">LOGIN</button>
+            </form>
+            <div class="link">
+                <a href="#" onclick="switchTab('forgot'); return false;">Forgot password?</a>
+            </div>
+        </div>
+
+        <!-- Signup Tab -->
+        <div id="signup-tab" class="tab-content">
+            <form onsubmit="return handleSignup(event)">
+                <div class="form-group">
+                    <label>Username (3-20 characters)</label>
+                    <input type="text" id="signup-username" placeholder="Choose username" required minlength="3" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label>Password (6+ characters)</label>
+                    <input type="password" id="signup-password" placeholder="Choose password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="signup-confirm" placeholder="Confirm password" required>
+                </div>
+                <div id="signup-error" class="error"></div>
+                <div id="signup-success" class="success"></div>
+                <button type="submit">CREATE ACCOUNT</button>
+            </form>
+        </div>
+
+        <div class="link">
+            <a href="index.html">← Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Local Storage for demo (in production, use backend/database)
+        function switchTab(tabName) {
+            // Remove active from all tabs
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active to selected tab
+            if (tabName === 'guest') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.getElementById('guest-tab').classList.add('active');
+            } else if (tabName === 'login') {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                document.getElementById('login-tab').classList.add('active');
+            } else if (tabName === 'signup') {
+                document.querySelectorAll('.tab')[2].classList.add('active');
+                document.getElementById('signup-tab').classList.add('active');
+            }
+
+            // Clear errors
+            document.querySelectorAll('.error, .success').forEach(el => el.textContent = '');
+        }
+
+        function playAsGuest() {
+            const guestName = 'Guest_' + Math.floor(Math.random() * 9000 + 1000);
+            localStorage.setItem('username', guestName);
+            localStorage.setItem('isGuest', 'true');
+            alert('Playing as: ' + guestName);
+            // Redirect to game
+            window.location.href = 'index.html';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const errorEl = document.getElementById('login-error');
+
+            // Get accounts from localStorage
+            const accounts = JSON.parse(localStorage.getItem('accounts') || '{}');
+
+            if (!accounts[username]) {
+                errorEl.textContent = '❌ Account not found';
+                return false;
+            }
+
+            // Simple password check (in production, use proper hashing)
+            if (accounts[username].password !== btoa(password)) {
+                errorEl.textContent = '❌ Incorrect password';
+                return false;
+            }
+
+            // Login successful
+            localStorage.setItem('username', username);
+            localStorage.setItem('isGuest', 'false');
+            localStorage.setItem('userStats', JSON.stringify(accounts[username].stats));
+
+            // Check if admin
+            if (username === 'King_davez') {
+                alert('⭐ ADMIN ACCESS GRANTED ⭐\nWelcome, ' + username + '!');
+            } else {
+                alert('✅ Login successful!\nWelcome back, ' + username + '!');
+            }
+
+            // Redirect to game
+            window.location.href = 'index.html';
+            return false;
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const confirm = document.getElementById('signup-confirm').value;
+            const errorEl = document.getElementById('signup-error');
+            const successEl = document.getElementById('signup-success');
+
+            // Validation
+            if (username.length < 3 || username.length > 20) {
+                errorEl.textContent = '❌ Username must be 3-20 characters';
+                return false;
+            }
+
+            if (password.length < 6) {
+                errorEl.textContent = '❌ Password must be at least 6 characters';
+                return false;
+            }
+
+            if (password !== confirm) {
+                errorEl.textContent = '❌ Passwords don\'t match';
+                return false;
+            }
+
+            // Get accounts from localStorage
+            const accounts = JSON.parse(localStorage.getItem('accounts') || '{}');
+
+            // Check if username exists
+            if (accounts[username]) {
+                errorEl.textContent = '❌ Username already exists';
+                return false;
+            }
+
+            // Create account
+            accounts[username] = {
+                password: btoa(password), // Simple encoding (use proper hashing in production)
+                stats: {
+                    level: 1,
+                    xp: 0,
+                    totalKills: 0,
+                    totalDeaths: 0,
+                    highScore: 0,
+                    gamesPlayed: 0
+                },
+                createdAt: Date.now()
+            };
+
+            // Save to localStorage
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+
+            // Auto-login
+            localStorage.setItem('username', username);
+            localStorage.setItem('isGuest', 'false');
+            localStorage.setItem('userStats', JSON.stringify(accounts[username].stats));
+
+            successEl.textContent = '✅ Account created! Redirecting...';
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1500);
+
+            return false;
+        }
+
+        // Check if already logged in
+        window.onload = function() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                const isGuest = localStorage.getItem('isGuest') === 'true';
+                if (confirm('Already logged in as ' + username + '. Continue to game?')) {
+                    window.location.href = 'index.html';
+                } else {
+                    // Logout
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('isGuest');
+                    localStorage.removeItem('userStats');
+                }
+            }
+        };
+    </script>
+</body>
+</html>
