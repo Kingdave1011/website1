@@ -529,23 +529,145 @@
             const theme = themes[themeName];
             if (!theme) return;
 
-            document.documentElement.style.setProperty('--primary-color', theme.primary);
-            document.documentElement.style.setProperty('--secondary-color', theme.secondary);
-            document.documentElement.style.setProperty('--accent-color', theme.accent);
-            document.documentElement.style.setProperty('--bg-color', theme.bg);
+            // Update body background
+            document.body.style.background = theme.bg;
+            
+            // Update canvas background
+            const canvas = document.getElementById('starfield');
+            if (canvas) {
+                canvas.style.background = theme.bg;
+            }
 
-            // Update all elements with primary color
-            document.querySelectorAll('[style*="color: #00C6FF"], [style*="color:#00C6FF"]').forEach(el => {
+            // Update all h1 elements (hero title)
+            document.querySelectorAll('h1').forEach(el => {
+                el.style.color = theme.primary;
+                el.style.textShadow = `0 0 20px ${theme.primary}, 0 0 40px ${theme.primary}`;
+            });
+
+            // Update all h2 elements (section titles)
+            document.querySelectorAll('h2').forEach(el => {
+                el.style.color = theme.primary;
+                el.style.textShadow = `0 0 15px ${theme.primary}`;
+            });
+
+            // Update all h3 elements
+            document.querySelectorAll('h3').forEach(el => {
                 el.style.color = theme.primary;
             });
 
-            // Update borders
-            document.querySelectorAll('[style*="border-color: #00C6FF"]').forEach(el => {
+            // Update tagline
+            const tagline = document.querySelector('.tagline');
+            if (tagline) {
+                tagline.style.color = theme.secondary;
+                tagline.style.textShadow = `0 0 10px ${theme.secondary}`;
+            }
+
+            // Update all buttons
+            document.querySelectorAll('.button').forEach(el => {
                 el.style.borderColor = theme.primary;
+                el.style.boxShadow = `0 0 10px ${theme.primary}`;
             });
+
+            document.querySelectorAll('.button.secondary').forEach(el => {
+                el.style.borderColor = theme.secondary;
+                el.style.boxShadow = `0 0 10px ${theme.secondary}`;
+            });
+
+            // Update navigation logo
+            const logo = document.querySelector('nav a[href="index.html"]');
+            if (logo) {
+                logo.style.color = theme.primary;
+                logo.style.textShadow = `0 0 10px ${theme.primary}`;
+            }
+
+            // Update theme toggle button
+            const themeBtn = document.getElementById('theme-toggle');
+            if (themeBtn) {
+                themeBtn.style.background = `rgba(${hexToRgb(theme.primary)}, 0.2)`;
+                themeBtn.style.borderColor = theme.primary;
+            }
+
+            // Update header background
+            const header = document.querySelector('header');
+            if (header) {
+                header.style.background = `rgba(${hexToRgb(theme.bg)}, 0.95)`;
+                header.style.borderBottomColor = `rgba(${hexToRgb(theme.primary)}, 0.3)`;
+            }
+
+            // Update community buttons
+            document.querySelectorAll('.community-btn').forEach(el => {
+                if (!el.style.borderColor || el.style.borderColor.includes('198, 255')) {
+                    el.style.borderColor = theme.primary;
+                    el.style.background = `rgba(${hexToRgb(theme.primary)}, 0.1)`;
+                    el.style.boxShadow = `0 0 15px rgba(${hexToRgb(theme.primary)}, 0.3)`;
+                }
+            });
+
+            // Update game container
+            const gameContainer = document.querySelector('.game-container');
+            if (gameContainer) {
+                gameContainer.style.borderColor = theme.primary;
+                gameContainer.style.boxShadow = `0 0 30px rgba(${hexToRgb(theme.primary)}, 0.5)`;
+            }
+
+            // Update star rating widget
+            const ratingWidget = document.querySelector('#about > div');
+            if (ratingWidget) {
+                ratingWidget.style.background = `rgba(${hexToRgb(theme.primary)}, 0.1)`;
+                ratingWidget.style.borderColor = theme.primary;
+            }
+
+            // Update rating title
+            const ratingTitle = document.querySelector('#about h3');
+            if (ratingTitle) {
+                ratingTitle.style.color = theme.primary;
+            }
+
+            // Update rating display
+            const ratingDisplay = document.getElementById('rating-display');
+            if (ratingDisplay) {
+                ratingDisplay.style.color = theme.secondary;
+            }
+
+            // Update download notice
+            const notice = document.querySelector('.hero p[style*="border: 2px solid #FFD700"]');
+            if (notice) {
+                notice.style.background = `rgba(${hexToRgb(theme.accent)}, 0.1)`;
+                notice.style.borderColor = theme.accent;
+            }
+
+            // Update footer border
+            const footer = document.querySelector('footer');
+            if (footer) {
+                footer.style.borderTopColor = `rgba(${hexToRgb(theme.primary)}, 0.3)`;
+            }
+
+            // Update footer links color
+            document.querySelectorAll('footer p').forEach(el => {
+                if (el.querySelector('span')) {
+                    const span = el.querySelector('span');
+                    span.style.color = theme.primary;
+                    span.style.textShadow = `0 0 10px ${theme.primary}`;
+                }
+            });
+
+            // Update update notification
+            const updateNotif = document.getElementById('update-notification');
+            if (updateNotif) {
+                updateNotif.style.background = `linear-gradient(135deg, ${theme.primary} 0%, ${theme.secondary} 100%)`;
+                updateNotif.style.boxShadow = `0 0 30px rgba(${hexToRgb(theme.primary)}, 0.8)`;
+            }
 
             localStorage.setItem('siteTheme', themeName);
             currentTheme = themeName;
+        }
+
+        // Helper function to convert hex to RGB
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? 
+                `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+                '0, 198, 255';
         }
 
         function cycleTheme() {
