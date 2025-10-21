@@ -1,220 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-		<title>Space Shooter V2</title>
-		<style>
-html, body, #canvas {
-	margin: 0;
-	padding: 0;
-	border: 0;
-}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Space Shooter - Beta</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="login-screen">
+        <div class="login-box">
+            <h1>SPACE SHOOTER</h1>
+            <p id="login-error"></p>
+            <input type="text" id="username-input" placeholder="Username">
+            <input type="password" id="password-input" placeholder="Password">
+            <button id="signin-button">Sign In</button>
+            <button id="signup-button">Sign Up</button>
+            <button id="guest-button">Play as Guest</button>
+        </div>
+    </div>
 
-body {
-	color: white;
-	background-color: black;
-	overflow: hidden;
-	touch-action: none;
-}
+    <div id="game-container" class="hidden">
+        <canvas id="game-canvas"></canvas>
 
-#canvas {
-	display: block;
-}
+        <div id="start-screen">
+            <h1 class="pulsing-glow">SPACE SHOOTER</h1>
+            <p class="subtitle">Beta App</p>
+            <p id="welcome-message">Welcome!</p>
+            
+             <div class="booster-selection-container">
+                <p class="booster-title">(SINGLE RUN)</p>
+                <div class="booster-options">
+                    <div class="booster-item" data-booster="shield">
+                        <label for="shield-booster-checkbox">
+                            <div class="booster-icon">🛡️</div>
+                            Shield
+                            <span class="booster-count" id="shield-booster-count">0</span>
+                        </label>
+                        <input type="checkbox" id="shield-booster-checkbox" class="booster-checkbox">
+                    </div>
+                    <div class="booster-item" data-booster="rapidFire">
+                        <label for="rapid-fire-booster-checkbox">
+                            <div class="booster-icon">⚡</div>
+                            Rapid Fire
+                            <span class="booster-count" id="rapid-fire-booster-count">0</span>
+                        </label>
+                         <input type="checkbox" id="rapid-fire-booster-checkbox" class="booster-checkbox">
+                    </div>
+                    <div class="booster-item" data-booster="doubleCredits">
+                         <label for="double-credits-booster-checkbox">
+                            <div class="booster-icon">💰</div>
+                            Double Credits
+                            <span class="booster-count" id="double-credits-booster-count">0</span>
+                        </label>
+                        <input type="checkbox" id="double-credits-booster-checkbox" class="booster-checkbox">
+                    </div>
+                </div>
+            </div>
 
-#canvas:focus {
-	outline: none;
-}
+            <button id="start-button">Start Game</button>
+            <div class="menu-buttons">
+                 <button id="hangar-button">Hangar</button>
+                <button id="upgrades-button">Upgrades</button>
+                <button id="achievements-button">Achievements</button>
+                <button id="map-selector-button">Map Selector</button>
+                <button id="daily-reward-button">Daily Rewards</button>
+                <button id="settings-button">Settings</button>
+                <button id="admin-panel-button" class="hidden">Admin Panel</button>
+            </div>
+            <p class="controls">Controls: WASD/Arrows to Move | Space/LMB to Shoot | ESC to Quit</p>
+            <p class="controls-gamepad">Gamepad: Left Stick to Move | A-Button/Right Trigger to Shoot</p>
+            <div id="player-counter">Players Online: <span>127</span></div>
+        </div>
 
-#status, #status-splash, #status-progress {
-	position: absolute;
-	left: 0;
-	right: 0;
-}
+        <div id="hud" class="hidden">
+            <div class="hud-item">Score: <span id="score">0</span></div>
+            <div class="hud-item">Lives: <span id="lives">3</span></div>
+            <div class="hud-item">Wave: <span id="wave">1</span></div>
+            <div class="hud-item" id="credits-display">Credits: <span id="credits">0</span></div>
+            <div id="level-container">
+                <div class="level-text">Level <span id="level">1</span></div>
+                <div id="xp-bar-container">
+                    <div id="xp-bar"></div>
+                </div>
+            </div>
+            <div id="anti-cheat-indicator">Anti-Cheat Enabled ✅</div>
+        </div>
+        
+        <p id="level-up-notification" class="hidden">LEVEL UP!</p>
+        <p id="wave-notification" class="hidden">WAVE 1</p>
 
-#status, #status-splash {
-	top: 0;
-	bottom: 0;
-}
+        <div id="game-over-screen" class="hidden">
+            <h2>Game Over</h2>
+            <p>Final Score: <span id="final-score">0</span></p>
+            <button id="restart-button">Play Again</button>
+        </div>
 
-#status {
-	background-color: #242424;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	visibility: hidden;
-}
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Settings</h2>
+                <div class="setting-item">
+                    <label for="effects-toggle">Enable Special Effects</label>
+                    <input type="checkbox" id="effects-toggle" checked>
+                </div>
+                <div class="setting-item">
+                    <label for="sfx-volume">SFX Volume</label>
+                    <input type="range" id="sfx-volume" min="0" max="1" step="0.1" value="0.5">
+                </div>
+                 <div class="setting-item">
+                    <label for="music-volume">Music Volume</label>
+                    <input type="range" id="music-volume" min="0" max="1" step="0.1" value="0.2">
+                </div>
+            </div>
+        </div>
 
-#status-splash {
-	max-height: 100%;
-	max-width: 100%;
-	margin: auto;
-}
+        <div id="daily-reward-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Daily Rewards</h2>
+                <div id="reward-calendar"></div>
+                <button id="claim-reward-button" disabled>Claim Reward</button>
+            </div>
+        </div>
+        
+        <div id="upgrades-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Upgrades</h2>
+                <p>Credits: <span id="upgrades-credits">0</span></p>
+                <div class="upgrade-item">
+                    <span>Fire Rate</span>
+                    <span id="fire-rate-level">Lv 1</span>
+                    <button id="buy-fire-rate">Cost: <span id="fire-rate-cost">100</span></button>
+                </div>
+                <div class="upgrade-item">
+                    <span>Ship Speed</span>
+                    <span id="ship-speed-level">Lv 1</span>
+                    <button id="buy-ship-speed">Cost: <span id="ship-speed-cost">100</span></button>
+                </div>
+                <div class="upgrade-item">
+                    <span>Extra Life</span>
+                    <span id="extra-life-level">Lv 1</span>
+                    <button id="buy-extra-life">Cost: <span id="extra-life-cost">250</span></button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="hangar-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Hangar</h2>
+                <div id="hangar-grid"></div>
+            </div>
+        </div>
 
-#status-splash.show-image--false {
-	display: none;
-}
+        <div id="achievements-modal" class="modal hidden">
+             <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Achievements</h2>
+                <div id="achievements-list"></div>
+            </div>
+        </div>
 
-#status-splash.fullsize--true {
-	height: 100%;
-	width: 100%;
-	object-fit: contain;
-}
+        <div id="achievement-toast" class="hidden">
+            <p>🏆 Achievement Unlocked!</p>
+            <span id="achievement-name"></span>
+        </div>
+        
+        <div id="map-selector-modal" class="modal hidden">
+             <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Map Selector</h2>
+                <div id="map-grid"></div>
+            </div>
+        </div>
 
-#status-splash.use-filter--false {
-	image-rendering: pixelated;
-}
+        <div id="admin-panel-modal" class="modal hidden">
+             <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Admin Panel</h2>
+                <div id="admin-info"></div>
+            </div>
+        </div>
 
-#status-progress, #status-notice {
-	display: none;
-}
 
-#status-progress {
-	bottom: 10%;
-	width: 50%;
-	margin: 0 auto;
-}
-
-#status-notice {
-	background-color: #5b3943;
-	border-radius: 0.5rem;
-	border: 1px solid #9b3943;
-	color: #e0e0e0;
-	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
-	line-height: 1.3;
-	margin: 0 2rem;
-	overflow: hidden;
-	padding: 1rem;
-	text-align: center;
-	z-index: 1;
-}
-		</style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="Space Shooter V2.icon.png" />
-<link rel="apple-touch-icon" href="Space Shooter V2.apple-touch-icon.png"/>
-
-	</head>
-	<body>
-		<canvas id="canvas">
-			Your browser does not support the canvas tag.
-		</canvas>
-
-		<noscript>
-			Your browser does not support JavaScript.
-		</noscript>
-
-		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="Space Shooter V2.png" alt="">
-			<progress id="status-progress"></progress>
-			<div id="status-notice"></div>
-		</div>
-
-		<script src="Space Shooter V2.js"></script>
-		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"Space Shooter V2","experimentalVK":false,"fileSizes":{"Space Shooter V2.pck":6083300,"Space Shooter V2.wasm":36145869},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
-const GODOT_THREADS_ENABLED = false;
-const engine = new Engine(GODOT_CONFIG);
-
-(function () {
-	const statusOverlay = document.getElementById('status');
-	const statusProgress = document.getElementById('status-progress');
-	const statusNotice = document.getElementById('status-notice');
-
-	let initializing = true;
-	let statusMode = '';
-
-	function setStatusMode(mode) {
-		if (statusMode === mode || !initializing) {
-			return;
-		}
-		if (mode === 'hidden') {
-			statusOverlay.remove();
-			initializing = false;
-			return;
-		}
-		statusOverlay.style.visibility = 'visible';
-		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
-		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
-		statusMode = mode;
-	}
-
-	function setStatusNotice(text) {
-		while (statusNotice.lastChild) {
-			statusNotice.removeChild(statusNotice.lastChild);
-		}
-		const lines = text.split('\n');
-		lines.forEach((line) => {
-			statusNotice.appendChild(document.createTextNode(line));
-			statusNotice.appendChild(document.createElement('br'));
-		});
-	}
-
-	function displayFailureNotice(err) {
-		console.error(err);
-		if (err instanceof Error) {
-			setStatusNotice(err.message);
-		} else if (typeof err === 'string') {
-			setStatusNotice(err);
-		} else {
-			setStatusNotice('An unknown error occurred.');
-		}
-		setStatusMode('notice');
-		initializing = false;
-	}
-
-	const missing = Engine.getMissingFeatures({
-		threads: GODOT_THREADS_ENABLED,
-	});
-
-	if (missing.length !== 0) {
-		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
-			let serviceWorkerRegistrationPromise;
-			try {
-				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
-			} catch (err) {
-				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
-			}
-			// There's a chance that installing the service worker would fix the issue
-			Promise.race([
-				serviceWorkerRegistrationPromise.then((registration) => {
-					if (registration != null) {
-						return Promise.reject(new Error('Service worker already exists.'));
-					}
-					return registration;
-				}).then(() => engine.installServiceWorker()),
-				// For some reason, `getRegistration()` can stall
-				new Promise((resolve) => {
-					setTimeout(() => resolve(), 2000);
-				}),
-			]).then(() => {
-				// Reload if there was no error.
-				window.location.reload();
-			}).catch((err) => {
-				console.error('Error while registering service worker:', err);
-			});
-		} else {
-			// Display the message as usual
-			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
-			displayFailureNotice(missingMsg + missing.join('\n'));
-		}
-	} else {
-		setStatusMode('progress');
-		engine.startGame({
-			'onProgress': function (current, total) {
-				if (current > 0 && total > 0) {
-					statusProgress.value = current;
-					statusProgress.max = total;
-				} else {
-					statusProgress.removeAttribute('value');
-					statusProgress.removeAttribute('max');
-				}
-			},
-		}).then(() => {
-			setStatusMode('hidden');
-		}, displayFailureNotice);
-	}
-}());
-		</script>
-	</body>
+        <div id="chat-container">
+            <div id="chat-messages"></div>
+            <input type="text" id="chat-input" placeholder="Type a message...">
+        </div>
+    </div>
+    
+    <script type="module" src="index.tsx"></script>
+</body>
 </html>
-
