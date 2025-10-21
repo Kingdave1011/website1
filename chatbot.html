@@ -197,6 +197,10 @@
             </div>
         </div>
         
+        <div class="chat-input-container" style="padding: 10px; border-top: 1px solid rgba(0, 198, 255, 0.3);">
+            <input type="text" id="chat-input" placeholder="Type your question..." style="width: 100%; padding: 8px; background: rgba(0, 198, 255, 0.1); border: 1px solid #00C6FF; border-radius: 5px; color: #E0E0E0; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem;" />
+        </div>
+        
         <div class="quick-questions">
             <p><strong>Quick Questions:</strong></p>
             <button class="quick-btn" onclick="askQuestion('Is the game safe to download?')">Is the game safe to download?</button>
@@ -280,6 +284,19 @@
                 addMessage(response, false);
             }, 500);
         }
+
+        // Add Enter key support for input
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('chat-input');
+            if (input) {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && input.value.trim()) {
+                        askQuestion(input.value);
+                        input.value = '';
+                    }
+                });
+            }
+        });
 
         // Auto-show on first visit
         if (!sessionStorage.getItem('chatbotShown')) {
