@@ -588,7 +588,7 @@
         // Apply saved theme on load
         applyTheme(currentTheme);
 
-        // Starfield Animation
+        // Starfield Animation (Optimized)
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
         
@@ -596,7 +596,7 @@
         canvas.height = window.innerHeight;
         
         const stars = [];
-        const numStars = 200;
+        const numStars = 100; // Reduced from 200 for better performance
         
         class Star {
             constructor() {
