@@ -47,6 +47,8 @@ interface PlayerState {
     unlockedSkins: Record<string, string[]>;
     battlePassTier: number;
     claimedBattlePassTiers: number[];
+    battlePassSeason: number;
+    battlePassLastReset: string;
     password?: string;
 }
 
@@ -966,6 +968,9 @@ function updateMusicVolume(volume: number) {
 // --- Local Storage & Player State ---
 
 function getDefaultPlayerState(): PlayerState {
+    const now = new Date();
+    const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    
     return {
         level: 1, xp: 0, credits: 0,
         upgrades: { fireRate: 0, shipSpeed: 0, extraLife: 0 },
@@ -979,6 +984,8 @@ function getDefaultPlayerState(): PlayerState {
         unlockedSkins: {},
         battlePassTier: 0,
         claimedBattlePassTiers: [],
+        battlePassSeason: 1,
+        battlePassLastReset: currentMonth,
     };
 }
 
