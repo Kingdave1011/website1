@@ -123,8 +123,13 @@
         
         <form id="login-form">
             <div class="form-group">
-                <label for="password">Admin Password</label>
-                <input type="password" id="password" placeholder="Enter admin password" required autocomplete="off">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username" required autocomplete="off">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password" required autocomplete="off">
             </div>
             
             <button type="submit" class="login-btn">LOGIN</button>
@@ -134,12 +139,14 @@
     </div>
 
     <script>
-        // Admin password hash (SHA-256 of "admin123" - CHANGE THIS!)
-        const ADMIN_PASSWORD_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
+        // Admin credentials (Username: King_davez, Password: Peaguyxx300!)
+        const ADMIN_USERNAME = "King_davez";
+        const ADMIN_PASSWORD_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"; // SHA-256 of "Peaguyxx300!"
         
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorDiv = document.getElementById('error-message');
             
@@ -149,15 +156,17 @@
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
             
-            if (hashHex === ADMIN_PASSWORD_HASH) {
+            if (username === ADMIN_USERNAME && hashHex === ADMIN_PASSWORD_HASH) {
                 // Set session token
                 sessionStorage.setItem('adminAuth', hashHex);
+                sessionStorage.setItem('adminUsername', username);
                 sessionStorage.setItem('authTime', Date.now());
                 
                 // Redirect to admin panel
                 window.location.href = 'admin-secure.html';
             } else {
                 errorDiv.style.display = 'block';
+                document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
                 
                 // Hide error after 3 seconds
