@@ -368,7 +368,7 @@
             const authTime = sessionStorage.getItem('authTime');
             
             if (!auth || !authTime) {
-                window.location.href = 'admin-login.html';
+                window.location.href = 'admin.html';
                 return false;
             }
             
@@ -387,8 +387,9 @@
         // Logout function
         function logout() {
             sessionStorage.removeItem('adminAuth');
+            sessionStorage.removeItem('adminUsername');
             sessionStorage.removeItem('authTime');
-            window.location.href = 'admin-login.html';
+            window.location.href = 'admin.html';
         }
 
         // Run authentication check
