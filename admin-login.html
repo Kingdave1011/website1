@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Space Shooter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            background: rgba(0, 198, 255, 0.05);
+            border: 2px solid #00C6FF;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.3);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #8A2BE2;
+            margin-bottom: 8px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00C6FF;
+            border-radius: 8px;
+            color: #E0E0E0;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 2px solid #00C6FF;
+            border-radius: 8px;
+            color: #E0E0E0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .login-btn:hover {
+            background: rgba(0, 198, 255, 0.2);
+            box-shadow: 0 0 20px #00C6FF;
+            transform: scale(1.05);
+        }
+
+        .error {
+            background: rgba(255, 0, 127, 0.2);
+            border: 2px solid #FF007F;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #FF007F;
+            display: none;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #8A2BE2;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #00C6FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>🔐 ADMIN LOGIN</h1>
+        
+        <div class="error" id="error-message">
+            Invalid credentials. Access denied.
+        </div>
+        
+        <form id="login-form">
+            <div class="form-group">
+                <label for="password">Admin Password</label>
+                <input type="password" id="password" placeholder="Enter admin password" required autocomplete="off">
+            </div>
+            
+            <button type="submit" class="login-btn">LOGIN</button>
+        </form>
+        
+        <a href="index.html" class="back-link">← Back to Site</a>
+    </div>
+
+    <script>
+        // Admin password hash (SHA-256 of "admin123" - CHANGE THIS!)
+        const ADMIN_PASSWORD_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
+        
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error-message');
+            
+            // Hash the password using SHA-256
+            const msgBuffer = new TextEncoder().encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            
+            if (hashHex === ADMIN_PASSWORD_HASH) {
+                // Set session token
+                sessionStorage.setItem('adminAuth', hashHex);
+                sessionStorage.setItem('authTime', Date.now());
+                
+                // Redirect to admin panel
+                window.location.href = 'admin-secure.html';
+            } else {
+                errorDiv.style.display = 'block';
+                document.getElementById('password').value = '';
+                
+                // Hide error after 3 seconds
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
