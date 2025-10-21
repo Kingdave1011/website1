@@ -20,6 +20,48 @@
             z-index: 10000;
             font-family: 'Rajdhani', sans-serif;
         }
+        
+        @media (max-width: 768px) {
+            .chatbot-container {
+                width: calc(100% - 20px);
+                max-width: 320px;
+                right: 10px;
+                bottom: 70px;
+                max-height: 400px;
+            }
+            
+            .chat-messages {
+                min-height: 200px !important;
+                max-height: 250px !important;
+                font-size: 0.9rem;
+            }
+            
+            .chatbot-header h3 {
+                font-size: 1rem !important;
+            }
+            
+            .quick-questions {
+                padding: 8px 10px !important;
+            }
+            
+            .quick-btn {
+                padding: 6px !important;
+                font-size: 0.85rem !important;
+            }
+            
+            .message {
+                padding: 8px 12px !important;
+                font-size: 0.9rem !important;
+            }
+            
+            .chat-toggle {
+                width: 50px !important;
+                height: 50px !important;
+                font-size: 1.5rem !important;
+                bottom: 15px !important;
+                right: 15px !important;
+            }
+        }
 
         .chatbot-header {
             background: linear-gradient(135deg, #00C6FF 0%, #8A2BE2 100%);
@@ -130,13 +172,6 @@
             box-shadow: 0 0 30px rgba(0, 198, 255, 0.8);
         }
 
-        @media (max-width: 768px) {
-            .chatbot-container {
-                width: calc(100% - 40px);
-                right: 20px;
-                left: 20px;
-            }
-        }
     </style>
 </head>
 <body>
