@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Space Shooter - Beta</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.25.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+
+        <!-- Screens -->
+        <div id="login-screen" class="screen active">
+            <div class="login-panel">
+                <h1 class="title">SPACE SHOOTER</h1>
+                <p class="subtitle">Beta App</p>
+                <input type="text" id="username" placeholder="Username / Guest Name">
+                <input type="email" id="email" placeholder="Email (for sign up)">
+                <input type="password" id="password" placeholder="Password">
+                <div id="login-error"></div>
+                <div class="button-group">
+                    <button id="signin-button">Sign In</button>
+                    <button id="signup-button">Sign Up</button>
+                </div>
+                <button id="guest-button">Play as Guest</button>
+            </div>
+        </div>
+
+        <div id="start-screen" class="screen">
+            <div class="menu-panel">
+                 <h1 class="title">SPACE SHOOTER</h1>
+                 <p class="subtitle" id="welcome-message">Welcome!</p>
+                 <p id="player-counter">Players Online: 123</p>
+
+                 <div class="booster-selection-container">
+                    <h3 class="booster-container-title">(SINGLE RUN)</h3>
+                    <div class="booster-list">
+                        <div class="booster-item" data-booster="shield">
+                            <div class="booster-count" id="shield-booster-count">0</div>
+                            <div class="booster-icon" id="shield-booster-icon"></div>
+                            <p class="booster-name">Shield</p>
+                        </div>
+                        <div class="booster-item" data-booster="rapidFire">
+                            <div class="booster-count" id="rapid-fire-booster-count">0</div>
+                            <div class="booster-icon" id="rapid-fire-booster-icon"></div>
+                            <p class="booster-name">Rapid Fire</p>
+                        </div>
+                        <div class="booster-item" data-booster="doubleCredits">
+                            <div class="booster-count" id="double-credits-booster-count">0</div>
+                            <div class="booster-icon" id="double-credits-booster-icon"></div>
+                            <p class="booster-name">Double Credits</p>
+                        </div>
+                    </div>
+                </div>
+
+                 <button id="start-button" class="start-game-button">Start Game</button>
+                 
+                 <div class="menu-buttons">
+                    <button id="hangar-button">Hangar</button>
+                    <button id="upgrades-button">Upgrades</button>
+                    <button id="map-selector-button">Map Selector</button>
+                    <button id="achievements-button">Achievements</button>
+                    <button id="daily-reward-button">Daily Rewards</button>
+                    <button id="settings-button">Settings</button>
+                    <button id="admin-panel-button" style="display: none;">Admin Panel</button>
+                 </div>
+
+                 <div class="controls-info">
+                    <p>Controls:</p>
+                    <p>W/A/S/D or Arrow Keys - Move</p>
+                    <p>Spacebar - Shoot</p>
+                    <p>Controller: Left Stick - Move | A or RT - Shoot</p>
+                    <p>ESC - Quit to Menu</p>
+                 </div>
+            </div>
+        </div>
+
+        <div id="game-over-screen" class="screen">
+            <div class="game-over-panel">
+                <h1>Game Over</h1>
+                <p>Final Score: <span id="final-score">0</span></p>
+                <p>Credits Earned: <span id="credits-earned">0</span></p>
+                <button id="restart-button">Play Again</button>
+                <button id="main-menu-button">Main Menu</button>
+            </div>
+        </div>
+
+        <!-- In-Game UI -->
+        <div id="game-ui">
+            <div class="hud-top">
+                <div id="score">Score: 0</div>
+                <div class="player-stats">
+                    <div id="lives">Lives: 3</div>
+                    <div id="level">Level: 1</div>
+                    <div id="credits">Credits: 0</div>
+                </div>
+            </div>
+             <div class="health-bar-container">
+                <div id="health-bar"></div>
+            </div>
+            <div class="xp-bar-container">
+                <div id="xp-bar"></div>
+            </div>
+             <div id="wave-counter">Wave: 1</div>
+             <div id="anti-cheat-indicator">Anti-Cheat Active</div>
+
+             <div id="boss-health-container" style="display: none;">
+                <div class="boss-health-bar-wrapper">
+                    <div id="boss-health-bar"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notifications -->
+        <div id="level-up-notification">LEVEL UP!</div>
+        <div id="achievement-toast"></div>
+        <div id="wave-notification"></div>
+
+        <!-- Modals -->
+        <div id="settings-modal" class="modal">
+            <div class="modal-content">
+                <h2>Settings</h2>
+                <div class="setting-item">
+                    <label for="sfx-volume">SFX Volume</label>
+                    <input type="range" id="sfx-volume" min="0" max="1" step="0.01">
+                </div>
+                <div class="setting-item">
+                    <label for="music-volume">Music Volume</label>
+                    <input type="range" id="music-volume" min="0" max="1" step="0.01">
+                </div>
+                 <div class="setting-item">
+                    <label for="effects-toggle">Enable Effects</label>
+                    <input type="checkbox" id="effects-toggle" checked>
+                </div>
+                <div class="setting-item">
+                    <label for="hud-scale">HUD Scale</label>
+                    <input type="range" id="hud-scale" min="0.5" max="1.5" step="0.1" value="1">
+                </div>
+                 <div class="setting-item">
+                    <label>HUD Position</label>
+                    <div class="radio-group">
+                        <input type="radio" id="hud-pos-top" name="hud-position" value="top" checked>
+                        <label for="hud-pos-top">Top</label>
+                        <input type="radio" id="hud-pos-bottom" name="hud-position" value="bottom">
+                        <label for="hud-pos-bottom">Bottom</label>
+                    </div>
+                </div>
+                <button id="fullscreen-toggle-button">Enter Fullscreen</button>
+                <button id="close-settings-button" class="close-button">Close</button>
+            </div>
+        </div>
+        
+        <div id="daily-reward-modal" class="modal">
+            <div class="modal-content">
+                <h2>Daily Rewards</h2>
+                <div id="calendar" class="calendar-grid"></div>
+                <button id="close-daily-reward-button" class="close-button">Close</button>
+            </div>
+        </div>
+
+         <div id="upgrades-modal" class="modal">
+            <div class="modal-content">
+                <h2>Upgrades</h2>
+                <div class="upgrade-item">
+                    <span>Fire Rate: <span id="fire-rate-level">Lvl 1</span></span>
+                    <button id="upgrade-fire-rate-button">Upgrade</button>
+                </div>
+                 <div class="upgrade-item">
+                    <span>Ship Speed: <span id="speed-level">Lvl 1</span></span>
+                    <button id="upgrade-speed-button">Upgrade</button>
+                </div>
+                 <div class="upgrade-item">
+                    <span>Extra Life: <span id="extra-life-level">Lvl 0</span></span>
+                    <button id="upgrade-extra-life-button">Upgrade</button>
+                </div>
+                <button id="close-upgrades-button" class="close-button">Close</button>
+            </div>
+        </div>
+
+        <div id="hangar-modal" class="modal">
+            <div class="modal-content">
+                <h2>Hangar</h2>
+                <div id="ship-grid" class="ship-grid"></div>
+                <div id="ship-details-container"></div>
+                <button id="close-hangar-button" class="close-button">Close</button>
+            </div>
+        </div>
+
+         <div id="achievements-modal" class="modal">
+            <div class="modal-content">
+                <h2>Achievements</h2>
+                <div id="achievements-list"></div>
+                <button id="close-achievements-button" class="close-button">Close</button>
+            </div>
+        </div>
+        
+        <div id="map-selector-modal" class="modal">
+            <div class="modal-content">
+                <h2>Map Selector</h2>
+                <div id="map-grid" class="map-grid"></div>
+                <button id="close-map-selector-button" class="close-button">Close</button>
+            </div>
+        </div>
+        
+        <div id="admin-panel-modal" class="modal">
+            <div class="modal-content">
+                <h2>Admin Panel</h2>
+                <div class="admin-actions">
+                     <h3>Actions</h3>
+                     <div class="admin-control">
+                         <input type="number" id="grant-credits-amount" placeholder="Amount">
+                         <button id="grant-credits-button">Grant Credits</button>
+                     </div>
+                     <div class="admin-control">
+                         <button id="unlock-all-maps-button">Unlock All Maps</button>
+                     </div>
+                     <div class="admin-control">
+                         <input type="text" id="ban-player-name" placeholder="Sim Player Name">
+                         <button id="ban-player-button">Ban Player</button>
+                     </div>
+                </div>
+                <pre id="admin-data-pre"></pre>
+                <button id="close-admin-panel-button" class="close-button">Close</button>
+            </div>
+        </div>
+
+
+        <!-- Mobile Controls -->
+        <div id="mobile-controls" style="display: none;">
+            <div id="joystick-area">
+                <div id="joystick-thumb"></div>
+            </div>
+            <div id="shoot-button-mobile"></div>
+        </div>
+
+        <!-- Chat -->
+        <div id="chat-container" style="display: none;">
+            <div id="chat-messages"></div>
+            <input type="text" id="chat-input" placeholder="Type a message...">
+        </div>
+
+    </div>
+
+    <script type="module" src="index.tsx"></script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
