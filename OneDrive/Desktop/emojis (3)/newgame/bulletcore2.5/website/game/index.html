@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Space Shooter - Beta</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="login-screen">
+        <div class="login-box">
+            <h1>SPACE SHOOTER</h1>
+            <p id="login-error"></p>
+            <input type="text" id="username-input" placeholder="Username">
+            <input type="password" id="password-input" placeholder="Password">
+            <button id="signin-button">Sign In</button>
+            <button id="signup-button">Sign Up</button>
+            <button id="guest-button">Play as Guest</button>
+        </div>
+    </div>
+
+    <div id="game-container" class="hidden">
+        <canvas id="game-canvas"></canvas>
+
+        <div id="start-screen">
+            <h1 class="pulsing-glow">SPACE SHOOTER</h1>
+            <p class="subtitle">Beta App</p>
+            <p id="welcome-message">Welcome!</p>
+            
+             <div class="booster-selection-container">
+                <p class="booster-title">(SINGLE RUN)</p>
+                <div class="booster-options">
+                    <div class="booster-item" data-booster="shield">
+                        <label for="shield-booster-checkbox">
+                            <div class="booster-icon">🛡️</div>
+                            Shield
+                            <span class="booster-count" id="shield-booster-count">0</span>
+                        </label>
+                        <input type="checkbox" id="shield-booster-checkbox" class="booster-checkbox">
+                    </div>
+                    <div class="booster-item" data-booster="rapidFire">
+                        <label for="rapid-fire-booster-checkbox">
+                            <div class="booster-icon">⚡</div>
+                            Rapid Fire
+                            <span class="booster-count" id="rapid-fire-booster-count">0</span>
+                        </label>
+                         <input type="checkbox" id="rapid-fire-booster-checkbox" class="booster-checkbox">
+                    </div>
+                    <div class="booster-item" data-booster="doubleCredits">
+                         <label for="double-credits-booster-checkbox">
+                            <div class="booster-icon">💰</div>
+                            Double Credits
+                            <span class="booster-count" id="double-credits-booster-count">0</span>
+                        </label>
+                        <input type="checkbox" id="double-credits-booster-checkbox" class="booster-checkbox">
+                    </div>
+                </div>
+            </div>
+
+            <button id="start-button">Start Game</button>
+            <div class="menu-buttons">
+                 <button id="hangar-button">🚀 Hangar</button>
+                <button id="upgrades-button">⬆️ Upgrades</button>
+                <button id="battle-pass-button">🎖️ Battle Pass</button>
+                <button id="achievements-button">🏆 Achievements</button>
+                <button id="map-selector-button">🗺️ Maps</button>
+                <button id="daily-reward-button">🎁 Daily Rewards</button>
+                <button id="settings-button">⚙️ Settings</button>
+                <button id="admin-panel-button" class="hidden">👑 Admin</button>
+            </div>
+            <p class="controls">Controls: WASD/Arrows to Move | Space/LMB to Shoot | ESC to Quit</p>
+            <p class="controls-gamepad">Gamepad: Left Stick to Move | A-Button/Right Trigger to Shoot</p>
+            <div id="player-counter">Players Online: <span>127</span></div>
+        </div>
+
+        <div id="hud" class="hidden">
+            <div class="hud-item">Score: <span id="score">0</span></div>
+            <div class="hud-item">Lives: <span id="lives">3</span></div>
+            <div class="hud-item">Wave: <span id="wave">1</span></div>
+            <div class="hud-item" id="credits-display">Credits: <span id="credits">0</span></div>
+            <div id="level-container">
+                <div class="level-text">Level <span id="level">1</span></div>
+                <div id="xp-bar-container">
+                    <div id="xp-bar"></div>
+                </div>
+            </div>
+            <div id="anti-cheat-indicator">Anti-Cheat Enabled ✅</div>
+        </div>
+        
+        <p id="level-up-notification" class="hidden">LEVEL UP!</p>
+        <p id="wave-notification" class="hidden">WAVE 1</p>
+
+        <div id="game-over-screen" class="hidden">
+            <h2>Game Over</h2>
+            <p>Final Score: <span id="final-score">0</span></p>
+            <button id="restart-button">Play Again</button>
+        </div>
+
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Settings</h2>
+                <div class="setting-item">
+                    <label for="effects-toggle">Enable Special Effects</label>
+                    <input type="checkbox" id="effects-toggle" checked>
+                </div>
+                <div class="setting-item">
+                    <label for="sfx-volume">SFX Volume</label>
+                    <input type="range" id="sfx-volume" min="0" max="1" step="0.1" value="0.5">
+                </div>
+                 <div class="setting-item">
+                    <label for="music-volume">Music Volume</label>
+                    <input type="range" id="music-volume" min="0" max="1" step="0.1" value="0.2">
+                </div>
+            </div>
+        </div>
+
+        <div id="daily-reward-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Daily Rewards</h2>
+                <div id="reward-calendar"></div>
+                <button id="claim-reward-button" disabled>Claim Reward</button>
+            </div>
+        </div>
+        
+        <div id="upgrades-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Upgrades</h2>
+                <p>Credits: <span id="upgrades-credits">0</span></p>
+                <div class="upgrade-item">
+                    <span>Fire Rate</span>
+                    <span id="fire-rate-level">Lv 1</span>
+                    <button id="buy-fire-rate">Cost: <span id="fire-rate-cost">100</span></button>
+                </div>
+                <div class="upgrade-item">
+                    <span>Ship Speed</span>
+                    <span id="ship-speed-level">Lv 1</span>
+                    <button id="buy-ship-speed">Cost: <span id="ship-speed-cost">100</span></button>
+                </div>
+                <div class="upgrade-item">
+                    <span>Extra Life</span>
+                    <span id="extra-life-level">Lv 1</span>
+                    <button id="buy-extra-life">Cost: <span id="extra-life-cost">250</span></button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="hangar-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Hangar</h2>
+                <div id="hangar-grid"></div>
+            </div>
+        </div>
+
+        <div id="achievements-modal" class="modal hidden">
+             <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Achievements</h2>
+                <div id="achievements-list"></div>
+            </div>
+        </div>
+
+        <div id="achievement-toast" class="hidden">
+            <p>🏆 Achievement Unlocked!</p>
+            <span id="achievement-name"></span>
+        </div>
+        
+        <div id="map-selector-modal" class="modal hidden">
+             <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Map Selector</h2>
+                <div id="map-grid"></div>
+            </div>
+        </div>
+
+        <div id="admin-panel-modal" class="modal hidden">
+             <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Admin Panel</h2>
+                <div id="admin-info"></div>
+            </div>
+        </div>
+
+        <div id="battle-pass-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>🎖️ Battle Pass - Season <span id="bp-season">1</span></h2>
+                <p style="text-align: center; color: #FFD700; margin-bottom: 20px;">Resets Monthly | Your Level: <span id="bp-player-level">1</span></p>
+                <div id="battle-pass-tiers"></div>
+            </div>
+        </div>
+
+
+        <div id="chat-container">
+            <div id="chat-messages"></div>
+            <input type="text" id="chat-input" placeholder="Type a message...">
+        </div>
+    </div>
+    
+    <script type="module" src="index.tsx"></script>
+</body>
+</html>
