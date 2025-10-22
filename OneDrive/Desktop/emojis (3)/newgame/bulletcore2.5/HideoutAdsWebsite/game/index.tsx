@@ -168,7 +168,10 @@ const SHIP_CONFIG: { [key: string]: ShipConfig } = {
         skins: [
             { id: 'default', name: 'Default', color: 'cyan' },
             { id: 'gold', name: 'Gold', color: 'gold' },
-            { id: 'crimson', name: 'Crimson', color: '#DC143C' }
+            { id: 'crimson', name: 'Crimson', color: '#DC143C' },
+            { id: 'neon', name: 'Neon Green', color: '#39FF14' },
+            { id: 'violet', name: 'Violet Storm', color: '#8A2BE2' },
+            { id: 'arctic', name: 'Arctic Blue', color: '#00FFFF' }
         ]
     },
     interceptor: {
@@ -179,7 +182,10 @@ const SHIP_CONFIG: { [key: string]: ShipConfig } = {
         skins: [
             { id: 'default', name: 'Default', color: 'cyan' },
             { id: 'emerald', name: 'Emerald', color: '#50C878' },
-            { id: 'sapphire', name: 'Sapphire', color: '#0F52BA' }
+            { id: 'sapphire', name: 'Sapphire', color: '#0F52BA' },
+            { id: 'ruby', name: 'Ruby Red', color: '#E0115F' },
+            { id: 'amethyst', name: 'Amethyst', color: '#9966CC' },
+            { id: 'topaz', name: 'Topaz', color: '#FFC87C' }
         ]
     },
     bruiser: {
@@ -190,7 +196,10 @@ const SHIP_CONFIG: { [key: string]: ShipConfig } = {
         skins: [
             { id: 'default', name: 'Default', color: 'cyan' },
             { id: 'onyx', name: 'Onyx', color: '#353839' },
-            { id: 'platinum', name: 'Platinum', color: '#E5E4E2' }
+            { id: 'platinum', name: 'Platinum', color: '#E5E4E2' },
+            { id: 'titanium', name: 'Titanium', color: '#878681' },
+            { id: 'chrome', name: 'Chrome', color: '#C0C0C0' },
+            { id: 'obsidian', name: 'Obsidian', color: '#1C1C1C' }
         ]
     }
 };
