@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Changelog - Space Shooter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -16,8 +18,22 @@
             font-family: 'Rajdhani', sans-serif;
             background: #05050A;
             color: #E0E0E0;
-            padding: 20px;
-            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 100px 20px 40px;
         }
 
         .container {
@@ -28,10 +44,22 @@
         h1 {
             font-family: 'Orbitron', sans-serif;
             color: #00C6FF;
-            text-shadow: 0 0 20px #00C6FF;
+            text-shadow: 0 0 20px #00C6FF, 0 0 40px #00C6FF;
             margin-bottom: 40px;
             font-size: 3rem;
             text-align: center;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .version {
@@ -40,6 +68,22 @@
             padding: 25px;
             margin-bottom: 30px;
             border-radius: 8px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .version:nth-child(2) { animation-delay: 0.1s; }
+        .version:nth-child(3) { animation-delay: 0.2s; }
+        .version:nth-child(4) { animation-delay: 0.3s; }
+        .version:nth-child(5) { animation-delay: 0.4s; }
+        .version:nth-child(6) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .version h2 {
@@ -92,11 +136,15 @@
             border-radius: 8px;
             font-family: 'Orbitron', sans-serif;
             transition: all 0.3s ease;
+            box-shadow: 0 0 10px #00C6FF;
         }
 
         .back-link:hover {
-            background: rgba(0, 198, 255, 0.2);
-            box-shadow: 0 0 20px #00C6FF;
+            transform: scale(1.05);
+            border-color: #FF007F;
+            box-shadow: 0 0 25px #FF007F, 0 0 50px #8A2BE2;
+            text-shadow: 0 0 8px #FF007F;
+            background: rgba(255, 0, 127, 0.1);
         }
 
         .badge {
@@ -122,135 +170,451 @@
             background: #4ECDC4;
             color: #000;
         }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(0, 198, 255, 0.3);
+            margin-top: 100px;
+        }
+
+        footer p {
+            color: #8A2BE2;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .version h2 {
+                font-size: 1.4rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📋 Changelog</h1>
+    <canvas id="starfield"></canvas>
+    
+    <!-- Navigation Header -->
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5, 5, 10, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 198, 255, 0.3); padding: 15px 0;">
+        <nav style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; flex-wrap: wrap;">
+            <a href="index.html" style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #00C6FF; text-decoration: none; text-shadow: 0 0 10px #00C6FF;">SPACE SHOOTER</a>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+                <button id="theme-toggle" onclick="cycleTheme()" style="padding: 8px 15px; background: rgba(0, 198, 255, 0.2); border: 2px solid #00C6FF; border-radius: 8px; color: #E0E0E0; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; transition: all 0.3s;">🎨 Theme</button>
+                <a href="about.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">About</a>
+                <a href="features.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Features</a>
+                <a href="controls.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Controls</a>
+                <a href="how-to-play.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">How to Play</a>
+                <a href="screenshots.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Screenshots</a>
+                <a href="faq.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">FAQ</a>
+                <a href="changelog.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">Changelog</a>
+                <a href="leaderboard.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">🏆 Leaderboard</a>
+                <a href="profile.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">📊 Profile</a>
+                <a href="bug-report.html" style="color: #FF007F; text-decoration: none; transition: color 0.3s;">Report Bug</a>
+                <a href="user-auth.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">👤 Sign In</a>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="content">
+        <div class="container">
+            <h1>📋 Changelog</h1>
 
-        <div class="version">
-            <h2>Version 2.5.2 <span class="badge new">LATEST</span></h2>
-            <p class="date">October 21, 2025</p>
-            
-            <h3>✨ New Features</h3>
-            <ul>
-                <li>Added 9 NEW ship skins - 3 for each ship type!</li>
-                <li>Ranger new skins: Neon Green, Violet Storm, Arctic Blue</li>
-                <li>Interceptor new skins: Ruby Red, Amethyst, Topaz</li>
-                <li>Bruiser new skins: Titanium, Chrome, Obsidian</li>
-            </ul>
+            <div class="version">
+                <h2>Version 2.5.2 <span class="badge new">LATEST</span></h2>
+                <p class="date">October 21, 2025</p>
+                
+                <h3>✨ New Features</h3>
+                <ul>
+                    <li>Added 9 NEW ship skins - 3 for each ship type!</li>
+                    <li>Ranger new skins: Neon Green, Violet Storm, Arctic Blue</li>
+                    <li>Interceptor new skins: Ruby Red, Amethyst, Topaz</li>
+                    <li>Bruiser new skins: Titanium, Chrome, Obsidian</li>
+                </ul>
 
-            <h3>🎨 Customization</h3>
-            <ul>
-                <li>Total of 18 ship skins available (6 per ship)</li>
-                <li>Unlock skins through Battle Pass, achievements, and daily rewards</li>
-                <li>Skins change your ship's color during gameplay</li>
-                <li>Access skin selector in Hangar menu</li>
-            </ul>
+                <h3>🎨 Customization</h3>
+                <ul>
+                    <li>Total of 18 ship skins available (6 per ship)</li>
+                    <li>Unlock skins through Battle Pass, achievements, and daily rewards</li>
+                    <li>Skins change your ship's color during gameplay</li>
+                    <li>Access skin selector in Hangar menu</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 2.5.1</h2>
+                <p class="date">October 21, 2025</p>
+                
+                <h3>✨ New Features</h3>
+                <ul>
+                    <li>Added Global Leaderboard page showing real-time player rankings</li>
+                    <li>Leaderboard auto-refreshes every 30 seconds for live updates</li>
+                    <li>Top 3 players get special gold, silver, and bronze highlighting</li>
+                    <li>Leaderboard accessible from main navigation menu</li>
+                </ul>
+
+                <h3>🔧 Improvements</h3>
+                <ul>
+                    <li>Updated Windows download to version 2.5 (SpaceShooter-Windows-v2.5.zip)</li>
+                    <li>Improved website structure with organized HideoutAdsWebsite folder</li>
+                    <li>Enhanced navigation with leaderboard link in header</li>
+                    <li>Better mobile responsiveness for leaderboard page</li>
+                </ul>
+
+                <h3>📦 Downloads</h3>
+                <ul>
+                    <li>Windows Version 2.5 now available for download</li>
+                    <li>Direct download link added to homepage</li>
+                </ul>
+
+                <h3>🐛 Bug Fixes</h3>
+                <ul>
+                    <li>Fixed leaderboard to only show real players (removed mock data)</li>
+                    <li>Improved error handling for leaderboard API connection</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 2.5 Beta</h2>
+                <p class="date">October 2025</p>
+                
+                <h3>✨ New Features</h3>
+                <ul>
+                    <li>20 unlockable maps including asteroid fields, nebula clouds, ice fields, and debris zones</li>
+                    <li>Multiplayer battles supporting up to 32 players</li>
+                    <li>Achievement system with unlockable rewards</li>
+                    <li>Daily challenges for bonus rewards</li>
+                    <li>Boss battles with unique mechanics</li>
+                    <li>Power-up collection system</li>
+                    <li>Multiple game modes (Campaign, Survival, Multiplayer)</li>
+                </ul>
+
+                <h3>🔧 Improvements</h3>
+                <ul>
+                    <li>Enhanced graphics and visual effects</li>
+                    <li>Improved enemy AI behavior</li>
+                    <li>Better performance optimization</li>
+                    <li>Smoother controls and gameplay</li>
+                    <li>Updated UI/UX design</li>
+                </ul>
+
+                <h3>🎮 Gameplay</h3>
+                <ul>
+                    <li>New weapon types and upgrades</li>
+                    <li>Ship customization options</li>
+                    <li>Difficulty progression system</li>
+                    <li>Wave-based enemy spawning</li>
+                    <li>Score multiplier mechanics</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 2.0</h2>
+                <p class="date">September 2025</p>
+                
+                <h3>✨ New Features</h3>
+                <ul>
+                    <li>Complete game redesign with modern graphics</li>
+                    <li>Introduced map system with multiple environments</li>
+                    <li>Added multiplayer functionality</li>
+                    <li>Player progression and leveling system</li>
+                </ul>
+
+                <h3>🔧 Improvements</h3>
+                <ul>
+                    <li>Rewritten game engine for better performance</li>
+                    <li>Improved collision detection</li>
+                    <li>Enhanced audio system with dynamic music</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 1.0</h2>
+                <p class="date">August 2025</p>
+                
+                <h3>✨ Initial Release</h3>
+                <ul>
+                    <li>Basic space shooter gameplay</li>
+                    <li>Single-player mode</li>
+                    <li>5 enemy types</li>
+                    <li>Simple scoring system</li>
+                    <li>Basic power-ups</li>
+                </ul>
+            </div>
+
+            <a href="index.html" class="back-link">← Back to Home</a>
         </div>
-
-        <div class="version">
-            <h2>Version 2.5.1</h2>
-            <p class="date">October 21, 2025</p>
-            
-            <h3>✨ New Features</h3>
-            <ul>
-                <li>Added Global Leaderboard page showing real-time player rankings</li>
-                <li>Leaderboard auto-refreshes every 30 seconds for live updates</li>
-                <li>Top 3 players get special gold, silver, and bronze highlighting</li>
-                <li>Leaderboard accessible from main navigation menu</li>
-            </ul>
-
-            <h3>🔧 Improvements</h3>
-            <ul>
-                <li>Updated Windows download to version 2.5 (SpaceShooter-Windows-v2.5.zip)</li>
-                <li>Improved website structure with organized HideoutAdsWebsite folder</li>
-                <li>Enhanced navigation with leaderboard link in header</li>
-                <li>Better mobile responsiveness for leaderboard page</li>
-            </ul>
-
-            <h3>📦 Downloads</h3>
-            <ul>
-                <li>Windows Version 2.5 now available for download</li>
-                <li>Direct download link added to homepage</li>
-            </ul>
-
-            <h3>🐛 Bug Fixes</h3>
-            <ul>
-                <li>Fixed leaderboard to only show real players (removed mock data)</li>
-                <li>Improved error handling for leaderboard API connection</li>
-            </ul>
-        </div>
-
-        <div class="version">
-            <h2>Version 2.5 Beta</h2>
-            <p class="date">October 2025</p>
-            
-            <h3>✨ New Features</h3>
-            <ul>
-                <li>20 unlockable maps including asteroid fields, nebula clouds, ice fields, and debris zones</li>
-                <li>Multiplayer battles supporting up to 32 players</li>
-                <li>Achievement system with unlockable rewards</li>
-                <li>Daily challenges for bonus rewards</li>
-                <li>Boss battles with unique mechanics</li>
-                <li>Power-up collection system</li>
-                <li>Multiple game modes (Campaign, Survival, Multiplayer)</li>
-            </ul>
-
-            <h3>🔧 Improvements</h3>
-            <ul>
-                <li>Enhanced graphics and visual effects</li>
-                <li>Improved enemy AI behavior</li>
-                <li>Better performance optimization</li>
-                <li>Smoother controls and gameplay</li>
-                <li>Updated UI/UX design</li>
-            </ul>
-
-            <h3>🎮 Gameplay</h3>
-            <ul>
-                <li>New weapon types and upgrades</li>
-                <li>Ship customization options</li>
-                <li>Difficulty progression system</li>
-                <li>Wave-based enemy spawning</li>
-                <li>Score multiplier mechanics</li>
-            </ul>
-        </div>
-
-        <div class="version">
-            <h2>Version 2.0</h2>
-            <p class="date">September 2025</p>
-            
-            <h3>✨ New Features</h3>
-            <ul>
-                <li>Complete game redesign with modern graphics</li>
-                <li>Introduced map system with multiple environments</li>
-                <li>Added multiplayer functionality</li>
-                <li>Player progression and leveling system</li>
-            </ul>
-
-            <h3>🔧 Improvements</h3>
-            <ul>
-                <li>Rewritten game engine for better performance</li>
-                <li>Improved collision detection</li>
-                <li>Enhanced audio system with dynamic music</li>
-            </ul>
-        </div>
-
-        <div class="version">
-            <h2>Version 1.0</h2>
-            <p class="date">August 2025</p>
-            
-            <h3>✨ Initial Release</h3>
-            <ul>
-                <li>Basic space shooter gameplay</li>
-                <li>Single-player mode</li>
-                <li>5 enemy types</li>
-                <li>Simple scoring system</li>
-                <li>Basic power-ups</li>
-            </ul>
-        </div>
-
-        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <!-- Footer -->
+        <footer>
+            <p>© 2025 Space Shooter | Version 2.5 Beta</p>
+            <p style="margin-top: 10px;">Developed by <span style="color: #00C6FF; text-shadow: 0 0 10px #00C6FF;">NEXO GAMES</span> | Made with 💜 by King_davezz</p>
+            <p style="margin-top: 15px;">
+                <a href="privacy-policy.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                <a href="terms.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Terms of Service</a> | 
+                <a href="faq.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">FAQ</a> |
+                <a href="controls.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Controls</a>
+            </p>
+        </footer>
     </div>
+
+    <script>
+        // Theme System
+        const themes = {
+            cosmic: {
+                name: 'Cosmic Blue',
+                primary: '#00C6FF',
+                secondary: '#8A2BE2',
+                accent: '#FF007F',
+                bg: '#05050A'
+            },
+            neon: {
+                name: 'Neon Green',
+                primary: '#00FF00',
+                secondary: '#FF00FF',
+                accent: '#FFFF00',
+                bg: '#000000'
+            },
+            sunset: {
+                name: 'Sunset Orange',
+                primary: '#FF6B35',
+                secondary: '#F7931E',
+                accent: '#FDC830',
+                bg: '#1A0A00'
+            },
+            matrix: {
+                name: 'Matrix Green',
+                primary: '#00FF41',
+                secondary: '#00D936',
+                accent: '#39FF14',
+                bg: '#000000'
+            },
+            purple: {
+                name: 'Purple Galaxy',
+                primary: '#9D4EDD',
+                secondary: '#C77DFF',
+                accent: '#E0AAFF',
+                bg: '#10002B'
+            },
+            halloween: {
+                name: 'Halloween Spooky',
+                primary: '#FF6600',
+                secondary: '#8B00FF',
+                accent: '#FFD700',
+                bg: '#1A0A00'
+            }
+        };
+
+        let currentTheme = localStorage.getItem('siteTheme') || 'cosmic';
+
+        function applyTheme(themeName) {
+            const theme = themes[themeName];
+            if (!theme) return;
+
+            document.body.style.background = theme.bg;
+            const canvas = document.getElementById('starfield');
+            if (canvas) canvas.style.background = theme.bg;
+
+            document.querySelectorAll('h1, h2').forEach(el => {
+                el.style.color = theme.primary;
+                el.style.textShadow = `0 0 20px ${theme.primary}`;
+            });
+
+            document.querySelectorAll('.version').forEach(el => {
+                el.style.background = `rgba(${hexToRgb(theme.primary)}, 0.1)`;
+                el.style.borderLeftColor = theme.primary;
+            });
+
+            document.querySelectorAll('.version .date').forEach(el => {
+                el.style.color = theme.secondary;
+            });
+
+            document.querySelectorAll('.version li:before').forEach(el => {
+                el.style.color = theme.primary;
+            });
+
+            const backLink = document.querySelector('.back-link');
+            if (backLink) {
+                backLink.style.borderColor = theme.primary;
+                backLink.style.color = theme.primary;
+                backLink.style.boxShadow = `0 0 10px ${theme.primary}`;
+            }
+
+            const logo = document.querySelector('nav a[href="index.html"]');
+            if (logo) {
+                logo.style.color = theme.primary;
+                logo.style.textShadow = `0 0 10px ${theme.primary}`;
+            }
+
+            const themeBtn = document.getElementById('theme-toggle');
+            if (themeBtn) {
+                themeBtn.style.background = `rgba(${hexToRgb(theme.primary)}, 0.2)`;
+                themeBtn.style.borderColor = theme.primary;
+            }
+
+            const header = document.querySelector('header');
+            if (header) {
+                header.style.background = `rgba(${hexToRgb(theme.bg)}, 0.95)`;
+                header.style.borderBottomColor = `rgba(${hexToRgb(theme.primary)}, 0.3)`;
+            }
+
+            const footer = document.querySelector('footer');
+            if (footer) {
+                footer.style.borderTopColor = `rgba(${hexToRgb(theme.primary)}, 0.3)`;
+            }
+
+            document.querySelectorAll('footer p span').forEach(el => {
+                el.style.color = theme.primary;
+                el.style.textShadow = `0 0 10px ${theme.primary}`;
+            });
+
+            localStorage.setItem('siteTheme', themeName);
+            currentTheme = themeName;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? 
+                `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+                '0, 198, 255';
+        }
+
+        function cycleTheme() {
+            const themeKeys = Object.keys(themes);
+            const currentIndex = themeKeys.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themeKeys.length;
+            const nextTheme = themeKeys[nextIndex];
+            
+            applyTheme(nextTheme);
+            
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: rgba(0, 198, 255, 0.9);
+                color: #fff;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-family: 'Orbitron', sans-serif;
+                z-index: 10002;
+                box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+            `;
+            notification.textContent = `Theme: ${themes[nextTheme].name}`;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        applyTheme(currentTheme);
+
+        // Starfield Animation
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const stars = [];
+        const numStars = 100;
+        
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * canvas.width;
+                this.speed = 0.5;
+            }
+            
+            update() {
+                this.z -= this.speed;
+                if (this.z <= 0) {
+                    this.z = canvas.width;
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                }
+            }
+            
+            draw() {
+                const x = (this.x - canvas.width / 2) * (canvas.width / this.z) + canvas.width / 2;
+                const y = (this.y - canvas.height / 2) * (canvas.width / this.z) + canvas.height / 2;
+                const size = (1 - this.z / canvas.width) * 2;
+                const brightness = (1 - this.z / canvas.width) * 255;
+                
+                ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness}, ${1 - this.z / canvas.width})`;
+                ctx.fillRect(x, y, size, size);
+            }
+        }
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+        
+        // Halloween floating objects
+        let halloweenObjects = [];
+        class HalloweenObject {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = 30 + Math.random() * 40;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
+                this.type = Math.random() > 0.5 ? '👽' : '👻';
+                this.opacity = 0.3 + Math.random() * 0.4;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
+                if (this.x < -100) this.x = canvas.width + 100;
+                if (this.x > canvas.width + 100) this.x = -100;
+                if (this.y < -100) this.y = canvas.height + 100;
+                if (this.y > canvas.height + 100) this.y = -100;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px Arial`;
+                ctx.fillText(this.type, this.x, this.y);
+                ctx.restore();
+            }
+        }
+        
+        for (let i = 0; i < 8; i++) {
+            halloweenObjects.push(new HalloweenObject());
+        }
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 10, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            
+            if (currentTheme === 'halloween') {
+                halloweenObjects.forEach(obj => {
+                    obj.update();
+                    obj.draw();
+                });
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
 </body>
 </html>

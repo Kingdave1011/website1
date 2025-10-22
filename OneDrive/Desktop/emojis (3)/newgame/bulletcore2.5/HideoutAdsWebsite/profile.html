@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Profile - Space Shooter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -16,7 +18,22 @@
             font-family: 'Rajdhani', sans-serif;
             background: #05050A;
             color: #E0E0E0;
-            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 100px 20px 40px;
         }
 
         .container {
@@ -27,10 +44,22 @@
         h1 {
             font-family: 'Orbitron', sans-serif;
             color: #00C6FF;
-            text-shadow: 0 0 20px #00C6FF;
+            text-shadow: 0 0 20px #00C6FF, 0 0 40px #00C6FF;
             margin-bottom: 40px;
             font-size: 3rem;
             text-align: center;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .profile-header {
@@ -40,6 +69,12 @@
             padding: 30px;
             margin-bottom: 30px;
             text-align: center;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .profile-header h2 {
@@ -73,7 +108,19 @@
             border-radius: 10px;
             padding: 25px;
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .stat-card:hover {
@@ -100,6 +147,7 @@
             border-radius: 10px;
             padding: 25px;
             margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out;
         }
 
         .section h3 {
@@ -145,6 +193,7 @@
             font-size: 1.2rem;
             border-radius: 5px;
             width: 300px;
+            max-width: 100%;
             text-align: center;
             font-family: 'Orbitron', sans-serif;
         }
@@ -161,11 +210,15 @@
             font-family: 'Orbitron', sans-serif;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 0 10px #00C6FF;
         }
 
         .copy-btn:hover, .back-btn:hover {
-            background: rgba(0, 198, 255, 0.2);
-            box-shadow: 0 0 20px #00C6FF;
+            transform: scale(1.05);
+            border-color: #FF007F;
+            box-shadow: 0 0 25px #FF007F, 0 0 50px #8A2BE2;
+            text-shadow: 0 0 8px #FF007F;
+            background: rgba(255, 0, 127, 0.1);
         }
 
         .reward-list {
@@ -200,20 +253,349 @@
             padding: 10px 20px;
             margin: 5px;
         }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(0, 198, 255, 0.3);
+            margin-top: 100px;
+        }
+
+        footer p {
+            color: #8A2BE2;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .referral-code input {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>👤 Player Profile</h1>
+    <canvas id="starfield"></canvas>
+    
+    <!-- Navigation Header -->
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5, 5, 10, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 198, 255, 0.3); padding: 15px 0;">
+        <nav style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; flex-wrap: wrap;">
+            <a href="index.html" style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #00C6FF; text-decoration: none; text-shadow: 0 0 10px #00C6FF;">SPACE SHOOTER</a>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+                <button id="theme-toggle" onclick="cycleTheme()" style="padding: 8px 15px; background: rgba(0, 198, 255, 0.2); border: 2px solid #00C6FF; border-radius: 8px; color: #E0E0E0; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; transition: all 0.3s;">🎨 Theme</button>
+                <a href="about.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">About</a>
+                <a href="features.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Features</a>
+                <a href="controls.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Controls</a>
+                <a href="how-to-play.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">How to Play</a>
+                <a href="screenshots.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Screenshots</a>
+                <a href="faq.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">FAQ</a>
+                <a href="changelog.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">Changelog</a>
+                <a href="leaderboard.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">🏆 Leaderboard</a>
+                <a href="profile.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">📊 Profile</a>
+                <a href="bug-report.html" style="color: #FF007F; text-decoration: none; transition: color 0.3s;">Report Bug</a>
+                <a href="user-auth.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">👤 Sign In</a>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="content">
+        <div class="container">
+            <h1>👤 Player Profile</h1>
 
-        <div id="profile-content">
-            <!-- Content loaded by JavaScript -->
+            <div id="profile-content">
+                <!-- Content loaded by JavaScript -->
+            </div>
+
+            <a href="index.html" class="back-btn">← Back to Home</a>
         </div>
 
-        <a href="index.html" class="back-btn">← Back to Home</a>
+        <!-- Footer -->
+        <footer>
+            <p>© 2025 Space Shooter | Version 2.5 Beta</p>
+            <p style="margin-top: 10px;">Developed by <span style="color: #00C6FF; text-shadow: 0 0 10px #00C6FF;">NEXO GAMES</span> | Made with 💜 by King_davezz</p>
+            <p style="margin-top: 15px;">
+                <a href="privacy-policy.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                <a href="terms.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Terms of Service</a> | 
+                <a href="faq.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">FAQ</a> |
+                <a href="controls.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Controls</a>
+            </p>
+        </footer>
     </div>
 
     <script>
+        // Theme System
+        const themes = {
+            cosmic: {
+                name: 'Cosmic Blue',
+                primary: '#00C6FF',
+                secondary: '#8A2BE2',
+                accent: '#FF007F',
+                bg: '#05050A'
+            },
+            neon: {
+                name: 'Neon Green',
+                primary: '#00FF00',
+                secondary: '#FF00FF',
+                accent: '#FFFF00',
+                bg: '#000000'
+            },
+            sunset: {
+                name: 'Sunset Orange',
+                primary: '#FF6B35',
+                secondary: '#F7931E',
+                accent: '#FDC830',
+                bg: '#1A0A00'
+            },
+            matrix: {
+                name: 'Matrix Green',
+                primary: '#00FF41',
+                secondary: '#00D936',
+                accent: '#39FF14',
+                bg: '#000000'
+            },
+            purple: {
+                name: 'Purple Galaxy',
+                primary: '#9D4EDD',
+                secondary: '#C77DFF',
+                accent: '#E0AAFF',
+                bg: '#10002B'
+            },
+            halloween: {
+                name: 'Halloween Spooky',
+                primary: '#FF6600',
+                secondary: '#8B00FF',
+                accent: '#FFD700',
+                bg: '#1A0A00'
+            }
+        };
+
+        let currentTheme = localStorage.getItem('siteTheme') || 'cosmic';
+
+        function applyTheme(themeName) {
+            const theme = themes[themeName];
+            if (!theme) return;
+
+            document.body.style.background = theme.bg;
+            const canvas = document.getElementById('starfield');
+            if (canvas) canvas.style.background = theme.bg;
+
+            document.querySelectorAll('h1, h2, h3').forEach(el => {
+                el.style.color = theme.primary;
+                el.style.textShadow = `0 0 20px ${theme.primary}`;
+            });
+
+            document.querySelectorAll('.profile-header, .stat-card, .section').forEach(el => {
+                el.style.background = `rgba(${hexToRgb(theme.primary)}, 0.1)`;
+                el.style.borderColor = theme.primary;
+            });
+
+            document.querySelectorAll('.stat-label').forEach(el => {
+                el.style.color = theme.secondary;
+            });
+
+            document.querySelectorAll('.referral-code').forEach(el => {
+                el.style.background = `rgba(${hexToRgb(theme.secondary)}, 0.2)`;
+                el.style.borderColor = theme.secondary;
+            });
+
+            document.querySelectorAll('.referral-code input').forEach(el => {
+                el.style.borderColor = theme.primary;
+                el.style.color = theme.primary;
+            });
+
+            document.querySelectorAll('.copy-btn, .back-btn').forEach(el => {
+                el.style.borderColor = theme.primary;
+                el.style.color = theme.primary;
+                el.style.boxShadow = `0 0 10px ${theme.primary}`;
+            });
+
+            document.querySelectorAll('.reward-item').forEach(el => {
+                el.style.background = `rgba(${hexToRgb(theme.primary)}, 0.1)`;
+                el.style.borderLeftColor = theme.secondary;
+            });
+
+            const logo = document.querySelector('nav a[href="index.html"]');
+            if (logo) {
+                logo.style.color = theme.primary;
+                logo.style.textShadow = `0 0 10px ${theme.primary}`;
+            }
+
+            const themeBtn = document.getElementById('theme-toggle');
+            if (themeBtn) {
+                themeBtn.style.background = `rgba(${hexToRgb(theme.primary)}, 0.2)`;
+                themeBtn.style.borderColor = theme.primary;
+            }
+
+            const header = document.querySelector('header');
+            if (header) {
+                header.style.background = `rgba(${hexToRgb(theme.bg)}, 0.95)`;
+                header.style.borderBottomColor = `rgba(${hexToRgb(theme.primary)}, 0.3)`;
+            }
+
+            const footer = document.querySelector('footer');
+            if (footer) {
+                footer.style.borderTopColor = `rgba(${hexToRgb(theme.primary)}, 0.3)`;
+            }
+
+            document.querySelectorAll('footer p span').forEach(el => {
+                el.style.color = theme.primary;
+                el.style.textShadow = `0 0 10px ${theme.primary}`;
+            });
+
+            localStorage.setItem('siteTheme', themeName);
+            currentTheme = themeName;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? 
+                `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+                '0, 198, 255';
+        }
+
+        function cycleTheme() {
+            const themeKeys = Object.keys(themes);
+            const currentIndex = themeKeys.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themeKeys.length;
+            const nextTheme = themeKeys[nextIndex];
+            
+            applyTheme(nextTheme);
+            
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: rgba(0, 198, 255, 0.9);
+                color: #fff;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-family: 'Orbitron', sans-serif;
+                z-index: 10002;
+                box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+            `;
+            notification.textContent = `Theme: ${themes[nextTheme].name}`;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        applyTheme(currentTheme);
+
+        // Starfield Animation
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const stars = [];
+        const numStars = 100;
+        
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * canvas.width;
+                this.speed = 0.5;
+            }
+            
+            update() {
+                this.z -= this.speed;
+                if (this.z <= 0) {
+                    this.z = canvas.width;
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                }
+            }
+            
+            draw() {
+                const x = (this.x - canvas.width / 2) * (canvas.width / this.z) + canvas.width / 2;
+                const y = (this.y - canvas.height / 2) * (canvas.width / this.z) + canvas.height / 2;
+                const size = (1 - this.z / canvas.width) * 2;
+                const brightness = (1 - this.z / canvas.width) * 255;
+                
+                ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness}, ${1 - this.z / canvas.width})`;
+                ctx.fillRect(x, y, size, size);
+            }
+        }
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+        
+        // Halloween floating objects
+        let halloweenObjects = [];
+        class HalloweenObject {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = 30 + Math.random() * 40;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
+                this.type = Math.random() > 0.5 ? '👽' : '👻';
+                this.opacity = 0.3 + Math.random() * 0.4;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
+                if (this.x < -100) this.x = canvas.width + 100;
+                if (this.x > canvas.width + 100) this.x = -100;
+                if (this.y < -100) this.y = canvas.height + 100;
+                if (this.y > canvas.height + 100) this.y = -100;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px Arial`;
+                ctx.fillText(this.type, this.x, this.y);
+                ctx.restore();
+            }
+        }
+        
+        for (let i = 0; i < 8; i++) {
+            halloweenObjects.push(new HalloweenObject());
+        }
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 10, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            
+            if (currentTheme === 'halloween') {
+                halloweenObjects.forEach(obj => {
+                    obj.update();
+                    obj.draw();
+                });
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Profile Loading
         function loadProfile() {
             const profileContent = document.getElementById('profile-content');
             
@@ -334,12 +716,15 @@
                     </div>
                 </div>
             `;
+            
+            // Reapply theme to new elements
+            applyTheme(currentTheme);
         }
 
         function copyReferralCode() {
             const input = document.getElementById('referral-code-input');
             input.select();
-            input.setSelectionRange(0, 99999); // For mobile
+            input.setSelectionRange(0, 99999);
             navigator.clipboard.writeText(input.value);
             
             const btn = event.target;

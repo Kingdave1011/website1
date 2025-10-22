@@ -3,161 +3,596 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard - HideoutAds</title>
+    <title>Leaderboard - Space Shooter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            overflow-x: hidden;
         }
-        
-        .container {
-            max-width: 800px;
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            height: 100%;
+            z-index: 0;
         }
-        
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 100px 20px 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
         h1 {
-            text-align: center;
-            color: #667eea;
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF, 0 0 40px #00C6FF;
             margin-bottom: 10px;
-            font-size: 2.5em;
+            font-size: 3rem;
+            text-align: center;
+            animation: fadeInDown 1s ease-out;
         }
-        
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .subtitle {
             text-align: center;
-            color: #666;
+            color: #8A2BE2;
             margin-bottom: 30px;
+            font-size: 1.2rem;
+            animation: fadeIn 1.5s ease-out;
         }
-        
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .refresh-btn {
+            background: rgba(0, 198, 255, 0.2);
+            color: #00C6FF;
+            border: 2px solid #00C6FF;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 auto 30px;
+            display: block;
+            font-size: 1em;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px #00C6FF;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            border-color: #FF007F;
+            box-shadow: 0 0 25px #FF007F;
+            background: rgba(255, 0, 127, 0.2);
+        }
+
         .leaderboard {
             list-style: none;
+            padding: 0;
         }
-        
+
         .leaderboard-item {
-            background: white;
-            margin: 10px 0;
+            background: rgba(0, 198, 255, 0.1);
+            margin: 15px 0;
             padding: 20px;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            border-left: 4px solid #00C6FF;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease-out forwards;
         }
-        
+
+        .leaderboard-item:nth-child(1) { animation-delay: 0.1s; }
+        .leaderboard-item:nth-child(2) { animation-delay: 0.2s; }
+        .leaderboard-item:nth-child(3) { animation-delay: 0.3s; }
+        .leaderboard-item:nth-child(4) { animation-delay: 0.4s; }
+        .leaderboard-item:nth-child(5) { animation-delay: 0.5s; }
+        .leaderboard-item:nth-child(6) { animation-delay: 0.6s; }
+        .leaderboard-item:nth-child(7) { animation-delay: 0.7s; }
+        .leaderboard-item:nth-child(8) { animation-delay: 0.8s; }
+        .leaderboard-item:nth-child(9) { animation-delay: 0.9s; }
+        .leaderboard-item:nth-child(10) { animation-delay: 1s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .leaderboard-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 198, 255, 0.3);
         }
-        
+
+        .leaderboard-item.top1 {
+            background: rgba(255, 215, 0, 0.15);
+            border-left-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .leaderboard-item.top2 {
+            background: rgba(192, 192, 192, 0.15);
+            border-left-color: #C0C0C0;
+            box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+        }
+
+        .leaderboard-item.top3 {
+            background: rgba(205, 127, 50, 0.15);
+            border-left-color: #CD7F32;
+            box-shadow: 0 0 15px rgba(205, 127, 50, 0.3);
+        }
+
         .rank {
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: bold;
-            color: #667eea;
-            min-width: 50px;
+            color: #00C6FF;
+            min-width: 60px;
+            font-family: 'Orbitron', sans-serif;
         }
-        
-        .rank.top1 { color: #ffd700; }
-        .rank.top2 { color: #c0c0c0; }
-        .rank.top3 { color: #cd7f32; }
-        
+
+        .rank.top1 { color: #FFD700; text-shadow: 0 0 10px #FFD700; }
+        .rank.top2 { color: #C0C0C0; text-shadow: 0 0 10px #C0C0C0; }
+        .rank.top3 { color: #CD7F32; text-shadow: 0 0 10px #CD7F32; }
+
         .player-info {
             flex-grow: 1;
             margin: 0 20px;
         }
-        
+
         .player-name {
-            font-size: 1.2em;
+            font-size: 1.3em;
             font-weight: bold;
-            color: #333;
+            color: #E0E0E0;
+            font-family: 'Orbitron', sans-serif;
         }
-        
+
         .player-stats {
-            font-size: 0.9em;
-            color: #666;
+            font-size: 0.95em;
+            color: #8A2BE2;
             margin-top: 5px;
         }
-        
+
         .score {
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: bold;
-            color: #667eea;
+            color: #00C6FF;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px #00C6FF;
         }
-        
-        .back-btn {
-            display: block;
-            width: 200px;
-            margin: 30px auto 0;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
+
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid #00C6FF;
+            color: #00C6FF;
             text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: transform 0.3s ease;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px #00C6FF;
         }
-        
-        .back-btn:hover {
+
+        .back-link:hover {
             transform: scale(1.05);
+            border-color: #FF007F;
+            box-shadow: 0 0 25px #FF007F, 0 0 50px #8A2BE2;
+            text-shadow: 0 0 8px #FF007F;
+            background: rgba(255, 0, 127, 0.1);
         }
-        
+
         .loading {
             text-align: center;
-            padding: 40px;
-            color: #667eea;
-            font-size: 1.2em;
+            padding: 60px 20px;
+            color: #00C6FF;
+            font-size: 1.3em;
+            font-family: 'Orbitron', sans-serif;
+            animation: pulse 2s ease-in-out infinite;
         }
-        
-        .refresh-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0 auto;
-            display: block;
-            margin-bottom: 20px;
-            font-size: 1em;
-            transition: background 0.3s ease;
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
-        
-        .refresh-btn:hover {
-            background: #764ba2;
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(0, 198, 255, 0.3);
+            margin-top: 100px;
+        }
+
+        footer p {
+            color: #8A2BE2;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .leaderboard-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .player-info {
+                margin: 15px 0;
+            }
+
+            .rank, .score {
+                font-size: 1.3em;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🏆 Global Leaderboard</h1>
-        <p class="subtitle">Top Players Worldwide</p>
-        
-        <button class="refresh-btn" onclick="loadLeaderboard()">🔄 Refresh</button>
-        
-        <div id="leaderboard-content" class="loading">
-            Loading leaderboard data...
+    <canvas id="starfield"></canvas>
+    
+    <!-- Navigation Header -->
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5, 5, 10, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 198, 255, 0.3); padding: 15px 0;">
+        <nav style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; flex-wrap: wrap;">
+            <a href="index.html" style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #00C6FF; text-decoration: none; text-shadow: 0 0 10px #00C6FF;">SPACE SHOOTER</a>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+                <button id="theme-toggle" onclick="cycleTheme()" style="padding: 8px 15px; background: rgba(0, 198, 255, 0.2); border: 2px solid #00C6FF; border-radius: 8px; color: #E0E0E0; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; transition: all 0.3s;">🎨 Theme</button>
+                <a href="about.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">About</a>
+                <a href="features.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Features</a>
+                <a href="controls.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Controls</a>
+                <a href="how-to-play.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">How to Play</a>
+                <a href="screenshots.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Screenshots</a>
+                <a href="faq.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">FAQ</a>
+                <a href="changelog.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">Changelog</a>
+                <a href="leaderboard.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">🏆 Leaderboard</a>
+                <a href="profile.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">📊 Profile</a>
+                <a href="bug-report.html" style="color: #FF007F; text-decoration: none; transition: color 0.3s;">Report Bug</a>
+                <a href="user-auth.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">👤 Sign In</a>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="content">
+        <div class="container">
+            <h1>🏆 Global Leaderboard</h1>
+            <p class="subtitle">Top Players Worldwide</p>
+            
+            <button class="refresh-btn" onclick="loadLeaderboard()">🔄 Refresh</button>
+            
+            <div id="leaderboard-content" class="loading">
+                Loading leaderboard data...
+            </div>
+            
+            <a href="index.html" class="back-link">← Back to Home</a>
         </div>
         
-        <a href="index.html" class="back-btn">← Back to Home</a>
+        <!-- Footer -->
+        <footer>
+            <p>© 2025 Space Shooter | Version 2.5 Beta</p>
+            <p style="margin-top: 10px;">Developed by <span style="color: #00C6FF; text-shadow: 0 0 10px #00C6FF;">NEXO GAMES</span> | Made with 💜 by King_davezz</p>
+            <p style="margin-top: 15px;">
+                <a href="privacy-policy.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                <a href="terms.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Terms of Service</a> | 
+                <a href="faq.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">FAQ</a> |
+                <a href="controls.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Controls</a>
+            </p>
+        </footer>
     </div>
-    
+
     <script>
-        // Realtime leaderboard data
+        // Theme System
+        const themes = {
+            cosmic: {
+                name: 'Cosmic Blue',
+                primary: '#00C6FF',
+                secondary: '#8A2BE2',
+                accent: '#FF007F',
+                bg: '#05050A'
+            },
+            neon: {
+                name: 'Neon Green',
+                primary: '#00FF00',
+                secondary: '#FF00FF',
+                accent: '#FFFF00',
+                bg: '#000000'
+            },
+            sunset: {
+                name: 'Sunset Orange',
+                primary: '#FF6B35',
+                secondary: '#F7931E',
+                accent: '#FDC830',
+                bg: '#1A0A00'
+            },
+            matrix: {
+                name: 'Matrix Green',
+                primary: '#00FF41',
+                secondary: '#00D936',
+                accent: '#39FF14',
+                bg: '#000000'
+            },
+            purple: {
+                name: 'Purple Galaxy',
+                primary: '#9D4EDD',
+                secondary: '#C77DFF',
+                accent: '#E0AAFF',
+                bg: '#10002B'
+            },
+            halloween: {
+                name: 'Halloween Spooky',
+                primary: '#FF6600',
+                secondary: '#8B00FF',
+                accent: '#FFD700',
+                bg: '#1A0A00'
+            }
+        };
+
+        let currentTheme = localStorage.getItem('siteTheme') || 'cosmic';
+
+        function applyTheme(themeName) {
+            const theme = themes[themeName];
+            if (!theme) return;
+
+            document.body.style.background = theme.bg;
+            const canvas = document.getElementById('starfield');
+            if (canvas) canvas.style.background = theme.bg;
+
+            document.querySelectorAll('h1').forEach(el => {
+                el.style.color = theme.primary;
+                el.style.textShadow = `0 0 20px ${theme.primary}`;
+            });
+
+            const subtitle = document.querySelector('.subtitle');
+            if (subtitle) subtitle.style.color = theme.secondary;
+
+            document.querySelectorAll('.leaderboard-item').forEach(el => {
+                if (!el.classList.contains('top1') && !el.classList.contains('top2') && !el.classList.contains('top3')) {
+                    el.style.background = `rgba(${hexToRgb(theme.primary)}, 0.1)`;
+                    el.style.borderLeftColor = theme.primary;
+                }
+            });
+
+            document.querySelectorAll('.rank:not(.top1):not(.top2):not(.top3)').forEach(el => {
+                el.style.color = theme.primary;
+            });
+
+            document.querySelectorAll('.score').forEach(el => {
+                el.style.color = theme.primary;
+                el.style.textShadow = `0 0 10px ${theme.primary}`;
+            });
+
+            document.querySelectorAll('.player-stats').forEach(el => {
+                el.style.color = theme.secondary;
+            });
+
+            const refreshBtn = document.querySelector('.refresh-btn');
+            if (refreshBtn) {
+                refreshBtn.style.background = `rgba(${hexToRgb(theme.primary)}, 0.2)`;
+                refreshBtn.style.borderColor = theme.primary;
+                refreshBtn.style.color = theme.primary;
+                refreshBtn.style.boxShadow = `0 0 10px ${theme.primary}`;
+            }
+
+            const backLink = document.querySelector('.back-link');
+            if (backLink) {
+                backLink.style.borderColor = theme.primary;
+                backLink.style.color = theme.primary;
+                backLink.style.boxShadow = `0 0 10px ${theme.primary}`;
+            }
+
+            const loading = document.querySelector('.loading');
+            if (loading) loading.style.color = theme.primary;
+
+            const logo = document.querySelector('nav a[href="index.html"]');
+            if (logo) {
+                logo.style.color = theme.primary;
+                logo.style.textShadow = `0 0 10px ${theme.primary}`;
+            }
+
+            const themeBtn = document.getElementById('theme-toggle');
+            if (themeBtn) {
+                themeBtn.style.background = `rgba(${hexToRgb(theme.primary)}, 0.2)`;
+                themeBtn.style.borderColor = theme.primary;
+            }
+
+            const header = document.querySelector('header');
+            if (header) {
+                header.style.background = `rgba(${hexToRgb(theme.bg)}, 0.95)`;
+                header.style.borderBottomColor = `rgba(${hexToRgb(theme.primary)}, 0.3)`;
+            }
+
+            const footer = document.querySelector('footer');
+            if (footer) {
+                footer.style.borderTopColor = `rgba(${hexToRgb(theme.primary)}, 0.3)`;
+            }
+
+            document.querySelectorAll('footer p span').forEach(el => {
+                el.style.color = theme.primary;
+                el.style.textShadow = `0 0 10px ${theme.primary}`;
+            });
+
+            localStorage.setItem('siteTheme', themeName);
+            currentTheme = themeName;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? 
+                `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+                '0, 198, 255';
+        }
+
+        function cycleTheme() {
+            const themeKeys = Object.keys(themes);
+            const currentIndex = themeKeys.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themeKeys.length;
+            const nextTheme = themeKeys[nextIndex];
+            
+            applyTheme(nextTheme);
+            
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: rgba(0, 198, 255, 0.9);
+                color: #fff;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-family: 'Orbitron', sans-serif;
+                z-index: 10002;
+                box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+            `;
+            notification.textContent = `Theme: ${themes[nextTheme].name}`;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        applyTheme(currentTheme);
+
+        // Starfield Animation
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const stars = [];
+        const numStars = 100;
+        
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * canvas.width;
+                this.speed = 0.5;
+            }
+            
+            update() {
+                this.z -= this.speed;
+                if (this.z <= 0) {
+                    this.z = canvas.width;
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                }
+            }
+            
+            draw() {
+                const x = (this.x - canvas.width / 2) * (canvas.width / this.z) + canvas.width / 2;
+                const y = (this.y - canvas.height / 2) * (canvas.width / this.z) + canvas.height / 2;
+                const size = (1 - this.z / canvas.width) * 2;
+                const brightness = (1 - this.z / canvas.width) * 255;
+                
+                ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness}, ${1 - this.z / canvas.width})`;
+                ctx.fillRect(x, y, size, size);
+            }
+        }
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+        
+        // Halloween floating objects
+        let halloweenObjects = [];
+        class HalloweenObject {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = 30 + Math.random() * 40;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
+                this.type = Math.random() > 0.5 ? '👽' : '👻';
+                this.opacity = 0.3 + Math.random() * 0.4;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
+                if (this.x < -100) this.x = canvas.width + 100;
+                if (this.x > canvas.width + 100) this.x = -100;
+                if (this.y < -100) this.y = canvas.height + 100;
+                if (this.y > canvas.height + 100) this.y = -100;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px Arial`;
+                ctx.fillText(this.type, this.x, this.y);
+                ctx.restore();
+            }
+        }
+        
+        for (let i = 0; i < 8; i++) {
+            halloweenObjects.push(new HalloweenObject());
+        }
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 10, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            
+            if (currentTheme === 'halloween') {
+                halloweenObjects.forEach(obj => {
+                    obj.update();
+                    obj.draw();
+                });
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Leaderboard Data
         async function loadLeaderboard() {
             const content = document.getElementById('leaderboard-content');
             content.innerHTML = '<div class="loading">Loading...</div>';
@@ -193,26 +628,45 @@
             
             const leaderboardHTML = `
                 <ul class="leaderboard">
-                    ${data.map(player => `
-                        <li class="leaderboard-item">
-                            <div class="rank ${player.rank <= 3 ? 'top' + player.rank : ''}">
-                                #${player.rank}
-                            </div>
-                            <div class="player-info">
-                                <div class="player-name">${player.name}</div>
-                                <div class="player-stats">
-                                    ${player.kills} Kills • ${player.games} Games Played
+                    ${data.map((player, index) => {
+                        const rank = index + 1;
+                        let rankClass = '';
+                        let itemClass = '';
+                        if (rank === 1) {
+                            rankClass = 'top1';
+                            itemClass = 'top1';
+                        } else if (rank === 2) {
+                            rankClass = 'top2';
+                            itemClass = 'top2';
+                        } else if (rank === 3) {
+                            rankClass = 'top3';
+                            itemClass = 'top3';
+                        }
+                        
+                        return `
+                            <li class="leaderboard-item ${itemClass}">
+                                <div class="rank ${rankClass}">
+                                    #${rank}
                                 </div>
-                            </div>
-                            <div class="score">
-                                ${player.score.toLocaleString()}
-                            </div>
-                        </li>
-                    `).join('')}
+                                <div class="player-info">
+                                    <div class="player-name">${player.name}</div>
+                                    <div class="player-stats">
+                                        ${player.kills} Kills • ${player.games} Games Played
+                                    </div>
+                                </div>
+                                <div class="score">
+                                    ${player.score.toLocaleString()}
+                                </div>
+                            </li>
+                        `;
+                    }).join('')}
                 </ul>
             `;
             
             content.innerHTML = leaderboardHTML;
+            
+            // Reapply theme to new elements
+            applyTheme(currentTheme);
         }
         
         // Load leaderboard on page load
