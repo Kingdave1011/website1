@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "username": "king_davez",
+      "email": "Brotmandavid24@gmail.com",
+      "role": "admin",
+      "isAdmin": true,
+      "autoLogin": true
+    },
+    {
+      "username": "Brick",
+      "email": "legionbricks@proton.me",
+      "password": "Rebrickable",
+      "role": "admin",
+      "isAdmin": true,
+      "autoLogin": true
+    }
+  ]
+}
