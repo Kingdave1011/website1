@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Space Shooter | NEXO GAMES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            overflow-x: hidden;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: #00C6FF;
+            text-shadow: 0 0 15px #00C6FF;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #8A2BE2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #8A2BE2;
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+
+        .highlight-box {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 0, 127, 0.1);
+            border-left: 4px solid #FF007F;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(0, 198, 255, 0.3);
+            margin-top: 100px;
+        }
+
+        footer p {
+            color: #8A2BE2;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starfield"></canvas>
+    
+    <!-- Navigation Header -->
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5, 5, 10, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 198, 255, 0.3); padding: 15px 0;">
+        <nav style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; flex-wrap: wrap; gap: 15px;">
+            <a href="index.html" style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #00C6FF; text-decoration: none; text-shadow: 0 0 10px #00C6FF;">SPACE SHOOTER</a>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+                <a href="index.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">Home</a>
+                <a href="about.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">About</a>
+                <a href="features.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">Features</a>
+                <a href="how-to-play.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">How to Play</a>
+                <a href="user-auth.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif; background: rgba(0, 255, 0, 0.1); padding: 8px 15px; border-radius: 8px; border: 2px solid #00FF00;">⭐ Sign In</a>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="content">
+        <div class="container">
+            <h1>Terms of Service</h1>
+            <p class="last-updated">Last Updated: October 22, 2025</p>
+
+            <p>Welcome to Space Shooter. By accessing or using our game and services, you agree to be bound by these Terms of Service. Please read them carefully.</p>
+
+            <div class="highlight-box">
+                <strong>⚠️ Important:</strong> By playing Space Shooter, downloading our software, or creating an account, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service and our Privacy Policy.
+            </div>
+
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing and using Space Shooter (the "Game"), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to these terms, please do not use our services.</p>
+
+            <h2>2. Game License</h2>
+            <h3>2.1 Grant of License</h3>
+            <p>NEXO GAMES grants you a limited, non-exclusive, non-transferable, revocable license to:</p>
+            <ul>
+                <li>Download and install the Game on your devices</li>
+                <li>Access and play the Game for personal, non-commercial use</li>
+                <li>Receive updates and support as provided</li>
+            </ul>
+
+            <h3>2.2 License Restrictions</h3>
+            <p>You agree NOT to:</p>
+            <ul>
+                <li>Modify, reverse engineer, or decompile the Game</li>
+                <li>Use cheats, exploits, automation software, bots, or hacks</li>
+                <li>Sell, rent, lease, or sublicense the Game</li>
+                <li>Remove copyright or proprietary notices</li>
+                <li>Use the Game for commercial purposes without permission</li>
+                <li>Interfere with or disrupt the Game servers or networks</li>
+            </ul>
+
+            <h2>3. User Accounts</h2>
+            <h3>3.1 Registration</h3>
+            <p>To access certain features, you must create an account. You agree to:</p>
+            <ul>
+                <li>Provide accurate, current, and complete information</li>
+                <li>Maintain and promptly update your account information</li>
+                <li>Keep your password secure and confidential</li>
+                <li>Notify us immediately of any unauthorized use</li>
+            </ul>
+
+            <h3>3.2 Account Termination</h3>
+            <p>We reserve the right to suspend or terminate your account if you:</p>
+            <ul>
+                <li>Violate these Terms of Service</li>
+                <li>Engage in fraudulent or illegal activities</li>
+                <li>Use cheats or exploits</li>
+                <li>Harass or abuse other players</li>
+                <li>Create multiple accounts to abuse systems</li>
+            </ul>
+
+            <h2>4. Code of Conduct</h2>
+            <p>When using our services, you agree to:</p>
+            <ul>
+                <li><strong>Be Respectful:</strong> Treat all players with respect</li>
+                <li><strong>Fair Play:</strong> Play fairly and honestly</li>
+                <li><strong>No Harassment:</strong> Do not harass, bully, or threaten others</li>
+                <li><strong>No Hate Speech:</strong> No discriminatory or offensive language</li>
+                <li><strong>No Spam:</strong> Do not spam chat or game systems</li>
+                <li><strong>Follow Rules:</strong> Adhere to all game rules and guidelines</li>
+            </ul>
+
+            <h2>5. Intellectual Property</h2>
+            <p>All content, features, and functionality of the Game, including but not limited to:</p>
+            <ul>
+                <li>Graphics, artwork, and visual effects</li>
+                <li>Audio, music, and sound effects</li>
+                <li>Code, software, and algorithms</li>
+                <li>Game mechanics and design</li>
+                <li>Trademarks, logos, and branding</li>
+            </ul>
+            <p>Are owned by NEXO GAMES and protected by international copyright, trademark, and other intellectual property laws.</p>
+
+            <h2>6. User-Generated Content</h2>
+            <p>Any content you create or share in the Game (usernames, profiles, etc.) remains your property, but you grant us a worldwide, royalty-free license to use, display, and distribute it within the Game.</p>
+
+            <h2>7. Virtual Items and Currency</h2>
+            <p>If applicable:</p>
+            <ul>
+                <li>Virtual items and currency have no real-world value</li>
+                <li>Purchases are final and non-refundable except as required by law</li>
+                <li>We reserve the right to modify, remove, or adjust virtual items</li>
+                <li>Virtual items are not transferable outside the Game</li>
+            </ul>
+
+            <h2>8. Game Modifications and Updates</h2>
+            <p>We reserve the right to:</p>
+            <ul>
+                <li>Modify, update, or discontinue the Game at any time</li>
+                <li>Change game balance, features, or content</li>
+                <li>Perform maintenance that may temporarily interrupt service</li>
+                <li>Remove features or content without notice</li>
+            </ul>
+
+            <h2>9. Disclaimer of Warranties</h2>
+            <p>The Game is provided "AS IS" and "AS AVAILABLE" without warranties of any kind, either express or implied, including but not limited to:</p>
+            <ul>
+                <li>Merchantability or fitness for a particular purpose</li>
+                <li>Uninterrupted or error-free operation</li>
+                <li>Compatibility with your device or system</li>
+                <li>Security from viruses or harmful components</li>
+            </ul>
+
+            <h2>10. Limitation of Liability</h2>
+            <p>To the maximum extent permitted by law, NEXO GAMES shall not be liable for:</p>
+            <ul>
+                <li>Indirect, incidental, or consequential damages</li>
+                <li>Loss of profits, data, or use</li>
+                <li>Damage to your device or equipment</li>
+                <li>Service interruptions or downtime</li>
+            </ul>
+            <p>Our total liability shall not exceed the amount you paid us in the past 12 months, or $100, whichever is greater.</p>
+
+            <h2>11. Indemnification</h2>
+            <p>You agree to indemnify and hold harmless NEXO GAMES from any claims, damages, losses, or expenses arising from:</p>
+            <ul>
+                <li>Your violation of these Terms</li>
+                <li>Your violation of any rights of another party</li>
+                <li>Your use or misuse of the Game</li>
+            </ul>
+
+            <h2>12. Dispute Resolution</h2>
+            <p>Any disputes arising from these Terms will be resolved through:</p>
+            <ul>
+                <li>Good faith negotiation first</li>
+                <li>Binding arbitration if negotiation fails</li>
+                <li>Governed by the laws of [Your Jurisdiction]</li>
+            </ul>
+
+            <h2>13. Changes to Terms</h2>
+            <p>We may modify these Terms at any time. Changes will be effective when posted with an updated date. Continued use after changes constitutes acceptance of the new Terms.</p>
+
+            <h2>14. Severability</h2>
+            <p>If any provision of these Terms is found to be unenforceable, the remaining provisions will continue in full force and effect.</p>
+
+            <h2>15. Contact Information</h2>
+            <p>For questions about these Terms, contact us:</p>
+            <ul>
+                <li><strong>Email:</strong> support@hideoutads.online</li>
+                <li><strong>Discord:</strong> <a href="https://discord.gg/Jhy8YYsXtv" style="color: #00C6FF;">Join our Discord</a></li>
+                <li><strong>Website:</strong> hideoutads.online</li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong>📜 Acceptance:</strong> By clicking "I Agree," registering for an account, or using the Game, you acknowledge that you have read and understood these Terms and agree to be bound by them.
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 Space Shooter | Version 2.5 Beta</p>
+            <p style="margin-top: 10px;">Developed by <span style="color: #00C6FF; text-shadow: 0 0 10px #00C6FF;">NEXO GAMES</span> | Made with 💜 by King_davezz</p>
+            <p style="margin-top: 15px;">
+                <a href="index.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Home</a> | 
+                <a href="privacy-policy.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                <a href="terms.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Terms of Service</a> | 
+                <a href="faq.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">FAQ</a> |
+                <a href="controls.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Controls</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Starfield Animation
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const stars = [];
+        const numStars = 100;
+        
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * canvas.width;
+                this.speed = 0.5;
+            }
+            
+            update() {
+                this.z -= this.speed;
+                if (this.z <= 0) {
+                    this.z = canvas.width;
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                }
+            }
+            
+            draw() {
+                const x = (this.x - canvas.width / 2) * (canvas.width / this.z) + canvas.width / 2;
+                const y = (this.y - canvas.height / 2) * (canvas.width / this.z) + canvas.height / 2;
+                const size = (1 - this.z / canvas.width) * 2;
+                const brightness = (1 - this.z / canvas.width) * 255;
+                
+                ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness}, ${1 - this.z / canvas.width})`;
+                ctx.fillRect(x, y, size, size);
+            }
+        }
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 10, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>

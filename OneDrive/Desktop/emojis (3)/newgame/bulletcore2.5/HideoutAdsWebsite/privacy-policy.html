@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Space Shooter | NEXO GAMES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            overflow-x: hidden;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: #00C6FF;
+            text-shadow: 0 0 15px #00C6FF;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #8A2BE2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #8A2BE2;
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(0, 198, 255, 0.3);
+            margin-top: 100px;
+        }
+
+        footer p {
+            color: #8A2BE2;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starfield"></canvas>
+    
+    <!-- Navigation Header -->
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5, 5, 10, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 198, 255, 0.3); padding: 15px 0;">
+        <nav style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; flex-wrap: wrap; gap: 15px;">
+            <a href="index.html" style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #00C6FF; text-decoration: none; text-shadow: 0 0 10px #00C6FF;">SPACE SHOOTER</a>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+                <a href="index.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">Home</a>
+                <a href="about.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">About</a>
+                <a href="features.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">Features</a>
+                <a href="how-to-play.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">How to Play</a>
+                <a href="user-auth.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif; background: rgba(0, 255, 0, 0.1); padding: 8px 15px; border-radius: 8px; border: 2px solid #00FF00;">⭐ Sign In</a>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="content">
+        <div class="container">
+            <h1>Privacy Policy</h1>
+            <p class="last-updated">Last Updated: October 22, 2025</p>
+
+            <p>Welcome to Space Shooter by NEXO GAMES. We are committed to protecting your privacy and ensuring your personal information is handled with care. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you play our game and use our services.</p>
+
+            <h2>1. Information We Collect</h2>
+            
+            <h3>1.1 Personal Information</h3>
+            <p>When you register for an account or use our services, we may collect:</p>
+            <ul>
+                <li>Username or display name</li>
+                <li>Email address</li>
+                <li>Password (encrypted)</li>
+                <li>Profile information you choose to provide</li>
+            </ul>
+
+            <h3>1.2 Gameplay Data</h3>
+            <p>To enhance your gaming experience, we collect:</p>
+            <ul>
+                <li>Game progress and achievements</li>
+                <li>High scores and statistics</li>
+                <li>In-game purchases and transactions</li>
+                <li>Ship selections and customizations</li>
+                <li>Gameplay sessions and duration</li>
+            </ul>
+
+            <h3>1.3 Technical Information</h3>
+            <p>We automatically collect certain technical data:</p>
+            <ul>
+                <li>IP address</li>
+                <li>Device type and operating system</li>
+                <li>Browser type and version</li>
+                <li>Game performance metrics</li>
+                <li>Error logs and crash reports</li>
+            </ul>
+
+            <h2>2. How We Use Your Information</h2>
+            <p>We use the collected information for:</p>
+            <ul>
+                <li><strong>Game Services:</strong> Providing and maintaining game functionality</li>
+                <li><strong>Account Management:</strong> Creating and managing your account</li>
+                <li><strong>Leaderboards:</strong> Displaying rankings and achievements</li>
+                <li><strong>Improvements:</strong> Analyzing gameplay to improve features</li>
+                <li><strong>Communication:</strong> Sending updates, news, and support messages</li>
+                <li><strong>Security:</strong> Preventing fraud and ensuring game integrity</li>
+                <li><strong>Compliance:</strong> Meeting legal and regulatory requirements</li>
+            </ul>
+
+            <h2>3. Data Sharing and Disclosure</h2>
+            <p>We do not sell your personal information. We may share data in these circumstances:</p>
+            <ul>
+                <li><strong>Service Providers:</strong> Third-party services that help us operate (hosting, analytics)</li>
+                <li><strong>Legal Requirements:</strong> When required by law or to protect our rights</li>
+                <li><strong>Business Transfers:</strong> In case of merger, acquisition, or asset sale</li>
+                <li><strong>With Consent:</strong> When you explicitly agree to share information</li>
+            </ul>
+
+            <h2>4. Data Storage and Security</h2>
+            <p>We implement industry-standard security measures to protect your data:</p>
+            <ul>
+                <li>Encrypted data transmission (HTTPS/SSL)</li>
+                <li>Secure cloud storage with Supabase</li>
+                <li>Regular security audits and updates</li>
+                <li>Access controls and authentication</li>
+                <li>Password encryption using industry-standard hashing</li>
+            </ul>
+            <p>However, no method of transmission over the internet is 100% secure. We cannot guarantee absolute security.</p>
+
+            <h2>5. Your Rights and Choices</h2>
+            <p>You have the following rights regarding your data:</p>
+            <ul>
+                <li><strong>Access:</strong> Request a copy of your personal data</li>
+                <li><strong>Correction:</strong> Update incorrect or incomplete information</li>
+                <li><strong>Deletion:</strong> Request deletion of your account and data</li>
+                <li><strong>Opt-Out:</strong> Unsubscribe from marketing communications</li>
+                <li><strong>Data Portability:</strong> Receive your data in a portable format</li>
+            </ul>
+            <p>To exercise these rights, contact us at: <strong>support@hideoutads.online</strong></p>
+
+            <h2>6. Cookies and Tracking</h2>
+            <p>We use cookies and similar technologies to:</p>
+            <ul>
+                <li>Remember your preferences and settings</li>
+                <li>Analyze site traffic and usage patterns</li>
+                <li>Improve user experience</li>
+                <li>Maintain your login session</li>
+            </ul>
+            <p>You can control cookies through your browser settings.</p>
+
+            <h2>7. Children's Privacy</h2>
+            <p>Space Shooter is not intended for children under 13. We do not knowingly collect personal information from children under 13. If we discover we have collected such information, we will delete it immediately.</p>
+
+            <h2>8. International Users</h2>
+            <p>Your information may be transferred to and processed in countries other than your own. By using our services, you consent to the transfer of your information to these locations.</p>
+
+            <h2>9. Third-Party Services</h2>
+            <p>Our game may contain links to third-party websites or services. We are not responsible for their privacy practices. Please review their privacy policies before providing any information.</p>
+
+            <h2>10. Changes to This Policy</h2>
+            <p>We may update this Privacy Policy from time to time. We will notify you of significant changes by:</p>
+            <ul>
+                <li>Posting the new policy on this page</li>
+                <li>Updating the "Last Updated" date</li>
+                <li>Sending email notifications for major changes</li>
+            </ul>
+            <p>Continued use of our services after changes constitutes acceptance of the updated policy.</p>
+
+            <h2>11. Contact Us</h2>
+            <p>If you have questions or concerns about this Privacy Policy, please contact us:</p>
+            <ul>
+                <li><strong>Email:</strong> support@hideoutads.online</li>
+                <li><strong>Discord:</strong> <a href="https://discord.gg/Jhy8YYsXtv" style="color: #00C6FF;">Join our Discord</a></li>
+                <li><strong>Website:</strong> hideoutads.online</li>
+            </ul>
+
+            <h2>12. Data Retention</h2>
+            <p>We retain your personal data only as long as necessary for the purposes described in this policy or as required by law. When you delete your account, we will delete or anonymize your data within 30 days, except where we are legally required to retain it.</p>
+
+            <h2>13. Your California Privacy Rights</h2>
+            <p>California residents have additional rights under the California Consumer Privacy Act (CCPA):</p>
+            <ul>
+                <li>Right to know what personal information is collected</li>
+                <li>Right to know if personal information is sold or disclosed</li>
+                <li>Right to opt-out of the sale of personal information</li>
+                <li>Right to deletion of personal information</li>
+                <li>Right to non-discrimination for exercising CCPA rights</li>
+            </ul>
+
+            <p style="margin-top: 40px; padding: 20px; background: rgba(0, 198, 255, 0.1); border-left: 4px solid #00C6FF; border-radius: 5px;">
+                <strong>Note:</strong> This privacy policy is designed to comply with general privacy regulations. For specific legal advice or concerns, please consult with a legal professional.
+            </p>
+        </div>
+
+        <footer>
+            <p>© 2025 Space Shooter | Version 2.5 Beta</p>
+            <p style="margin-top: 10px;">Developed by <span style="color: #00C6FF; text-shadow: 0 0 10px #00C6FF;">NEXO GAMES</span> | Made with 💜 by King_davezz</p>
+            <p style="margin-top: 15px;">
+                <a href="index.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Home</a> | 
+                <a href="privacy-policy.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                <a href="terms.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Terms of Service</a> | 
+                <a href="faq.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">FAQ</a> |
+                <a href="controls.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Controls</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Starfield Animation
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const stars = [];
+        const numStars = 100;
+        
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * canvas.width;
+                this.speed = 0.5;
+            }
+            
+            update() {
+                this.z -= this.speed;
+                if (this.z <= 0) {
+                    this.z = canvas.width;
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                }
+            }
+            
+            draw() {
+                const x = (this.x - canvas.width / 2) * (canvas.width / this.z) + canvas.width / 2;
+                const y = (this.y - canvas.height / 2) * (canvas.width / this.z) + canvas.height / 2;
+                const size = (1 - this.z / canvas.width) * 2;
+                const brightness = (1 - this.z / canvas.width) * 255;
+                
+                ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness}, ${1 - this.z / canvas.width})`;
+                ctx.fillRect(x, y, size, size);
+            }
+        }
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 10, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>

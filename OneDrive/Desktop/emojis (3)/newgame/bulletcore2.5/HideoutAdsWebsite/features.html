@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - Space Shooter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 50px;
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .feature-card {
+            background: rgba(0, 198, 255, 0.1);
+            border: 2px solid #00C6FF;
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.5);
+        }
+        .feature-card h2 {
+            color: #00C6FF;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        .feature-card p {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #00C6FF 0%, #8A2BE2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Game Features</h1>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h2>🎮 Multiple Game Modes</h2>
+                <p>Solo campaign, co-op missions, and competitive multiplayer with up to 32 players!</p>
+            </div>
+            
+            <div class="feature-card">
+                <h2>🗺️ 20 Unlockable Maps</h2>
+                <p>Explore asteroid fields, nebula clouds, ice fields, and more unique environments.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h2>🏆 50+ Achievements</h2>
+                <p>Complete challenges and unlock exclusive rewards, titles, and bragging rights.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h2>⚡ 15+ Power-Ups</h2>
+                <p>Collect weapon boosts, shields, speed boosts, and devastating special abilities.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h2>👾 10 Enemy Types</h2>
+                <p>Face scouts, brutes, bombers, snipers, and massive boss battles!</p>
+            </div>
+            
+            <div class="feature-card">
+                <h2>🚀 Ship Customization</h2>
+                <p>Unlock 3 ships with unique abilities and dozens of color skins.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h2>📅 Daily Rewards</h2>
+                <p>Log in every day for credits, boosters, and mystery boxes!</p>
+            </div>
+            
+            <div class="feature-card">
+                <h2>🎯 Battle Pass System</h2>
+                <p>Progress through tiers to unlock exclusive ships, skins, and rewards.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h2>💪 Upgrade System</h2>
+                <p>Enhance fire rate, speed, and add extra lives to dominate the battlefield.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h2>👥 Refer-a-Friend</h2>
+                <p>Invite friends and both earn exclusive rewards and starter bundles!</p>
+            </div>
+            
+            <div class="feature-card">
+                <h2>🎨 10 Visual Themes</h2>
+                <p>Customize your experience with Cosmic, Neon, Sunset, Matrix, and more themes!</p>
+            </div>
+            
+            <div class="feature-card">
+                <h2>📱 Cross-Platform</h2>
+                <p>Play on Windows, Linux, or web browser. Mobile controls supported!</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="index.html" class="back-btn">← Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

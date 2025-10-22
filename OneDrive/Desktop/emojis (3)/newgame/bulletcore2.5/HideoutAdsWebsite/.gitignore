@@ -1,6 +1,12 @@
 node_modules/
 dist/
+dist-electron/
 .env
 .env.local
 *.log
 .DS_Store
+*.exe
+*.dll
+*.pak
+*.bin
+*.asar

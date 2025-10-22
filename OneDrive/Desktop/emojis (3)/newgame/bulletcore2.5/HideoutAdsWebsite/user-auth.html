@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Space Shooter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: rgba(5, 5, 10, 0.9);
+            border: 2px solid #00C6FF;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.5);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF;
+            margin-bottom: 10px;
+        }
+
+        .auth-header p {
+            color: #8A2BE2;
+            font-size: 1.1rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            background: rgba(0, 198, 255, 0.1);
+            border: 2px solid #00C6FF;
+            border-radius: 8px;
+            color: #E0E0E0;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .auth-tab.active {
+            background: rgba(0, 198, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+        }
+
+        .auth-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.4);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00C6FF;
+            font-size: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 198, 255, 0.1);
+            border: 2px solid #00C6FF;
+            border-radius: 8px;
+            color: #E0E0E0;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #8A2BE2;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00C6FF 0%, #8A2BE2 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.6);
+        }
+
+        .error-message {
+            background: rgba(255, 0, 127, 0.2);
+            border: 2px solid #FF007F;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            color: #FF007F;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #8A2BE2;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-link a:hover {
+            color: #00C6FF;
+        }
+
+        .info-box {
+            background: rgba(138, 43, 226, 0.1);
+            border: 2px solid #8A2BE2;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .info-box p {
+            color: #8A2BE2;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .info-box a {
+            color: #00C6FF;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                padding: 30px 20px;
+            }
+
+            .auth-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starfield"></canvas>
+    
+    <div class="content">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1>🚀 Space Shooter</h1>
+                <p>Sign in to start your adventure</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="signin">Sign In</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+                <button class="auth-tab" data-tab="guest">Guest</button>
+            </div>
+
+            <div class="error-message" id="error-message"></div>
+
+            <!-- Sign In Form -->
+            <form class="auth-form active" id="signin-form">
+                <div class="form-group">
+                    <label for="signin-username">Username</label>
+                    <input type="text" id="signin-username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="signin-password">Password</label>
+                    <input type="password" id="signin-password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form class="auth-form" id="signup-form">
+                <div class="form-group">
+                    <label for="signup-username">Username</label>
+                    <input type="text" id="signup-username" required minlength="3" autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" required minlength="4" autocomplete="new-password">
+                </div>
+                <button type="submit" class="submit-btn">Create Account</button>
+            </form>
+
+            <!-- Guest Form -->
+            <form class="auth-form" id="guest-form">
+                <div class="form-group">
+                    <label for="guest-username">Guest Name</label>
+                    <input type="text" id="guest-username" required minlength="3" placeholder="Enter your name">
+                </div>
+                <button type="submit" class="submit-btn">Play as Guest</button>
+                <div class="info-box">
+                    <p>⚠️ Guest progress won't be saved permanently</p>
+                </div>
+            </form>
+
+            <div class="back-link">
+                <a href="index.html">← Back to Home</a>
+            </div>
+
+            <div class="info-box">
+                <p>New to Space Shooter?</p>
+                <a href="index.html#play">Play in Browser</a> or 
+                <a href="https://github.com/Kingdave1011/website1/releases/download/v2.5-updated/SpaceShooter-Windows-v2.5.zip" download>Download</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Starfield Animation
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const stars = [];
+        const numStars = 100;
+        
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * canvas.width;
+                this.speed = 0.5;
+            }
+            
+            update() {
+                this.z -= this.speed;
+                if (this.z <= 0) {
+                    this.z = canvas.width;
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                }
+            }
+            
+            draw() {
+                const x = (this.x - canvas.width / 2) * (canvas.width / this.z) + canvas.width / 2;
+                const y = (this.y - canvas.height / 2) * (canvas.width / this.z) + canvas.height / 2;
+                const size = (1 - this.z / canvas.width) * 2;
+                const brightness = (1 - this.z / canvas.width) * 255;
+                
+                ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness}, ${1 - this.z / canvas.width})`;
+                ctx.fillRect(x, y, size, size);
+            }
+        }
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 10, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Tab Switching
+        const tabs = document.querySelectorAll('.auth-tab');
+        const forms = document.querySelectorAll('.auth-form');
+        const errorMessage = document.getElementById('error-message');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                forms.forEach(f => f.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(`${tabName}-form`).classList.add('active');
+                
+                errorMessage.classList.remove('show');
+            });
+        });
+
+        // Authentication Functions
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+            setTimeout(() => {
+                errorMessage.classList.remove('show');
+            }, 3000);
+        }
+
+        function redirectToGame(username, isGuest = false) {
+            // Store authentication info
+            const authData = {
+                username: username,
+                isGuest: isGuest,
+                timestamp: Date.now()
+            };
+            sessionStorage.setItem('space_shooter_auth', JSON.stringify(authData));
+            
+            // Redirect to game
+            window.location.href = 'https://space-shooter-634206651593.us-west1.run.app';
+        }
+
+        // Sign In Handler
+        document.getElementById('signin-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('signin-username').value.trim();
+            const password = document.getElementById('signin-password').value;
+
+            if (!username || !password) {
+                showError('Please enter username and password');
+                return;
+            }
+
+            // Check admin credentials
+            if (username === 'King_davez' && password === 'Peaguyxx300!') {
+                redirectToGame('King_davez', false);
+                return;
+            }
+
+            // Check stored accounts
+            const savedData = localStorage.getItem(`acct_${username}`);
+            if (savedData) {
+                const accountData = JSON.parse(savedData);
+                if (accountData.password === password) {
+                    redirectToGame(username, false);
+                } else {
+                    showError('Invalid username or password');
+                }
+            } else {
+                showError('Account not found. Please sign up first.');
+            }
+        });
+
+        // Sign Up Handler
+        document.getElementById('signup-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('signup-username').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const password = document.getElementById('signup-password').value;
+
+            if (username.length < 3) {
+                showError('Username must be at least 3 characters');
+                return;
+            }
+
+            if (password.length < 4) {
+                showError('Password must be at least 4 characters');
+                return;
+            }
+
+            if (!email.includes('@')) {
+                showError('Please enter a valid email');
+                return;
+            }
+
+            if (localStorage.getItem(`acct_${username}`)) {
+                showError('Username already exists');
+                return;
+            }
+
+            // Create account
+            localStorage.setItem(`acct_${username}`, JSON.stringify({
+                password: password,
+                email: email,
+                created: Date.now()
+            }));
+
+            // Grant starter bundle
+            const starterBundle = {
+                credits: 1000,
+                boosters: {
+                    shield: 3,
+                    rapidFire: 3,
+                    doubleCredits: 2
+                },
+                ships: ['ranger'],
+                skins: ['default', 'gold'],
+                message: '🎁 Starter Bundle Received! 1000 Credits + Boosters!'
+            };
+            
+            localStorage.setItem(`starter_bundle_${username}`, JSON.stringify(starterBundle));
+
+            // Check for referral code
+            const referralCode = sessionStorage.getItem('referralCode');
+            if (referralCode) {
+                // Grant referral bonus to new user
+                const referralBonus = {
+                    credits: 500,
+                    boosters: { shield: 2, rapidFire: 2 },
+                    message: '🎁 Referral Bonus: +500 Credits!'
+                };
+                localStorage.setItem(`referral_bonus_${username}`, JSON.stringify(referralBonus));
+                
+                // Grant reward to referrer
+                const referrerBonus = JSON.parse(localStorage.getItem('referral_rewards') || '{}');
+                referrerBonus[referralCode] = (referrerBonus[referralCode] || 0) + 1;
+                localStorage.setItem('referral_rewards', JSON.stringify(referrerBonus));
+                
+                sessionStorage.removeItem('referralCode');
+            }
+
+            // Redirect to game
+            redirectToGame(username, false);
+        });
+
+        // Guest Handler
+        document.getElementById('guest-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('guest-username').value.trim();
+
+            if (username.length < 3) {
+                showError('Guest name must be at least 3 characters');
+                return;
+            }
+
+            redirectToGame(username, true);
+        });
+    </script>
+</body>
+</html>

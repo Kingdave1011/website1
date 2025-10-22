@@ -388,7 +388,7 @@
                 <a href="how-to-play.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">How to Play</a>
                 <a href="changelog.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">📋 Changelog</a>
                 <a href="leaderboard.html" style="color: #00C6FF; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">🏆 Leaderboard</a>
-                <a href="#" style="color: #FF6B35; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif; background: rgba(255, 107, 53, 0.1); padding: 8px 15px; border-radius: 8px; border: 2px solid #FF6B35;">🎁 Refer a Friend</a>
+                <a href="refer-friend.html" style="color: #FF6B35; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif; background: rgba(255, 107, 53, 0.1); padding: 8px 15px; border-radius: 8px; border: 2px solid #FF6B35;">🎁 Refer a Friend</a>
                 <a href="bug-report.html" style="color: #FF007F; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif;">🐛 Report Bug</a>
                 <a href="user-auth.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s; font-family: 'Rajdhani', sans-serif; background: rgba(0, 255, 0, 0.1); padding: 8px 15px; border-radius: 8px; border: 2px solid #00FF00;">⭐ Sign In</a>
             </div>
@@ -888,6 +888,34 @@
       window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
     </script>
     <script defer src="/_vercel/speed-insights/script.js"></script>
+    
+    <!-- Discord Notifications Integration -->
+    <script src="/discord-notifier.js"></script>
+    <script>
+        // Notify Discord on page load (track visits)
+        let hasNotifiedVisit = sessionStorage.getItem('hasNotifiedVisit');
+        if (!hasNotifiedVisit) {
+            // Don't notify on every page load, but could use for special events
+            sessionStorage.setItem('hasNotifiedVisit', 'true');
+        }
+        
+        // Notify when user rates the game
+        const originalSubmitRating = window.submitRating;
+        window.submitRating = function(rating) {
+            originalSubmitRating(rating);
+            
+            // Send Discord notification for 5-star ratings
+            if (rating === 5) {
+                const username = localStorage.getItem('lastRatingUsername') || 'Anonymous';
+                discordNotifier.sendPlayerAchievement(
+                    username,
+                    'gave Space Shooter a 5-star rating! ⭐⭐⭐⭐⭐',
+                    rating,
+                    'Thank you for your support!'
+                ).catch(err => console.log('Discord notification skipped'));
+            }
+        };
+    </script>
     
     <!-- AI Chatbot Widget -->
     <button class="chat-toggle" id="chat-toggle" onclick="toggleChatbot()" style="position: fixed; bottom: 20px; right: 20px; width: 55px; height: 55px; background: linear-gradient(135deg, #00C6FF 0%, #8A2BE2 100%); border: none; border-radius: 50%; color: #fff; font-size: 1.6rem; cursor: pointer; box-shadow: 0 0 15px rgba(0, 198, 255, 0.4); z-index: 10001; transition: all 0.3s;">💬</button>
