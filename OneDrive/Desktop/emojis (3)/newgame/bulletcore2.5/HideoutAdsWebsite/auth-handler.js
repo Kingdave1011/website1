@@ -206,7 +206,7 @@
         });
 
         adminBtn.addEventListener('click', () => {
-            showAdminModal();
+            window.location.href = 'admin-panel.html';
         });
 
         document.body.appendChild(adminBtn);

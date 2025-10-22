@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Space Shooter</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #000;
+            color: #E0E0E0;
+            min-height: 100vh;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: rgba(10, 10, 20, 0.95);
+            border: 3px solid #FFD700;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+        }
+
+        .login-box h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2rem;
+            text-shadow: 0 0 20px #FFD700;
+        }
+
+        .login-box p {
+            text-align: center;
+            color: #FF007F;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #FFD700;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #FFD700;
+            border-radius: 8px;
+            color: #E0E0E0;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }
+
+        .error {
+            background: rgba(255, 0, 127, 0.2);
+            border: 2px solid #FF007F;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            color: #FF007F;
+            text-align: center;
+            display: none;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            flex: 1;
+            padding: 20px;
+        }
+
+        .admin-header {
+            background: rgba(10, 10, 20, 0.95);
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #FFD700;
+            font-size: 2rem;
+            text-shadow: 0 0 20px #FFD700;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: rgba(255, 0, 127, 0.2);
+            border: 2px solid #FF007F;
+            border-radius: 8px;
+            color: #FF007F;
+            font-family: 'Rajdhani', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 0, 127, 0.4);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .admin-card {
+            background: rgba(10, 10, 20, 0.95);
+            border: 2px solid #00C6FF;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .admin-card h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .stat-item {
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(0, 198, 255, 0.1);
+            border-left: 3px solid #00C6FF;
+            border-radius: 5px;
+        }
+
+        .stat-label {
+            color: #8A2BE2;
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            color: #FFD700;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .admin-btn {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: rgba(0, 198, 255, 0.2);
+            border: 2px solid #00C6FF;
+            border-radius: 8px;
+            color: #00C6FF;
+            font-family: 'Rajdhani', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .admin-btn:hover {
+            background: rgba(0, 198, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+        }
+
+        .admin-btn.danger {
+            background: rgba(255, 0, 127, 0.2);
+            border-color: #FF007F;
+            color: #FF007F;
+        }
+
+        .admin-btn.danger:hover {
+            background: rgba(255, 0, 127, 0.4);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+        }
+
+        .user-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .user-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(138, 43, 226, 0.1);
+            border-left: 3px solid #8A2BE2;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starfield"></canvas>
+    
+    <div class="container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="login-screen">
+            <div class="login-box">
+                <h1>⚡ Admin Panel</h1>
+                <p>⚠️ Authorized Access Only</p>
+                
+                <div class="error" id="error-message"></div>
+                
+                <form id="admin-login-form">
+                    <div class="form-group">
+                        <label for="admin-username">Username</label>
+                        <input type="text" id="admin-username" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-password">Password</label>
+                        <input type="password" id="admin-password" required autocomplete="off">
+                    </div>
+                    <button type="submit" class="login-btn">Access Admin Panel</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div class="admin-panel" id="admin-panel">
+            <div class="admin-header">
+                <h1>⚡ Admin Dashboard</h1>
+                <button class="logout-btn" onclick="logout()">Sign Out</button>
+            </div>
+
+            <div class="admin-grid">
+                <!-- Statistics Card -->
+                <div class="admin-card">
+                    <h2>📊 Statistics</h2>
+                    <div class="stat-item">
+                        <div class="stat-label">Total Users</div>
+                        <div class="stat-value" id="total-users">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Active Sessions</div>
+                        <div class="stat-value" id="active-sessions">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Total Ratings</div>
+                        <div class="stat-value" id="total-ratings">0</div>
+                    </div>
+                </div>
+
+                <!-- User Management Card -->
+                <div class="admin-card">
+                    <h2>👥 User Management</h2>
+                    <button class="admin-btn" onclick="viewAllUsers()">View All Users</button>
+                    <button class="admin-btn" onclick="exportUserData()">Export User Data</button>
+                    <button class="admin-btn danger" onclick="clearOldSessions()">Clear Old Sessions</button>
+                </div>
+
+                <!-- System Controls Card -->
+                <div class="admin-card">
+                    <h2>🔧 System Controls</h2>
+                    <button class="admin-btn" onclick="window.location.href='leaderboard.html'">View Leaderboards</button>
+                    <button class="admin-btn" onclick="window.location.href='index.html'">Go to Homepage</button>
+                    <button class="admin-btn" onclick="viewSystemLogs()">View System Logs</button>
+                    <button class="admin-btn danger" onclick="clearAllData()">⚠️ Clear All Data</button>
+                </div>
+
+                <!-- Recent Users Card -->
+                <div class="admin-card">
+                    <h2>🕒 Recent Users</h2>
+                    <div class="user-list" id="recent-users"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Starfield Animation
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const stars = [];
+        for (let i = 0; i < 200; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2,
+                speed: Math.random() * 0.5
+            });
+        }
+        
+        function animateStars() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#FFD700';
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                star.y += star.speed;
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
+                }
+            });
+            
+            requestAnimationFrame(animateStars);
+        }
+        
+        animateStars();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Admin Authentication
+        const ADMIN_CREDENTIALS = {
+            username: 'King_davez',
+            password: 'Peaguyxx300!'
+        };
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function checkAdminAuth() {
+            const sessionAuth = sessionStorage.getItem('admin_authenticated');
+            if (sessionAuth === 'true') {
+                showAdminPanel();
+            }
+        }
+
+        function showAdminPanel() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'flex';
+            loadAdminData();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('admin_authenticated');
+            location.reload();
+        }
+
+        // Login Form Handler
+        document.getElementById('admin-login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                sessionStorage.setItem('admin_authenticated', 'true');
+                showAdminPanel();
+            } else {
+                showError('❌ Access Denied: Invalid Credentials');
+                // Log failed attempt
+                console.warn('Failed admin login attempt');
+            }
+        });
+
+        // Load Admin Data
+        function loadAdminData() {
+            // Count total users
+            let userCount = 0;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('acct_')) {
+                    userCount++;
+                }
+            }
+            document.getElementById('total-users').textContent = userCount;
+
+            // Count active sessions (last 24 hours)
+            let activeSessions = 0;
+            const now = Date.now();
+            const dayAgo = now - (24 * 60 * 60 * 1000);
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('acct_')) {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    if (data.created > dayAgo) {
+                        activeSessions++;
+                    }
+                }
+            }
+            document.getElementById('active-sessions').textContent = activeSessions;
+
+            // Count total ratings
+            const ratings = JSON.parse(localStorage.getItem('allRatings') || '[]');
+            document.getElementById('total-ratings').textContent = ratings.length;
+
+            // Load recent users
+            loadRecentUsers();
+        }
+
+        function loadRecentUsers() {
+            const recentUsersDiv = document.getElementById('recent-users');
+            const users = [];
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('acct_')) {
+                    const username = key.replace('acct_', '');
+                    const data = JSON.parse(localStorage.getItem(key));
+                    users.push({
+                        username,
+                        email: data.email,
+                        created: data.created
+                    });
+                }
+            }
+            
+            // Sort by creation date (newest first)
+            users.sort((a, b) => b.created - a.created);
+            
+            // Display top 10
+            const recentTen = users.slice(0, 10);
+            recentUsersDiv.innerHTML = recentTen.map(user => `
+                <div class="user-item">
+                    <div>
+                        <strong style="color: #00C6FF;">${user.username}</strong><br>
+                        <small style="color: #8A2BE2;">${user.email}</small>
+                    </div>
+                    <small style="color: #FFD700;">${new Date(user.created).toLocaleDateString()}</small>
+                </div>
+            `).join('');
+            
+            if (recentTen.length === 0) {
+                recentUsersDiv.innerHTML = '<p style="color: #8A2BE2; text-align: center; padding: 20px;">No users registered yet</p>';
+            }
+        }
+
+        function viewAllUsers() {
+            const users = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('acct_')) {
+                    const username = key.replace('acct_', '');
+                    const data = JSON.parse(localStorage.getItem(key));
+                    users.push({
+                        username,
+                        email: data.email,
+                        created: new Date(data.created).toLocaleString()
+                    });
+                }
+            }
+            
+            if (users.length === 0) {
+                alert('No users found in the system.');
+                return;
+            }
+            
+            const userList = users.map((u, i) => 
+                `${i + 1}. ${u.username}\n   Email: ${u.email}\n   Registered: ${u.created}`
+            ).join('\n\n');
+            
+            alert(`Total Users: ${users.length}\n\n${userList}`);
+        }
+
+        function exportUserData() {
+            const users = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('acct_')) {
+                    const username = key.replace('acct_', '');
+                    const data = JSON.parse(localStorage.getItem(key));
+                    users.push({
+                        username,
+                        email: data.email,
+                        registered: new Date(data.created).toISOString()
+                    });
+                }
+            }
+            
+            const dataStr = JSON.stringify(users, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `users_export_${Date.now()}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            alert(`✅ Exported ${users.length} users to JSON file`);
+        }
+
+        function clearOldSessions() {
+            if (!confirm('Clear sessions older than 7 days?')) return;
+            
+            const now = Date.now();
+            const weekAgo = now - (7 * 24 * 60 * 60 * 1000);
+            let cleared = 0;
+            
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const key = localStorage.key(i);
+                if (key.startsWith('acct_')) {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    if (data.created < weekAgo) {
+                        localStorage.removeItem(key);
+                        cleared++;
+                    }
+                }
+            }
+            
+            alert(`✅ Cleared ${cleared} old user accounts`);
+            loadAdminData();
+        }
+
+        function viewSystemLogs() {
+            const logs = [];
+            
+            // Collect ratings
+            const ratings = JSON.parse(localStorage.getItem('allRatings') || '[]');
+            logs.push(`📊 Total Ratings: ${ratings.length}`);
+            
+            // Collect referrals
+            const referrals = JSON.parse(localStorage.getItem('referral_rewards') || '{}');
+            const referralCount = Object.keys(referrals).length;
+            logs.push(`🎁 Total Referrals: ${referralCount}`);
+            
+            // Site theme
+            const siteTheme = localStorage.getItem('siteTheme') || 'cosmic';
+            logs.push(`🎨 Current Theme: ${siteTheme}`);
+            
+            // Version
+            const lastVersion = localStorage.getItem('lastSeenVersion') || 'unknown';
+            logs.push(`📦 Last Version Seen: ${lastVersion}`);
+            
+            alert('System Logs:\n\n' + logs.join('\n'));
+        }
+
+        function clearAllData() {
+            if (!confirm('⚠️ WARNING: This will delete ALL user data!\n\nAre you absolutely sure?')) return;
+            if (!confirm('⚠️ FINAL WARNING: This action cannot be undone!')) return;
+            
+            const confirmed = prompt('Type "DELETE ALL" to confirm:');
+            if (confirmed !== 'DELETE ALL') {
+                alert('❌ Cancelled');
+                return;
+            }
+            
+            localStorage.clear();
+            sessionStorage.clear();
+            alert('✅ All data has been cleared');
+            location.reload();
+        }
+
+        // Check auth on load
+        checkAdminAuth();
+    </script>
+</body>
+</html>
