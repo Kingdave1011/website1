@@ -1051,6 +1051,15 @@
             });
             localStorage.setItem('allRatings', JSON.stringify(allRatings));
             
+            // Calculate real average
+            const totalRatings = allRatings.length;
+            const sumRatings = allRatings.reduce((sum, r) => sum + r.rating, 0);
+            const avgRating = totalRatings > 0 ? (sumRatings / totalRatings).toFixed(1) : '0.0';
+            
+            // Update display
+            document.getElementById('avg-rating').textContent = avgRating;
+            document.getElementById('total-ratings').textContent = totalRatings;
+            
             updateStarDisplay(rating);
             displayRecentRatings();
             
@@ -1083,6 +1092,16 @@
         
         if (userRating) {
             updateStarDisplay(parseInt(userRating));
+        }
+        
+        // Calculate and display real average on page load
+        const allRatings = JSON.parse(localStorage.getItem('allRatings') || '[]');
+        if (allRatings.length > 0) {
+            const totalRatings = allRatings.length;
+            const sumRatings = allRatings.reduce((sum, r) => sum + r.rating, 0);
+            const avgRating = (sumRatings / totalRatings).toFixed(1);
+            document.getElementById('avg-rating').textContent = avgRating;
+            document.getElementById('total-ratings').textContent = totalRatings;
         }
         
         // Display recent ratings on load
