@@ -289,8 +289,11 @@
     </div>
 
     <script>
-        const SERVER_URL = 'ws://localhost:3001';
+        const WS_SERVER_URL = 'ws://localhost:3001';
+        const HTTP_SERVER_URL = 'http://localhost:3001';
         let currentUsername = 'Player' + Math.floor(Math.random() * 1000);
+        let ws = null;
+        let isOnline = false;
         
         // Get username from auth
         const authData = localStorage.getItem('space_shooter_auth');
@@ -342,28 +345,79 @@
         }
         animate();
 
+        // Connect to WebSocket
+        function connectWebSocket() {
+            try {
+                ws = new WebSocket(WS_SERVER_URL);
+                
+                ws.onopen = () => {
+                    isOnline = true;
+                    document.getElementById('us-east-ping').textContent = '5';
+                    addSystemMessage('✅ Server Online! Connected to chat.');
+                    
+                    // Send join message
+                    ws.send(JSON.stringify({
+                        type: 'join',
+                        username: currentUsername
+                    }));
+                };
+                
+                ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.type === 'chat') {
+                            addChatMessage(data.username, data.message);
+                        } else if (data.type === 'system') {
+                            addSystemMessage(data.message);
+                        } else if (data.type === 'playerCount') {
+                            document.getElementById('us-east-players').textContent = data.count + '/32';
+                        }
+                    } catch (e) {
+                        console.error('Error parsing message:', e);
+                    }
+                };
+                
+                ws.onerror = () => {
+                    isOnline = false;
+                    document.getElementById('us-east-ping').textContent = 'Offline';
+                    addSystemMessage('❌ Connection error. Server may be starting...');
+                };
+                
+                ws.onclose = () => {
+                    isOnline = false;
+                    document.getElementById('us-east-ping').textContent = 'Offline';
+                    addSystemMessage('⚠️ Disconnected from server. Reconnecting...');
+                    setTimeout(connectWebSocket, 3000);
+                };
+            } catch (error) {
+                isOnline = false;
+                document.getElementById('us-east-ping').textContent = 'Offline';
+                addSystemMessage('⚠️ Server currently offline. Please make sure matchmaking server is running.');
+            }
+        }
+        
         // Check server status
         async function checkServerStatus() {
-            try {
-                const response = await fetch(SERVER_URL + '/health');
-                const data = await response.json();
-                
-                document.getElementById('us-east-players').textContent = data.players + '/32';
-                document.getElementById('us-east-ping').textContent = '45';
-                
-                addSystemMessage(`✅ Server Online: ${data.players} players connected`);
-            } catch (error) {
+            if (isOnline) {
+                document.getElementById('us-east-players').textContent = '1/32';
+                document.getElementById('us-east-ping').textContent = '5';
+            } else {
+                document.getElementById('us-east-players').textContent = '0/32';
                 document.getElementById('us-east-ping').textContent = 'Offline';
-                addSystemMessage('⚠️ Server currently offline. Setting up...');
             }
         }
 
         function joinServer(region) {
+            if (!isOnline) {
+                addSystemMessage('❌ Server is offline. Please try again later.');
+                return;
+            }
+            
             addSystemMessage(`🚀 Connecting to ${region} server...`);
             
             // Redirect to game with server parameter
             setTimeout(() => {
-                window.location.href = `https://space-shooter-634206651593.us-west1.run.app?mode=online&server=${SERVER_URL}&region=${region}&username=${currentUsername}`;
+                window.location.href = `https://space-shooter-634206651593.us-west1.run.app?mode=online&server=${WS_SERVER_URL}&region=${region}&username=${currentUsername}`;
             }, 1000);
         }
 
@@ -378,9 +432,15 @@
             const input = document.getElementById('chat-input');
             const message = input.value.trim();
             
-            if (message) {
-                addChatMessage(currentUsername, message);
+            if (message && ws && isOnline) {
+                ws.send(JSON.stringify({
+                    type: 'chat',
+                    username: currentUsername,
+                    message: message
+                }));
                 input.value = '';
+            } else if (!isOnline) {
+                addSystemMessage('❌ Cannot send message - server is offline');
             }
         }
 
@@ -410,9 +470,9 @@
                 }
             });
 
-            // Check server status
-            checkServerStatus();
-            setInterval(checkServerStatus, 10000); // Update every 10 seconds
+            // Connect to WebSocket and check status
+            connectWebSocket();
+            setInterval(checkServerStatus, 5000); // Update every 5 seconds
         });
     </script>
 </body>
