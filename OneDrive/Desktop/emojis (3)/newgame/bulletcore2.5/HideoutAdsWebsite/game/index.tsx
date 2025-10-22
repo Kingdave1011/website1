@@ -796,6 +796,9 @@ window.onload = () => {
     canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
     ctx = canvas.getContext('2d')!;
     
+    // Check if running in Electron (standalone mode)
+    const isElectron = navigator.userAgent.toLowerCase().indexOf(' electron/') > -1;
+    
     gameContainer = document.getElementById('game-container')!;
     loginScreen = document.getElementById('login-screen')!;
     startScreen = document.getElementById('start-screen')!;
@@ -839,10 +842,22 @@ window.onload = () => {
     fullscreenToggleButton = document.getElementById('fullscreen-toggle-button') as HTMLButtonElement;
 
     resizeCanvas();
-    loadGameState('guest_default'); 
+    
+    // If running in Electron, skip login and go straight to start screen
+    if (isElectron) {
+        initAudio();
+        loadGameState('StandalonePlayer');
+        gameState.username = 'Player';
+        showScreen('start-screen');
+        startMenuAnimation();
+        document.getElementById('admin-panel-button')!.style.display = 'none';
+        chatContainer.style.display = 'none'; // Hide chat in standalone
+    } else {
+        loadGameState('guest_default');
+    }
+    
     setupEventListeners();
     initStars();
-    startMenuAnimation();
     updateFullscreenButtonText();
     populateBoosterIcons();
     
