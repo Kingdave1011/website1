@@ -223,6 +223,61 @@
             <h1>📋 Changelog</h1>
 
             <div class="version">
+                <h2>Version 6.1 <span class="badge new">LATEST</span></h2>
+                <p class="date">October 22, 2025</p>
+                
+                <h3>🔧 Bug Fixes & Improvements</h3>
+                <ul>
+                    <li>Fixed stuck spacebar bug - keys now properly clear when window loses focus</li>
+                    <li>Fixed online chat showing "offline" - now connects to local WebSocket server (localhost:3001)</li>
+                    <li>Fixed git push errors with Godot cache files - added comprehensive .gitignore</li>
+                    <li>Improved multiplayer lobby connection stability</li>
+                </ul>
+
+                <h3>🖥️ Server Infrastructure</h3>
+                <ul>
+                    <li>Matchmaking server now running 24/7 via PM2 process manager</li>
+                    <li>WebSocket server on port 3001 for real-time multiplayer</li>
+                    <li>Automatic server restart on crashes</li>
+                    <li>Server health monitoring and status updates</li>
+                    <li>Rating-based matchmaking system (ELO)</li>
+                    <li>Player queue management with match creation</li>
+                </ul>
+
+                <h3>⚡ Admin System</h3>
+                <ul>
+                    <li>Confirmed admin account: King_davez (password: Peaguyxx300!)</li>
+                    <li>Admin panel button (⚡) appears on all pages when logged in as admin</li>
+                    <li>Developer badge with gold lightning bolt displayed in profile</li>
+                    <li>Access to user management, leaderboard admin, and system controls</li>
+                </ul>
+
+                <h3>🌐 Online Multiplayer Updates</h3>
+                <ul>
+                    <li>Updated server URL to connect to local matchmaking server</li>
+                    <li>Real-time lobby chat with WebSocket connection</li>
+                    <li>Player join/leave notifications in chat</li>
+                    <li>Quick Match functionality for instant game finding</li>
+                    <li>Server browser with live player counts</li>
+                </ul>
+
+                <h3>📝 Documentation</h3>
+                <ul>
+                    <li>COMPREHENSIVE_GAME_ENHANCEMENTS.md - Complete feature roadmap</li>
+                    <li>All planned features documented with implementation guides</li>
+                    <li>Created guides for Halloween event, unique ship weapons, and more</li>
+                </ul>
+
+                <h3>🔐 Technical Improvements</h3>
+                <ul>
+                    <li>Account data persistence verified and working via localStorage</li>
+                    <li>Session management with 24-hour authentication</li>
+                    <li>All changes successfully pushed to GitHub</li>
+                    <li>.gitignore excludes Godot cache, node_modules, and build artifacts</li>
+                </ul>
+            </div>
+
+            <div class="version">
                 <h2>Version 6.0 <span class="badge new">LATEST</span></h2>
                 <p class="date">October 22, 2025</p>
                 

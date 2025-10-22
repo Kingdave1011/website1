@@ -1,0 +1,115 @@
+[gd_scene load_steps=3 format=3 uid="uid://detshqr1a6c44"]
+
+[ext_resource type="Script" path="res://Enemy.gd" id="1_jrux4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n8vlh"]
+size = Vector2(35, 35)
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_jrux4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_n8vlh")
+
+[node name="EnemyShip" type="Node2D" parent="."]
+
+[node name="MainBody" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.9, 0.2, 0.15, 1)
+polygon = PackedVector2Array(0, 22, -9, 15, -11, -5, -9, -16, 9, -16, 11, -5, 9, 15)
+
+[node name="BodyShading" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.7, 0.1, 0.1, 1)
+polygon = PackedVector2Array(-4, 10, -7, 0, -6, -10, 6, -10, 7, 0, 4, 10)
+
+[node name="WingLeft" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.75, 0.15, 0.1, 1)
+polygon = PackedVector2Array(-11, -5, -24, -8, -28, -20, -20, -18, -11, -12)
+
+[node name="WingRight" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.75, 0.15, 0.1, 1)
+polygon = PackedVector2Array(11, -5, 24, -8, 28, -20, 20, -18, 11, -12)
+
+[node name="WingSpike1" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.6, 0.1, 0.05, 1)
+polygon = PackedVector2Array(-20, -18, -26, -22, -18, -20)
+
+[node name="WingSpike2" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.6, 0.1, 0.05, 1)
+polygon = PackedVector2Array(20, -18, 26, -22, 18, -20)
+
+[node name="Core" type="Polygon2D" parent="EnemyShip"]
+color = Color(1, 0.45, 0.1, 1)
+polygon = PackedVector2Array(-5, 8, 5, 8, 6, -6, -6, -6)
+
+[node name="CoreGlow" type="Polygon2D" parent="EnemyShip"]
+color = Color(1, 0.7, 0.3, 0.6)
+polygon = PackedVector2Array(-4, 6, 4, 6, 5, -4, -5, -4)
+
+[node name="Cockpit" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.2, 0.2, 0.3, 0.8)
+polygon = PackedVector2Array(-3, 12, 3, 12, 4, 2, -4, 2)
+
+[node name="ArmorPlate1" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.5, 0.15, 0.1, 1)
+polygon = PackedVector2Array(-7, 0, -5, 0, -5, 6, -7, 6)
+
+[node name="ArmorPlate2" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.5, 0.15, 0.1, 1)
+polygon = PackedVector2Array(5, 0, 7, 0, 7, 6, 5, 6)
+
+[node name="EngineGlow1" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.2, 1, 0.3, 1)
+polygon = PackedVector2Array(-8, -16, -6, -16, -6, -20, -8, -20)
+
+[node name="EngineGlow2" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.2, 1, 0.3, 1)
+polygon = PackedVector2Array(6, -16, 8, -16, 8, -20, 6, -20)
+
+[node name="EngineParticles1" type="CPUParticles2D" parent="EnemyShip"]
+position = Vector2(-7, -18)
+amount = 15
+lifetime = 0.25
+speed_scale = 1.5
+explosiveness = 0.3
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+direction = Vector2(0, -1)
+spread = 12.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 80.0
+initial_velocity_max = 120.0
+scale_amount_min = 1.5
+scale_amount_max = 3.0
+color = Color(0.3, 1, 0.4, 1)
+
+[node name="EngineParticles2" type="CPUParticles2D" parent="EnemyShip"]
+position = Vector2(7, -18)
+amount = 15
+lifetime = 0.25
+speed_scale = 1.5
+explosiveness = 0.3
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+direction = Vector2(0, -1)
+spread = 12.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 80.0
+initial_velocity_max = 120.0
+scale_amount_min = 1.5
+scale_amount_max = 3.0
+color = Color(0.3, 1, 0.4, 1)
+
+[node name="WeaponMount1" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.3, 0.3, 0.35, 1)
+polygon = PackedVector2Array(-10, 10, -8, 10, -8, 14, -10, 14)
+
+[node name="WeaponMount2" type="Polygon2D" parent="EnemyShip"]
+color = Color(0.3, 0.3, 0.35, 1)
+polygon = PackedVector2Array(8, 10, 10, 10, 10, 14, 8, 14)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_n8vlh")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

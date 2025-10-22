@@ -1,0 +1,122 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwhqvnby7bxj7"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_3xv8h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yx6lq"]
+size = Vector2(40, 40)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_3xv8h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_yx6lq")
+
+[node name="Spaceship" type="Node2D" parent="."]
+
+[node name="MainBody" type="Polygon2D" parent="Spaceship"]
+color = Color(0.25, 0.65, 0.95, 1)
+polygon = PackedVector2Array(0, -28, -8, -15, -10, 5, -8, 18, 8, 18, 10, 5, 8, -15)
+
+[node name="BodyShading" type="Polygon2D" parent="Spaceship"]
+color = Color(0.15, 0.45, 0.75, 1)
+polygon = PackedVector2Array(-3, -15, -6, 0, -5, 15, 5, 15, 6, 0, 3, -15)
+
+[node name="Nose" type="Polygon2D" parent="Spaceship"]
+color = Color(0.4, 0.75, 1, 1)
+polygon = PackedVector2Array(0, -28, -4, -20, 4, -20)
+
+[node name="WingLeft" type="Polygon2D" parent="Spaceship"]
+color = Color(0.2, 0.5, 0.85, 1)
+polygon = PackedVector2Array(-10, 5, -22, 8, -28, 22, -20, 20, -10, 15)
+
+[node name="WingRight" type="Polygon2D" parent="Spaceship"]
+color = Color(0.2, 0.5, 0.85, 1)
+polygon = PackedVector2Array(10, 5, 22, 8, 28, 22, 20, 20, 10, 15)
+
+[node name="WingDetail1" type="Polygon2D" parent="Spaceship"]
+color = Color(0.15, 0.35, 0.65, 1)
+polygon = PackedVector2Array(-12, 10, -18, 12, -22, 18, -12, 14)
+
+[node name="WingDetail2" type="Polygon2D" parent="Spaceship"]
+color = Color(0.15, 0.35, 0.65, 1)
+polygon = PackedVector2Array(12, 10, 18, 12, 22, 18, 12, 14)
+
+[node name="Cockpit" type="Polygon2D" parent="Spaceship"]
+color = Color(0.4, 0.9, 1, 0.8)
+polygon = PackedVector2Array(-4, -12, 4, -12, 5, 2, -5, 2)
+
+[node name="CockpitGlass" type="Polygon2D" parent="Spaceship"]
+color = Color(0.6, 1, 1, 0.3)
+polygon = PackedVector2Array(-3, -10, 3, -10, 4, 0, -4, 0)
+
+[node name="EngineHousing1" type="Polygon2D" parent="Spaceship"]
+color = Color(0.3, 0.3, 0.4, 1)
+polygon = PackedVector2Array(-10, 16, -6, 16, -6, 22, -10, 22)
+
+[node name="EngineHousing2" type="Polygon2D" parent="Spaceship"]
+color = Color(0.3, 0.3, 0.4, 1)
+polygon = PackedVector2Array(6, 16, 10, 16, 10, 22, 6, 22)
+
+[node name="EngineGlow1" type="Polygon2D" parent="Spaceship"]
+color = Color(1, 0.5, 0.1, 1)
+polygon = PackedVector2Array(-9, 22, -7, 22, -7, 26, -9, 26)
+
+[node name="EngineGlow2" type="Polygon2D" parent="Spaceship"]
+color = Color(1, 0.5, 0.1, 1)
+polygon = PackedVector2Array(7, 22, 9, 22, 9, 26, 7, 26)
+
+[node name="EngineParticles1" type="CPUParticles2D" parent="Spaceship"]
+position = Vector2(-8, 24)
+amount = 20
+lifetime = 0.3
+speed_scale = 2.0
+explosiveness = 0.2
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+direction = Vector2(0, 1)
+spread = 15.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 150.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(1, 0.6, 0.2, 1)
+
+[node name="EngineParticles2" type="CPUParticles2D" parent="Spaceship"]
+position = Vector2(8, 24)
+amount = 20
+lifetime = 0.3
+speed_scale = 2.0
+explosiveness = 0.2
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+direction = Vector2(0, 1)
+spread = 15.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 150.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(1, 0.6, 0.2, 1)
+
+[node name="Armor1" type="Polygon2D" parent="Spaceship"]
+color = Color(0.4, 0.4, 0.5, 1)
+polygon = PackedVector2Array(-6, 8, -4, 8, -4, 12, -6, 12)
+
+[node name="Armor2" type="Polygon2D" parent="Spaceship"]
+color = Color(0.4, 0.4, 0.5, 1)
+polygon = PackedVector2Array(4, 8, 6, 8, 6, 12, 4, 12)
+
+[node name="PlayerGlow" type="PointLight2D" parent="."]
+energy = 1.5
+texture_scale = 3.0
+color = Color(0.4, 0.8, 1, 1)
+
+[node name="ShootSound" type="AudioStreamPlayer2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_yx6lq")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
