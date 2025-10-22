@@ -1,0 +1,55 @@
+# Godot editor cache files
+**/.godot/
+.godot/
+
+# Godot export files
+*.import
+export_presets.cfg
+
+# Compiled files
+*.o
+*.so
+*.dylib
+*.dll
+*.exe
+*.pck
+*.wasm
+
+# Build artifacts
+build/
+dist/
+*.zip
+
+# Node modules
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.cache
