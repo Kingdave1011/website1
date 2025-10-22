@@ -404,6 +404,14 @@
             <h1>SPACE SHOOTER</h1>
             <p class="tagline">🚀 Epic Space Battles Await 🌌</p>
             
+            <p style="background: linear-gradient(135deg, #FF6600, #8B00FF); color: #fff; padding: 15px 30px; border-radius: 10px; font-size: 1.2rem; margin: 20px auto; max-width: 600px; box-shadow: 0 0 20px rgba(255, 102, 0, 0.5); animation: pulse 2s infinite;">
+                🎃 NEW: Halloween Theme Available! Click 🎨 Theme to try it! 👻
+            </p>
+            
+            <p style="background: linear-gradient(135deg, #00C6FF, #8A2BE2); color: #fff; padding: 15px 30px; border-radius: 10px; font-size: 1.2rem; margin: 20px auto; max-width: 600px; box-shadow: 0 0 20px rgba(0, 198, 255, 0.5); animation: pulse 2s infinite; animation-delay: 1s;">
+                🚀 Space Shooter V5 is OUT NOW!
+            </p>
+            
             <div class="button-group">
                 <a href="https://github.com/Kingdave1011/website1/releases/download/v2.5-updated/SpaceShooter-Windows-v2.5.zip" class="button" download>💻 Download for PC</a>
                 <a href="#play" class="button secondary">🌐 Play in Browser</a>
@@ -763,6 +771,40 @@
             stars.push(new Star());
         }
         
+        // Halloween floating aliens/ghosts
+        let halloweenObjects = [];
+        class HalloweenObject {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = 30 + Math.random() * 40;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
+                this.type = Math.random() > 0.5 ? '👽' : '👻';
+                this.opacity = 0.3 + Math.random() * 0.4;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
+                if (this.x < -100) this.x = canvas.width + 100;
+                if (this.x > canvas.width + 100) this.x = -100;
+                if (this.y < -100) this.y = canvas.height + 100;
+                if (this.y > canvas.height + 100) this.y = -100;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px Arial`;
+                ctx.fillText(this.type, this.x, this.y);
+                ctx.restore();
+            }
+        }
+        
+        for (let i = 0; i < 8; i++) {
+            halloweenObjects.push(new HalloweenObject());
+        }
+        
         function animate() {
             ctx.fillStyle = 'rgba(5, 5, 10, 0.1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -771,6 +813,14 @@
                 star.update();
                 star.draw();
             });
+            
+            // Draw Halloween effects if theme is active
+            if (currentTheme === 'halloween') {
+                halloweenObjects.forEach(obj => {
+                    obj.update();
+                    obj.draw();
+                });
+            }
             
             requestAnimationFrame(animate);
         }
