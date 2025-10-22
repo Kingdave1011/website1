@@ -1,6 +1,8 @@
 {
-  "buildCommand": null,
-  "outputDirectory": "website",
-  "framework": null,
-  "installCommand": null
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/website/$1"
+    }
+  ]
 }
