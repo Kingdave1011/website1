@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog - Space Shooter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF;
+            margin-bottom: 40px;
+            font-size: 3rem;
+            text-align: center;
+        }
+
+        .version {
+            background: rgba(0, 198, 255, 0.1);
+            border-left: 4px solid #00C6FF;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .version h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .version .date {
+            color: #8A2BE2;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .version h3 {
+            color: #FFD700;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .version ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .version li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .version li:before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: #00C6FF;
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid #00C6FF;
+            color: #00C6FF;
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(0, 198, 255, 0.2);
+            box-shadow: 0 0 20px #00C6FF;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .badge.new {
+            background: #00FF00;
+            color: #000;
+        }
+
+        .badge.fixed {
+            background: #FF6B6B;
+            color: #FFF;
+        }
+
+        .badge.improved {
+            background: #4ECDC4;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Changelog</h1>
+
+        <div class="version">
+            <h2>Version 2.5.1 <span class="badge new">LATEST</span></h2>
+            <p class="date">October 21, 2025</p>
+            
+            <h3>✨ New Features</h3>
+            <ul>
+                <li>Added Global Leaderboard page showing real-time player rankings</li>
+                <li>Leaderboard auto-refreshes every 30 seconds for live updates</li>
+                <li>Top 3 players get special gold, silver, and bronze highlighting</li>
+                <li>Leaderboard accessible from main navigation menu</li>
+            </ul>
+
+            <h3>🔧 Improvements</h3>
+            <ul>
+                <li>Updated Windows download to version 2.5 (SpaceShooter-Windows-v2.5.zip)</li>
+                <li>Improved website structure with organized HideoutAdsWebsite folder</li>
+                <li>Enhanced navigation with leaderboard link in header</li>
+                <li>Better mobile responsiveness for leaderboard page</li>
+            </ul>
+
+            <h3>📦 Downloads</h3>
+            <ul>
+                <li>Windows Version 2.5 now available for download</li>
+                <li>Direct download link added to homepage</li>
+            </ul>
+
+            <h3>🐛 Bug Fixes</h3>
+            <ul>
+                <li>Fixed leaderboard to only show real players (removed mock data)</li>
+                <li>Improved error handling for leaderboard API connection</li>
+            </ul>
+        </div>
+
+        <div class="version">
+            <h2>Version 2.5 Beta</h2>
+            <p class="date">October 2025</p>
+            
+            <h3>✨ New Features</h3>
+            <ul>
+                <li>20 unlockable maps including asteroid fields, nebula clouds, ice fields, and debris zones</li>
+                <li>Multiplayer battles supporting up to 32 players</li>
+                <li>Achievement system with unlockable rewards</li>
+                <li>Daily challenges for bonus rewards</li>
+                <li>Boss battles with unique mechanics</li>
+                <li>Power-up collection system</li>
+                <li>Multiple game modes (Campaign, Survival, Multiplayer)</li>
+            </ul>
+
+            <h3>🔧 Improvements</h3>
+            <ul>
+                <li>Enhanced graphics and visual effects</li>
+                <li>Improved enemy AI behavior</li>
+                <li>Better performance optimization</li>
+                <li>Smoother controls and gameplay</li>
+                <li>Updated UI/UX design</li>
+            </ul>
+
+            <h3>🎮 Gameplay</h3>
+            <ul>
+                <li>New weapon types and upgrades</li>
+                <li>Ship customization options</li>
+                <li>Difficulty progression system</li>
+                <li>Wave-based enemy spawning</li>
+                <li>Score multiplier mechanics</li>
+            </ul>
+        </div>
+
+        <div class="version">
+            <h2>Version 2.0</h2>
+            <p class="date">September 2025</p>
+            
+            <h3>✨ New Features</h3>
+            <ul>
+                <li>Complete game redesign with modern graphics</li>
+                <li>Introduced map system with multiple environments</li>
+                <li>Added multiplayer functionality</li>
+                <li>Player progression and leveling system</li>
+            </ul>
+
+            <h3>🔧 Improvements</h3>
+            <ul>
+                <li>Rewritten game engine for better performance</li>
+                <li>Improved collision detection</li>
+                <li>Enhanced audio system with dynamic music</li>
+            </ul>
+        </div>
+
+        <div class="version">
+            <h2>Version 1.0</h2>
+            <p class="date">August 2025</p>
+            
+            <h3>✨ Initial Release</h3>
+            <ul>
+                <li>Basic space shooter gameplay</li>
+                <li>Single-player mode</li>
+                <li>5 enemy types</li>
+                <li>Simple scoring system</li>
+                <li>Basic power-ups</li>
+            </ul>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+</body>
+</html>

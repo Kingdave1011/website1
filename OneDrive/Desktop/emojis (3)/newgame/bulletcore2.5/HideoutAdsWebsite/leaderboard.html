@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - HideoutAds</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .leaderboard {
+            list-style: none;
+        }
+        
+        .leaderboard-item {
+            background: white;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .leaderboard-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            min-width: 50px;
+        }
+        
+        .rank.top1 { color: #ffd700; }
+        .rank.top2 { color: #c0c0c0; }
+        .rank.top3 { color: #cd7f32; }
+        
+        .player-info {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+        
+        .player-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .player-stats {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .score {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .back-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+        
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 auto;
+            display: block;
+            margin-bottom: 20px;
+            font-size: 1em;
+            transition: background 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 Global Leaderboard</h1>
+        <p class="subtitle">Top Players Worldwide</p>
+        
+        <button class="refresh-btn" onclick="loadLeaderboard()">🔄 Refresh</button>
+        
+        <div id="leaderboard-content" class="loading">
+            Loading leaderboard data...
+        </div>
+        
+        <a href="index.html" class="back-btn">← Back to Home</a>
+    </div>
+    
+    <script>
+        // Realtime leaderboard data
+        async function loadLeaderboard() {
+            const content = document.getElementById('leaderboard-content');
+            content.innerHTML = '<div class="loading">Loading...</div>';
+            
+            try {
+                // Fetch real player data from your API endpoint
+                // const response = await fetch('YOUR_API_ENDPOINT/leaderboard');
+                // const data = await response.json();
+                
+                // For now, show empty until real API is connected
+                const data = [];
+                
+                displayLeaderboard(data);
+                
+            } catch (error) {
+                content.innerHTML = `
+                    <div class="loading">
+                        ⚠️ Unable to load leaderboard.<br>
+                        <small>Please check your connection and try again.</small>
+                    </div>
+                `;
+                console.error('Error loading leaderboard:', error);
+            }
+        }
+        
+        function displayLeaderboard(data) {
+            const content = document.getElementById('leaderboard-content');
+            
+            if (!data || data.length === 0) {
+                content.innerHTML = '<div class="loading">No players yet. Be the first!</div>';
+                return;
+            }
+            
+            const leaderboardHTML = `
+                <ul class="leaderboard">
+                    ${data.map(player => `
+                        <li class="leaderboard-item">
+                            <div class="rank ${player.rank <= 3 ? 'top' + player.rank : ''}">
+                                #${player.rank}
+                            </div>
+                            <div class="player-info">
+                                <div class="player-name">${player.name}</div>
+                                <div class="player-stats">
+                                    ${player.kills} Kills • ${player.games} Games Played
+                                </div>
+                            </div>
+                            <div class="score">
+                                ${player.score.toLocaleString()}
+                            </div>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+            
+            content.innerHTML = leaderboardHTML;
+        }
+        
+        // Load leaderboard on page load
+        loadLeaderboard();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadLeaderboard, 30000);
+    </script>
+</body>
+</html>
