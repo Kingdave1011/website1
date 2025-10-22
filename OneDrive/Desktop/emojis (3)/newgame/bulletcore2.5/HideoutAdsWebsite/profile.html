@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Profile - Space Shooter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF;
+            margin-bottom: 40px;
+            font-size: 3rem;
+            text-align: center;
+        }
+
+        .profile-header {
+            background: rgba(0, 198, 255, 0.1);
+            border: 2px solid #00C6FF;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .profile-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(0, 198, 255, 0.1);
+            border: 2px solid #00C6FF;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #FFD700;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .stat-label {
+            color: #8A2BE2;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .section {
+            background: rgba(0, 198, 255, 0.05);
+            border: 1px solid rgba(0, 198, 255, 0.3);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00C6FF, #8A2BE2);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .referral-code {
+            background: rgba(138, 43, 226, 0.2);
+            border: 2px solid #8A2BE2;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .referral-code input {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00C6FF;
+            color: #00C6FF;
+            padding: 12px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            width: 300px;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .copy-btn, .back-btn {
+            display: inline-block;
+            margin: 10px 5px;
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid #00C6FF;
+            color: #00C6FF;
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover, .back-btn:hover {
+            background: rgba(0, 198, 255, 0.2);
+            box-shadow: 0 0 20px #00C6FF;
+        }
+
+        .reward-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .reward-item {
+            background: rgba(0, 198, 255, 0.1);
+            border-left: 4px solid #8A2BE2;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .login-prompt {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .login-prompt h2 {
+            color: #00C6FF;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 20px;
+        }
+
+        .achievement-badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👤 Player Profile</h1>
+
+        <div id="profile-content">
+            <!-- Content loaded by JavaScript -->
+        </div>
+
+        <a href="index.html" class="back-btn">← Back to Home</a>
+    </div>
+
+    <script>
+        function loadProfile() {
+            const profileContent = document.getElementById('profile-content');
+            
+            // Get current user from localStorage
+            let currentUser = null;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('space_shooter_') && !key.includes('guest_')) {
+                    const username = key.replace('space_shooter_', '');
+                    currentUser = username;
+                    break;
+                }
+            }
+
+            if (!currentUser) {
+                profileContent.innerHTML = `
+                    <div class="login-prompt">
+                        <h2>🔒 Please Log In</h2>
+                        <p style="color: #8A2BE2; font-size: 1.2rem; margin-bottom: 20px;">
+                            Create an account to track your stats and earn referral rewards!
+                        </p>
+                        <a href="game/index.html" class="back-btn">Go to Game</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Load player data
+            const playerData = JSON.parse(localStorage.getItem(`space_shooter_${currentUser}`) || '{}');
+            const stats = playerData.stats || { totalKills: 0, wavesSurvived: 0, boostersUsed: 0 };
+            const level = playerData.level || 1;
+            const xp = playerData.xp || 0;
+            const credits = playerData.credits || 0;
+            const achievements = playerData.unlockedAchievements || [];
+            
+            // Generate referral code (based on username)
+            const referralCode = btoa(currentUser).substring(0, 8).toUpperCase();
+            
+            // Get referral data
+            const referralData = JSON.parse(localStorage.getItem(`referrals_${currentUser}`) || '{"referred": [], "rewards": 0}');
+            
+            profileContent.innerHTML = `
+                <div class="profile-header">
+                    <h2>${currentUser}</h2>
+                    <div class="level-badge">Level ${level}</div>
+                    <p style="color: #8A2BE2; margin-top: 15px; font-size: 1.1rem;">
+                        ${credits} Credits • ${achievements.length} Achievements
+                    </p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">${stats.totalKills}</div>
+                        <div class="stat-label">💥 Total Kills</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${stats.wavesSurvived}</div>
+                        <div class="stat-label">🌊 Waves Survived</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${stats.boostersUsed}</div>
+                        <div class="stat-label">🚀 Boosters Used</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${Math.floor(xp / 1000)}</div>
+                        <div class="stat-label">⭐ Total XP (k)</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>📊 Level Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${(xp % 1000) / 10}%">
+                            ${xp % 1000} / 1000 XP
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🎁 Referral System</h3>
+                    <p style="color: #8A2BE2; margin-bottom: 20px;">
+                        Invite friends to earn exclusive rewards! Each friend who plays gives you bonuses.
+                    </p>
+                    <div class="referral-code">
+                        <p style="color: #8A2BE2; margin-bottom: 10px; font-size: 1.1rem;">Your Referral Code:</p>
+                        <input type="text" id="referral-code-input" value="${referralCode}" readonly>
+                        <br>
+                        <button class="copy-btn" onclick="copyReferralCode()">📋 Copy Code</button>
+                    </div>
+                    
+                    <div style="margin-top: 25px;">
+                        <h4 style="color: #FFD700; margin-bottom: 15px;">🎁 Referral Rewards:</h4>
+                        <ul class="reward-list">
+                            <li class="reward-item"><strong>1 Friend:</strong> 500 Credits + Neon Green Ranger Skin</li>
+                            <li class="reward-item"><strong>3 Friends:</strong> 1500 Credits + Ruby Red Interceptor Skin</li>
+                            <li class="reward-item"><strong>5 Friends:</strong> 3000 Credits + Titanium Bruiser Skin</li>
+                            <li class="reward-item"><strong>10 Friends:</strong> 10000 Credits + All Exclusive Skins!</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(138, 43, 226, 0.1); border-radius: 8px;">
+                        <p style="color: #00C6FF; font-size: 1.1rem;">
+                            <strong>Friends Referred:</strong> ${referralData.referred.length}
+                        </p>
+                        <p style="color: #FFD700; margin-top: 10px;">
+                            <strong>Total Rewards Earned:</strong> ${referralData.rewards} Credits
+                        </p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🏆 Achievements</h3>
+                    <div style="margin-top: 15px;">
+                        ${achievements.length > 0 
+                            ? achievements.map(ach => `<span class="achievement-badge">✓ ${ach.replace('bp_', 'Battle Pass Lvl ')}</span>`).join('')
+                            : '<p style="color: #8A2BE2;">No achievements unlocked yet. Play to earn achievements!</p>'
+                        }
+                    </div>
+                </div>
+            `;
+        }
+
+        function copyReferralCode() {
+            const input = document.getElementById('referral-code-input');
+            input.select();
+            input.setSelectionRange(0, 99999); // For mobile
+            navigator.clipboard.writeText(input.value);
+            
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Copied!';
+            btn.style.borderColor = '#00FF00';
+            btn.style.color = '#00FF00';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.borderColor = '#00C6FF';
+                btn.style.color = '#00C6FF';
+            }, 2000);
+        }
+
+        // Load profile on page load
+        loadProfile();
+    </script>
+</body>
+</html>
