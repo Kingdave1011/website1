@@ -60,7 +60,8 @@
                 </div>
             </div>
 
-            <button id="start-button">Start Game</button>
+            <button id="start-button">🎮 Single Player</button>
+            <button id="multiplayer-button" class="multiplayer-btn">🌐 Online Multiplayer</button>
             <div class="menu-buttons">
                  <button id="hangar-button">🚀 Hangar</button>
                 <button id="upgrades-button">⬆️ Upgrades</button>
@@ -193,6 +194,30 @@
                 <h2>🎖️ Battle Pass - Season <span id="bp-season">1</span></h2>
                 <p style="text-align: center; color: #FFD700; margin-bottom: 20px;">Resets Monthly | Your Level: <span id="bp-player-level">1</span></p>
                 <div id="battle-pass-tiers"></div>
+            </div>
+        </div>
+
+        <div id="server-browser-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>🌐 Server Browser</h2>
+                <p style="text-align: center; margin-bottom: 20px;">Select a server to join or use Quick Match</p>
+                <button id="quick-match-button" style="width: 100%; padding: 15px; margin-bottom: 20px; background: linear-gradient(135deg, #00FF00, #00AA00); border: none; border-radius: 8px; color: white; font-size: 1.2rem; cursor: pointer;">⚡ Quick Match</button>
+                <div id="server-list"></div>
+            </div>
+        </div>
+
+        <div id="matchmaking-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Finding Match...</h2>
+                <p id="matchmaking-status" style="text-align: center; margin: 20px 0;">Searching for players...</p>
+                <div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0;">
+                    <div class="player-slot" style="padding: 10px 20px; background: rgba(0,200,0,0.3); border-radius: 5px;">Waiting...</div>
+                    <div class="player-slot" style="padding: 10px 20px; background: rgba(100,100,100,0.3); border-radius: 5px;">Finding...</div>
+                    <div class="player-slot" style="padding: 10px 20px; background: rgba(100,100,100,0.3); border-radius: 5px;">Finding...</div>
+                </div>
+                <button id="cancel-matchmaking" style="width: 100%; padding: 10px; background: #ff4444; border: none; border-radius: 8px; color: white; cursor: pointer;">Cancel</button>
             </div>
         </div>
 

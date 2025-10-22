@@ -929,7 +929,10 @@ window.onload = () => {
     fullscreenToggleButton = document.getElementById('fullscreen-toggle-button') as HTMLButtonElement;
 
     resizeCanvas();
-    loadGameState('guest_default'); 
+    
+    // Check if user is already logged in from website
+    checkWebsiteAuth();
+    
     setupEventListeners();
     initStars();
     startMenuAnimation();
@@ -1066,15 +1069,17 @@ function setupEventListeners() {
     });
     document.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
     
+    // Fix: Reset all keys when window loses focus to prevent stuck keys
+    window.addEventListener('blur', () => {
+        keys = {};
+    });
+    
     document.getElementById('signin-button')!.addEventListener('click', handleSignIn);
     document.getElementById('signup-button')!.addEventListener('click', handleSignUp);
     document.getElementById('guest-button')!.addEventListener('click', handleGuestLogin);
     
-    document.getElementById('start-button')!.addEventListener('click', () => {
-        //showModal('server-browser-modal');
-        // TEMP: Direct start
-        startMatchmaking();
-    });
+    document.getElementById('start-button')!.addEventListener('click', () => startGame());
+    document.getElementById('multiplayer-button')!.addEventListener('click', () => showModal('server-browser-modal'));
     document.getElementById('hangar-button')!.addEventListener('click', () => showModal('hangar-modal'));
     document.getElementById('upgrades-button')!.addEventListener('click', () => showModal('upgrades-modal'));
     document.getElementById('map-selector-button')!.addEventListener('click', () => showModal('map-selector-modal'));
@@ -1163,6 +1168,16 @@ function setupEventListeners() {
         const nameToBan = (document.getElementById('ban-player-name') as HTMLInputElement).value;
         simulatedPlayers = simulatedPlayers.filter(p => p !== nameToBan);
         populateAdminPanel();
+    });
+    
+    document.getElementById('quick-match-button')!.addEventListener('click', () => {
+        document.getElementById('server-browser-modal')!.classList.remove('active');
+        startMatchmaking();
+    });
+    
+    document.getElementById('cancel-matchmaking')!.addEventListener('click', () => {
+        document.getElementById('matchmaking-modal')!.classList.remove('active');
+        playSound('uiClick');
     });
     
     // Booster Selection Logic
@@ -1607,6 +1622,31 @@ function loginSuccess(username: string, isGuest = false) {
     startMenuAnimation();
     document.getElementById('admin-panel-button')!.style.display = (username === 'admin') ? 'inline-block' : 'none';
     chatContainer.style.display = 'flex';
+}
+
+function checkWebsiteAuth() {
+    // Check if user is already authenticated from website
+    const websiteAuth = sessionStorage.getItem('space_shooter_auth');
+    const websiteUser = sessionStorage.getItem('space_shooter_username');
+    
+    if (websiteAuth === 'true' && websiteUser) {
+        // User is already logged in from website, auto-login to game
+        console.log('Auto-login detected from website:', websiteUser);
+        initAudio();
+        loadGameState(websiteUser);
+        gameState.username = websiteUser;
+        showScreen('start-screen');
+        startMenuAnimation();
+        document.getElementById('admin-panel-button')!.style.display = (websiteUser === 'King_davez') ? 'inline-block' : 'none';
+        chatContainer.style.display = 'flex';
+        
+        // Show welcome notification
+        showWaveNotification(`Welcome to the game, ${websiteUser}!`);
+    } else {
+        // No website auth, show login screen
+        loadGameState('guest_default');
+        showScreen('login-screen');
+    }
 }
 
 function initStars() {
