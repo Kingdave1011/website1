@@ -385,15 +385,37 @@
                 <button id="theme-toggle" onclick="cycleTheme()" style="padding: 8px 15px; background: rgba(0, 198, 255, 0.2); border: 2px solid #00C6FF; border-radius: 8px; color: #E0E0E0; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; transition: all 0.3s;">🎨 Theme</button>
                 <a href="about.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">About</a>
                 <a href="features.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Features</a>
-                <a href="controls.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Controls</a>
                 <a href="how-to-play.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">How to Play</a>
-                <a href="screenshots.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Screenshots</a>
-                <a href="faq.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">FAQ</a>
                 <a href="changelog.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">Changelog</a>
                 <a href="leaderboard.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">🏆 Leaderboard</a>
-                <a href="profile.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">📊 Profile</a>
+                <a href="profile.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s; background: rgba(255, 215, 0, 0.1); padding: 8px 15px; border-radius: 8px;">🎁 Refer a Friend</a>
                 <a href="bug-report.html" style="color: #FF007F; text-decoration: none; transition: color 0.3s;">Report Bug</a>
-                <a href="user-auth.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">👤 Sign In</a>
+                
+                <!-- User Profile Dropdown -->
+                <div id="user-profile-menu" style="position: relative; display: none;">
+                    <button id="profile-btn" onclick="toggleProfileDropdown()" style="padding: 8px 15px; background: rgba(0, 255, 0, 0.2); border: 2px solid #00FF00; border-radius: 8px; color: #00FF00; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: all 0.3s;">
+                        <span>👤</span>
+                        <span id="profile-username">User</span>
+                        <span id="dropdown-arrow">▼</span>
+                    </button>
+                    <div id="profile-dropdown" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 10px; background: rgba(5, 5, 10, 0.98); border: 2px solid #00C6FF; border-radius: 10px; min-width: 220px; box-shadow: 0 0 30px rgba(0, 198, 255, 0.5); z-index: 1000;">
+                        <div style="padding: 15px; border-bottom: 1px solid rgba(0, 198, 255, 0.3);">
+                            <div style="color: #00C6FF; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin-bottom: 5px;" id="dd-username">Username</div>
+                            <div style="color: #8A2BE2; font-size: 0.85rem;" id="dd-level">Level 1</div>
+                        </div>
+                        <div style="padding: 10px 0;">
+                            <a href="profile.html" style="display: block; padding: 12px 20px; color: #E0E0E0; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,198,255,0.2)'" onmouseout="this.style.background='transparent'">📊 My Profile</a>
+                            <a href="profile.html#stats" style="display: block; padding: 12px 20px; color: #E0E0E0; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,198,255,0.2)'" onmouseout="this.style.background='transparent'">📈 Stats</a>
+                            <a href="profile.html#referral" style="display: block; padding: 12px 20px; color: #E0E0E0; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,198,255,0.2)'" onmouseout="this.style.background='transparent'">🎁 Refer Friends</a>
+                            <a href="game/index.html" style="display: block; padding: 12px 20px; color: #E0E0E0; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,198,255,0.2)'" onmouseout="this.style.background='transparent'">⚙️ Game Settings</a>
+                            <div style="border-top: 1px solid rgba(0, 198, 255, 0.3); margin: 10px 0;"></div>
+                            <a href="#" onclick="logoutUser(); return false;" style="display: block; padding: 12px 20px; color: #FF007F; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,0,127,0.2)'" onmouseout="this.style.background='transparent'">🚪 Log Out</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sign In Button (shows when not logged in) -->
+                <a href="user-auth.html" id="sign-in-btn" style="color: #00FF00; text-decoration: none; transition: color 0.3s; padding: 8px 15px; background: rgba(0, 255, 0, 0.1); border: 2px solid #00FF00; border-radius: 8px; font-family: 'Orbitron', sans-serif;">👤 Sign In</a>
             </div>
         </nav>
     </header>
@@ -1065,6 +1087,80 @@
         
         // Display recent ratings on load
         displayRecentRatings();
+        
+        // User Profile Dropdown System
+        function checkUserLogin() {
+            // Check if user is logged in
+            let currentUser = null;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('space_shooter_') && !key.includes('guest_')) {
+                    const username = key.replace('space_shooter_', '');
+                    currentUser = username;
+                    break;
+                }
+            }
+            
+            const profileMenu = document.getElementById('user-profile-menu');
+            const signInBtn = document.getElementById('sign-in-btn');
+            
+            if (currentUser) {
+                // User is logged in - show profile dropdown
+                const playerData = JSON.parse(localStorage.getItem(`space_shooter_${currentUser}`) || '{}');
+                const level = playerData.level || 1;
+                
+                document.getElementById('profile-username').textContent = currentUser;
+                document.getElementById('dd-username').textContent = currentUser;
+                document.getElementById('dd-level').textContent = `Level ${level}`;
+                
+                profileMenu.style.display = 'block';
+                signInBtn.style.display = 'none';
+            } else {
+                // User not logged in - show sign in button
+                profileMenu.style.display = 'none';
+                signInBtn.style.display = 'block';
+            }
+        }
+        
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profile-dropdown');
+            const arrow = document.getElementById('dropdown-arrow');
+            
+            if (dropdown.style.display === 'none' || !dropdown.style.display) {
+                dropdown.style.display = 'block';
+                arrow.textContent = '▲';
+            } else {
+                dropdown.style.display = 'none';
+                arrow.textContent = '▼';
+            }
+        }
+        
+        function logoutUser() {
+            if (confirm('Are you sure you want to log out?')) {
+                // Clear user session (keep their data, just clear the session)
+                localStorage.removeItem('currentUser');
+                
+                // Refresh the page to update UI
+                window.location.reload();
+            }
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const profileMenu = document.getElementById('user-profile-menu');
+            const dropdown = document.getElementById('profile-dropdown');
+            const profileBtn = document.getElementById('profile-btn');
+            
+            if (profileMenu && dropdown && profileBtn) {
+                if (!profileMenu.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                    document.getElementById('dropdown-arrow').textContent = '▼';
+                }
+            }
+        });
+        
+        // Check user login status on page load
+        checkUserLogin();
     </script>
 </body>
 </html>
