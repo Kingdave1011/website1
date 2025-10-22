@@ -399,17 +399,19 @@
             }, 3000);
         }
 
-        function redirectToGame(username, isGuest = false) {
+        function redirectToGame(username, isGuest = false, isAdmin = false) {
             // Store authentication info
             const authData = {
                 username: username,
                 isGuest: isGuest,
+                isAdmin: isAdmin,
                 timestamp: Date.now()
             };
+            localStorage.setItem('space_shooter_auth', JSON.stringify(authData));
             sessionStorage.setItem('space_shooter_auth', JSON.stringify(authData));
             
-            // Redirect to game
-            window.location.href = 'https://space-shooter-634206651593.us-west1.run.app';
+            // Redirect to home page instead of game
+            window.location.href = 'index.html';
         }
 
         // Sign In Handler
@@ -425,7 +427,7 @@
 
             // Check admin credentials
             if (username === 'King_davez' && password === 'Peaguyxx300!') {
-                redirectToGame('King_davez', false);
+                redirectToGame('King_davez', false, true);
                 return;
             }
 
