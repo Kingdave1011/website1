@@ -223,7 +223,129 @@
             <h1>📋 Changelog</h1>
 
             <div class="version">
-                <h2>Version 5.2 <span class="badge new">LATEST</span></h2>
+                <h2>Version 6.0 <span class="badge new">LATEST</span></h2>
+                <p class="date">October 22, 2025</p>
+                
+                <h3>🔐 Authentication & User System</h3>
+                <ul>
+                    <li>Complete sign-in/sign-up system with secure authentication</li>
+                    <li>Users stay on website after signing in - no auto-redirect to game</li>
+                    <li>Profile display in top-right corner with user menu dropdown</li>
+                    <li>Automatic game authentication - sign in once for both website and game</li>
+                    <li>Welcome notification: "Welcome to the game!" appears on successful login</li>
+                    <li>Sign-up rewards: 1000 Credits + Exclusive Boosters for new players</li>
+                    <li>Session persistence with localStorage/sessionStorage</li>
+                    <li>Profile menu shows username, level, and quick access options</li>
+                </ul>
+
+                <h3>⚡ Admin Panel (Developer Only)</h3>
+                <ul>
+                    <li>Hidden admin panel accessible only to King_davez account</li>
+                    <li>Admin button (⚡) appears in top-right when developer is logged in</li>
+                    <li>Secure login: Username: King_davez | Password: Peaguyxx300!</li>
+                    <li>User management dashboard with real-time statistics</li>
+                    <li>View all registered users and their activity</li>
+                    <li>Export user data functionality</li>
+                    <li>Server health monitoring</li>
+                    <li>Ban/unban user capabilities</li>
+                </ul>
+
+                <h3>🌐 Multi-Language Support</h3>
+                <ul>
+                    <li>Website and game now support 8 languages</li>
+                    <li>Languages: English, Spanish, French, German, Portuguese, Chinese, Japanese, Russian</li>
+                    <li>LanguageManager class for seamless translation switching</li>
+                    <li>Translation keys for all UI elements</li>
+                    <li>Language preference saved per user account</li>
+                    <li>Automatic language detection based on browser settings</li>
+                </ul>
+
+                <h3>🎮 Online Multiplayer System</h3>
+                <ul>
+                    <li>New "🌐 Online Multiplayer" button on homepage with green gradient</li>
+                    <li>Multiplayer lobby with server browser interface</li>
+                    <li>AWS EC2 dedicated server integration (18.116.64.173)</li>
+                    <li>Real-time server browser showing US East - Ohio region</li>
+                    <li>Live player count display (e.g., "12/32 Players")</li>
+                    <li>Quick Match functionality for instant matchmaking</li>
+                    <li>Lobby chat system with real-time messaging</li>
+                    <li>Player join/leave notifications in chat</li>
+                    <li>System messages for game events</li>
+                    <li>Chat synchronization across all connected players</li>
+                    <li>Mobile-optimized chat interface</li>
+                </ul>
+
+                <h3>💬 Enhanced Chat System</h3>
+                <ul>
+                    <li>Real-time chat synchronization using WebSocket</li>
+                    <li>Player join announcements: "[SYSTEM] PlayerName joined the game"</li>
+                    <li>Player leave announcements: "[SYSTEM] PlayerName left the game"</li>
+                    <li>Profanity filter and chat moderation</li>
+                    <li>Anti-spam measures with rate limiting</li>
+                    <li>System messages for important game events</li>
+                    <li>Chat history persistence</li>
+                    <li>Responsive design for mobile and desktop</li>
+                </ul>
+
+                <h3>⚙️ Performance Optimization</h3>
+                <ul>
+                    <li>Complete performance optimization guide created</li>
+                    <li>Object pooling system for bullets, enemies, and explosions</li>
+                    <li>Entity limits to prevent lag (max enemies, bullets, particles)</li>
+                    <li>Visibility culling - only render what's on screen</li>
+                    <li>Mobile-specific optimizations (reduced particles, lower quality effects)</li>
+                    <li>Desktop optimizations for high-end devices</li>
+                    <li>Web build optimizations for browser performance</li>
+                    <li>Reduced memory footprint</li>
+                    <li>Smooth 60 FPS on all devices</li>
+                </ul>
+
+                <h3>🖥️ AWS Server Integration</h3>
+                <ul>
+                    <li>AWS EC2 Windows Server 2025 deployed</li>
+                    <li>Instance: i-0b45bbd8105d85e19</li>
+                    <li>Public IP: 18.116.64.173</li>
+                    <li>Region: US East (Ohio) - us-east-2</li>
+                    <li>Node.js + Express matchmaking server</li>
+                    <li>PM2 process management for 24/7 uptime</li>
+                    <li>Firewall configured for ports 3000, 3001, 7777</li>
+                    <li>Real-time player tracking and lobby management</li>
+                    <li>Complete deployment guide in AWS_EC2_MULTIPLAYER_SERVER_SETUP.md</li>
+                </ul>
+
+                <h3>🎨 Homepage Updates</h3>
+                <ul>
+                    <li>Redesigned homepage with three main action buttons</li>
+                    <li>"🌐 Online Multiplayer" - Green gradient button to multiplayer lobby</li>
+                    <li>"🎮 Single Player" - Play game in solo mode</li>
+                    <li>"💻 Download for PC" - Download Windows standalone version</li>
+                    <li>Professional button styling with hover effects</li>
+                    <li>Improved mobile responsiveness</li>
+                </ul>
+
+                <h3>📚 Documentation</h3>
+                <ul>
+                    <li>AUTH_SYSTEM_GUIDE.md - Complete authentication documentation</li>
+                    <li>ONLINE_MULTIPLAYER_SPECIFICATION.md - Full multiplayer architecture</li>
+                    <li>GAME_PERFORMANCE_OPTIMIZATION_GUIDE.md - Performance tuning guide</li>
+                    <li>AWS_EC2_MULTIPLAYER_SERVER_SETUP.md - Server deployment steps</li>
+                    <li>Comprehensive code examples and implementation details</li>
+                </ul>
+
+                <h3>🔧 Technical Improvements</h3>
+                <ul>
+                    <li>JWT token-based authentication</li>
+                    <li>Secure password hashing</li>
+                    <li>Anti-cheat system foundation</li>
+                    <li>Rate limiting on all API endpoints</li>
+                    <li>CORS configuration for secure cross-origin requests</li>
+                    <li>Session management with automatic refresh</li>
+                    <li>Git push optimization (excluded .godot cache files)</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 5.2</h2>
                 <p class="date">October 22, 2025</p>
                 
                 <h3>🎃 Halloween Theme Enhancements</h3>
