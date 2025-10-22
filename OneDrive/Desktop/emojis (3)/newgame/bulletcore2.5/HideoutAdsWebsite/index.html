@@ -385,37 +385,13 @@
                 <button id="theme-toggle" onclick="cycleTheme()" style="padding: 8px 15px; background: rgba(0, 198, 255, 0.2); border: 2px solid #00C6FF; border-radius: 8px; color: #E0E0E0; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; transition: all 0.3s;">🎨 Theme</button>
                 <a href="about.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">About</a>
                 <a href="features.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Features</a>
+                <a href="controls.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Controls</a>
                 <a href="how-to-play.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">How to Play</a>
+                <a href="screenshots.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Screenshots</a>
+                <a href="faq.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">FAQ</a>
                 <a href="changelog.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">Changelog</a>
-                <a href="leaderboard.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">🏆 Leaderboard</a>
-                <a href="profile.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s; background: rgba(255, 215, 0, 0.1); padding: 8px 15px; border-radius: 8px;">🎁 Refer a Friend</a>
                 <a href="bug-report.html" style="color: #FF007F; text-decoration: none; transition: color 0.3s;">Report Bug</a>
-                
-                <!-- User Profile Dropdown -->
-                <div id="user-profile-menu" style="position: relative; display: none;">
-                    <button id="profile-btn" onclick="toggleProfileDropdown()" style="padding: 8px 15px; background: rgba(0, 255, 0, 0.2); border: 2px solid #00FF00; border-radius: 8px; color: #00FF00; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: all 0.3s;">
-                        <span>👤</span>
-                        <span id="profile-username">User</span>
-                        <span id="dropdown-arrow">▼</span>
-                    </button>
-                    <div id="profile-dropdown" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 10px; background: rgba(5, 5, 10, 0.98); border: 2px solid #00C6FF; border-radius: 10px; min-width: 220px; box-shadow: 0 0 30px rgba(0, 198, 255, 0.5); z-index: 1000;">
-                        <div style="padding: 15px; border-bottom: 1px solid rgba(0, 198, 255, 0.3);">
-                            <div style="color: #00C6FF; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin-bottom: 5px;" id="dd-username">Username</div>
-                            <div style="color: #8A2BE2; font-size: 0.85rem;" id="dd-level">Level 1</div>
-                        </div>
-                        <div style="padding: 10px 0;">
-                            <a href="profile.html" style="display: block; padding: 12px 20px; color: #E0E0E0; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,198,255,0.2)'" onmouseout="this.style.background='transparent'">📊 My Profile</a>
-                            <a href="profile.html#stats" style="display: block; padding: 12px 20px; color: #E0E0E0; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,198,255,0.2)'" onmouseout="this.style.background='transparent'">📈 Stats</a>
-                            <a href="profile.html#referral" style="display: block; padding: 12px 20px; color: #E0E0E0; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,198,255,0.2)'" onmouseout="this.style.background='transparent'">🎁 Refer Friends</a>
-                            <a href="game/index.html" style="display: block; padding: 12px 20px; color: #E0E0E0; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,198,255,0.2)'" onmouseout="this.style.background='transparent'">⚙️ Game Settings</a>
-                            <div style="border-top: 1px solid rgba(0, 198, 255, 0.3); margin: 10px 0;"></div>
-                            <a href="#" onclick="logoutUser(); return false;" style="display: block; padding: 12px 20px; color: #FF007F; text-decoration: none; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,0,127,0.2)'" onmouseout="this.style.background='transparent'">🚪 Log Out</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Sign In Button (shows when not logged in) -->
-                <a href="user-auth.html" id="sign-in-btn" style="color: #00FF00; text-decoration: none; transition: color 0.3s; padding: 8px 15px; background: rgba(0, 255, 0, 0.1); border: 2px solid #00FF00; border-radius: 8px; font-family: 'Orbitron', sans-serif;">👤 Sign In</a>
+                <a href="user-auth.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">👤 Sign In</a>
             </div>
         </nav>
     </header>
@@ -425,14 +401,6 @@
         <section class="hero">
             <h1>SPACE SHOOTER</h1>
             <p class="tagline">🚀 Epic Space Battles Await 🌌</p>
-            
-            <p style="background: linear-gradient(135deg, #FF6600, #8B00FF); color: #fff; padding: 15px 30px; border-radius: 10px; font-size: 1.2rem; margin: 20px auto; max-width: 600px; box-shadow: 0 0 20px rgba(255, 102, 0, 0.5); animation: pulse 2s infinite;">
-                🎃 NEW: Halloween Theme Available! Click 🎨 Theme to try it! 👻
-            </p>
-            
-            <p style="background: linear-gradient(135deg, #00C6FF, #8A2BE2); color: #fff; padding: 15px 30px; border-radius: 10px; font-size: 1.2rem; margin: 20px auto; max-width: 600px; box-shadow: 0 0 20px rgba(0, 198, 255, 0.5); animation: pulse 2s infinite; animation-delay: 1s;">
-                🚀 Space Shooter V5 is OUT NOW!
-            </p>
             
             <div class="button-group">
                 <a href="https://github.com/Kingdave1011/website1/releases/download/v2.5-updated/SpaceShooter-Windows-v2.5.zip" class="button" download>💻 Download for PC</a>
@@ -462,7 +430,7 @@
                     <span class="star" data-value="4">☆</span>
                     <span class="star" data-value="5">☆</span>
                 </div>
-                <p id="rating-display" style="color: #8A2BE2; font-size: 1.1rem; margin-top: 10px;">Average Rating: <span id="avg-rating">0.0</span>/5 (<span id="total-ratings">0</span> ratings)</p>
+                <p id="rating-display" style="color: #8A2BE2; font-size: 1.1rem; margin-top: 10px;">Average Rating: <span id="avg-rating">4.8</span>/5 (<span id="total-ratings">1247</span> ratings)</p>
                 <p id="thanks-message" style="color: #00FF00; font-size: 0.9rem; margin-top: 10px; display: none;">✨ Thanks for your rating!</p>
                 
                 <div style="margin-top: 25px;">
@@ -561,76 +529,6 @@
                 secondary: '#8B00FF',
                 accent: '#FFD700',
                 bg: '#1A0A00'
-            },
-            crimson: {
-                name: 'Crimson Red',
-                primary: '#DC143C',
-                secondary: '#FF1493',
-                accent: '#FF6347',
-                bg: '#0A0000'
-            },
-            arctic: {
-                name: 'Arctic Ice',
-                primary: '#00FFFF',
-                secondary: '#87CEEB',
-                accent: '#B0E0E6',
-                bg: '#001A1A'
-            },
-            gold: {
-                name: 'Royal Gold',
-                primary: '#FFD700',
-                secondary: '#FFA500',
-                accent: '#FFFF00',
-                bg: '#1A1000'
-            },
-            midnight: {
-                name: 'Midnight Blue',
-                primary: '#4169E1',
-                secondary: '#6495ED',
-                accent: '#00BFFF',
-                bg: '#000033'
-            },
-            forest: {
-                name: 'Forest Green',
-                primary: '#228B22',
-                secondary: '#32CD32',
-                accent: '#7FFF00',
-                bg: '#001A00'
-            },
-            sakura: {
-                name: 'Sakura Pink',
-                primary: '#FF69B4',
-                secondary: '#FF1493',
-                accent: '#FFB6C1',
-                bg: '#1A000A'
-            },
-            ocean: {
-                name: 'Deep Ocean',
-                primary: '#006994',
-                secondary: '#0099CC',
-                accent: '#00CED1',
-                bg: '#000A0F'
-            },
-            lava: {
-                name: 'Lava Red',
-                primary: '#FF4500',
-                secondary: '#FF6347',
-                accent: '#FF8C00',
-                bg: '#1A0500'
-            },
-            electric: {
-                name: 'Electric Blue',
-                primary: '#7DF9FF',
-                secondary: '#00FFFF',
-                accent: '#40E0D0',
-                bg: '#000F0F'
-            },
-            toxic: {
-                name: 'Toxic Green',
-                primary: '#ADFF2F',
-                secondary: '#7FFF00',
-                accent: '#00FF00',
-                bg: '#0A1A00'
             }
         };
 
@@ -863,40 +761,6 @@
             stars.push(new Star());
         }
         
-        // Halloween floating aliens/ghosts
-        let halloweenObjects = [];
-        class HalloweenObject {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = 30 + Math.random() * 40;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
-                this.type = Math.random() > 0.5 ? '👽' : '👻';
-                this.opacity = 0.3 + Math.random() * 0.4;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
-                if (this.x < -100) this.x = canvas.width + 100;
-                if (this.x > canvas.width + 100) this.x = -100;
-                if (this.y < -100) this.y = canvas.height + 100;
-                if (this.y > canvas.height + 100) this.y = -100;
-            }
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.opacity;
-                ctx.font = `${this.size}px Arial`;
-                ctx.fillText(this.type, this.x, this.y);
-                ctx.restore();
-            }
-        }
-        
-        for (let i = 0; i < 8; i++) {
-            halloweenObjects.push(new HalloweenObject());
-        }
-        
         function animate() {
             ctx.fillStyle = 'rgba(5, 5, 10, 0.1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -905,14 +769,6 @@
                 star.update();
                 star.draw();
             });
-            
-            // Draw Halloween effects if theme is active
-            if (currentTheme === 'halloween') {
-                halloweenObjects.forEach(obj => {
-                    obj.update();
-                    obj.draw();
-                });
-            }
             
             requestAnimationFrame(animate);
         }
@@ -1054,8 +910,8 @@
     
     <!-- Auto-Update Notification -->
     <div id="update-notification" style="display: none; position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #00C6FF 0%, #8A2BE2 100%); color: #fff; padding: 15px 30px; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 198, 255, 0.8); z-index: 10001; font-family: 'Orbitron', sans-serif; text-align: center; animation: slideDown 0.5s ease-out;">
-        <strong>🎮 V5 is Out Now!</strong>
-        <p style="margin: 10px 0 0 0; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem;">With many exciting features!</p>
+        <strong>🎮 New Update Available!</strong>
+        <p style="margin: 10px 0 0 0; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem;">Version 2.5 Beta is now live with new features!</p>
         <button onclick="document.getElementById('update-notification').style.display='none'" style="margin-top: 10px; padding: 8px 20px; background: rgba(255,255,255,0.2); border: 1px solid #fff; border-radius: 5px; color: #fff; cursor: pointer; font-family: 'Rajdhani', sans-serif;">Got it!</button>
     </div>
     
@@ -1068,7 +924,7 @@
     
     <script>
         // Show update notification on first visit or version change
-        const currentVersion = 'v5';
+        const currentVersion = '2.5-beta';
         const lastSeenVersion = localStorage.getItem('lastSeenVersion');
         
         if (lastSeenVersion !== currentVersion) {
@@ -1121,15 +977,6 @@
             });
             localStorage.setItem('allRatings', JSON.stringify(allRatings));
             
-            // Calculate real average
-            const totalRatings = allRatings.length;
-            const sumRatings = allRatings.reduce((sum, r) => sum + r.rating, 0);
-            const avgRating = totalRatings > 0 ? (sumRatings / totalRatings).toFixed(1) : '0.0';
-            
-            // Update display
-            document.getElementById('avg-rating').textContent = avgRating;
-            document.getElementById('total-ratings').textContent = totalRatings;
-            
             updateStarDisplay(rating);
             displayRecentRatings();
             
@@ -1164,92 +1011,8 @@
             updateStarDisplay(parseInt(userRating));
         }
         
-        // Calculate and display real average on page load
-        const allRatings = JSON.parse(localStorage.getItem('allRatings') || '[]');
-        if (allRatings.length > 0) {
-            const totalRatings = allRatings.length;
-            const sumRatings = allRatings.reduce((sum, r) => sum + r.rating, 0);
-            const avgRating = (sumRatings / totalRatings).toFixed(1);
-            document.getElementById('avg-rating').textContent = avgRating;
-            document.getElementById('total-ratings').textContent = totalRatings;
-        }
-        
         // Display recent ratings on load
         displayRecentRatings();
-        
-        // User Profile Dropdown System
-        function checkUserLogin() {
-            // Check if user is logged in
-            let currentUser = null;
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key && key.startsWith('space_shooter_') && !key.includes('guest_')) {
-                    const username = key.replace('space_shooter_', '');
-                    currentUser = username;
-                    break;
-                }
-            }
-            
-            const profileMenu = document.getElementById('user-profile-menu');
-            const signInBtn = document.getElementById('sign-in-btn');
-            
-            if (currentUser) {
-                // User is logged in - show profile dropdown
-                const playerData = JSON.parse(localStorage.getItem(`space_shooter_${currentUser}`) || '{}');
-                const level = playerData.level || 1;
-                
-                document.getElementById('profile-username').textContent = currentUser;
-                document.getElementById('dd-username').textContent = currentUser;
-                document.getElementById('dd-level').textContent = `Level ${level}`;
-                
-                profileMenu.style.display = 'block';
-                signInBtn.style.display = 'none';
-            } else {
-                // User not logged in - show sign in button
-                profileMenu.style.display = 'none';
-                signInBtn.style.display = 'block';
-            }
-        }
-        
-        function toggleProfileDropdown() {
-            const dropdown = document.getElementById('profile-dropdown');
-            const arrow = document.getElementById('dropdown-arrow');
-            
-            if (dropdown.style.display === 'none' || !dropdown.style.display) {
-                dropdown.style.display = 'block';
-                arrow.textContent = '▲';
-            } else {
-                dropdown.style.display = 'none';
-                arrow.textContent = '▼';
-            }
-        }
-        
-        function logoutUser() {
-            if (confirm('Are you sure you want to log out?')) {
-                // Clear user session (keep their data, just clear the session)
-                localStorage.removeItem('currentUser');
-                
-                // Refresh the page to update UI
-                window.location.reload();
-            }
-        }
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            const profileMenu = document.getElementById('user-profile-menu');
-            const dropdown = document.getElementById('profile-dropdown');
-            const profileBtn = document.getElementById('profile-btn');
-            
-            if (profileMenu && dropdown && profileBtn) {
-                if (!profileMenu.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                    document.getElementById('dropdown-arrow').textContent = '▼';
-                }
-            }
-        });
-        
-        // Check user login status on page load
-        checkUserLogin();
     </script>
 </body>
 </html>
