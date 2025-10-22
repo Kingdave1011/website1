@@ -984,8 +984,8 @@
     
     <!-- Auto-Update Notification -->
     <div id="update-notification" style="display: none; position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #00C6FF 0%, #8A2BE2 100%); color: #fff; padding: 15px 30px; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 198, 255, 0.8); z-index: 10001; font-family: 'Orbitron', sans-serif; text-align: center; animation: slideDown 0.5s ease-out;">
-        <strong>🎮 New Update Available!</strong>
-        <p style="margin: 10px 0 0 0; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem;">Version 2.5 Beta is now live with new features!</p>
+        <strong>🎮 V5 is Out Now!</strong>
+        <p style="margin: 10px 0 0 0; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem;">With many exciting features!</p>
         <button onclick="document.getElementById('update-notification').style.display='none'" style="margin-top: 10px; padding: 8px 20px; background: rgba(255,255,255,0.2); border: 1px solid #fff; border-radius: 5px; color: #fff; cursor: pointer; font-family: 'Rajdhani', sans-serif;">Got it!</button>
     </div>
     
@@ -998,7 +998,7 @@
     
     <script>
         // Show update notification on first visit or version change
-        const currentVersion = '2.5-beta';
+        const currentVersion = 'v5';
         const lastSeenVersion = localStorage.getItem('lastSeenVersion');
         
         if (lastSeenVersion !== currentVersion) {
