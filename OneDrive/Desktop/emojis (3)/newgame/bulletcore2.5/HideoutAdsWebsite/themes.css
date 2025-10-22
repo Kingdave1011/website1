@@ -1,0 +1,404 @@
+/* =================================================================
+   THEME SYSTEM - 10 Themes with Animated Backgrounds
+   ================================================================= */
+
+:root {
+    --theme-primary: #00d4ff;
+    --theme-secondary: #ff00ff;
+    --theme-background: #0a0a1a;
+    --theme-text: #ffffff;
+    --theme-card-bg: rgba(20, 20, 40, 0.9);
+    --theme-border: rgba(255, 255, 255, 0.1);
+}
+
+/* Theme 1: Default Starfield (current) */
+body[data-theme="default"] {
+    --theme-primary: #00d4ff;
+    --theme-secondary: #ff00ff;
+    --theme-background: #0a0a1a;
+    --theme-text: #ffffff;
+}
+
+/* Theme 2: Nebula Dreams */
+body[data-theme="nebula"] {
+    --theme-primary: #9d4edd;
+    --theme-secondary: #ff6d00;
+    --theme-background: #1a0a2e;
+    --theme-text: #e0aaff;
+}
+
+body[data-theme="nebula"]::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 20% 50%, rgba(157, 78, 221, 0.3), transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(255, 109, 0, 0.2), transparent 50%);
+    animation: nebulaFloat 20s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes nebulaFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(50px, 30px) scale(1.1); }
+}
+
+/* Theme 3: Arctic Freeze */
+body[data-theme="arctic"] {
+    --theme-primary: #4cc9f0;
+    --theme-secondary: #ffffff;
+    --theme-background: #001219;
+    --theme-text: #caf0f8;
+}
+
+body[data-theme="arctic"]::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, white, transparent),
+        radial-gradient(2px 2px at 60% 70%, white, transparent),
+        radial-gradient(1px 1px at 50% 50%, white, transparent),
+        radial-gradient(1px 1px at 80% 10%, white, transparent),
+        radial-gradient(2px 2px at 90% 60%, white, transparent);
+    background-size: 200% 200%;
+    animation: snowfall 20s linear infinite;
+    opacity: 0.6;
+    z-index: -1;
+}
+
+@keyframes snowfall {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(50%); }
+}
+
+/* Theme 4: Cyber Neon */
+body[data-theme="cyber"] {
+    --theme-primary: #00ffff;
+    --theme-secondary: #ff00ff;
+    --theme-background: #0d1b2a;
+    --theme-text: #00ff00;
+}
+
+body[data-theme="cyber"]::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.05) 25%, rgba(0, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.05) 75%, rgba(0, 255, 255, 0.05) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(255, 0, 255, 0.05) 25%, rgba(255, 0, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 255, 0.05) 75%, rgba(255, 0, 255, 0.05) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+    animation: gridScroll 2s linear infinite;
+    z-index: -1;
+}
+
+@keyframes gridScroll {
+    0% { background-position: 0 0, 0 0; }
+    100% { background-position: 50px 50px, 50px 50px; }
+}
+
+/* Theme 5: Deep Ocean */
+body[data-theme="ocean"] {
+    --theme-primary: #06ffa5;
+    --theme-secondary: #4d908e;
+    --theme-background: #001f3f;
+    --theme-text: #a8dadc;
+}
+
+body[data-theme="ocean"]::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(180deg, rgba(6, 255, 165, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(77, 144, 142, 0.2), transparent 70%);
+    animation: waveFlow 15s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes waveFlow {
+    0%, 100% { transform: translateY(0); opacity: 0.3; }
+    50% { transform: translateY(-20px); opacity: 0.5; }
+}
+
+/* Theme 6: Desert Storm */
+body[data-theme="desert"] {
+    --theme-primary: #ff9500;
+    --theme-secondary: #ffdd00;
+    --theme-background: #2d1b00;
+    --theme-text: #ffe5b4;
+}
+
+body[data-theme="desert"]::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 149, 0, 0.1) 0%, rgba(255, 221, 0, 0.1) 100%);
+    z-index: -1;
+}
+
+/* Theme 7: Forest Night */
+body[data-theme="forest"] {
+    --theme-primary: #38b000;
+    --theme-secondary: #70e000;
+    --theme-background: #0f2027;
+    --theme-text: #a3f7bf;
+}
+
+body[data-theme="forest"]::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(1px 1px at 10% 20%, #70e000, transparent),
+        radial-gradient(1px 1px at 30% 60%, #38b000, transparent),
+        radial-gradient(1px 1px at 70% 30%, #70e000, transparent),
+        radial-gradient(1px 1px at 90% 80%, #38b000, transparent);
+    background-size: 100% 100%;
+    animation: fireflies 4s ease-in-out infinite;
+    opacity: 0.5;
+    z-index: -1;
+}
+
+@keyframes fireflies {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+}
+
+/* Theme 8: Halloween Spooky */
+body[data-theme="halloween"] {
+    --theme-primary: #ff6d00;
+    --theme-secondary: #9d4edd;
+    --theme-background: #1a0a0a;
+    --theme-text: #ffb703;
+}
+
+body[data-theme="halloween"]::before {
+    content: '👻';
+    position: fixed;
+    font-size: 40px;
+    top: -10%;
+    left: 10%;
+    animation: floatGhost 15s linear infinite;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+body[data-theme="halloween"]::after {
+    content: '🎃';
+    position: fixed;
+    font-size: 35px;
+    top: -10%;
+    left: 70%;
+    animation: floatGhost 18s linear infinite 2s;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+@keyframes floatGhost {
+    0% { transform: translateY(-10%) translateX(0) rotate(0deg); }
+    50% { transform: translateY(50vh) translateX(50px) rotate(10deg); }
+    100% { transform: translateY(110vh) translateX(0) rotate(0deg); }
+}
+
+/* Theme 9: Winter Wonderland */
+body[data-theme="winter"] {
+    --theme-primary: #e0f7fa;
+    --theme-secondary: #80deea;
+    --theme-background: #0d1b2a;
+    --theme-text: #ffffff;
+}
+
+body[data-theme="winter"]::before {
+    content: '';
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background-image: 
+        radial-gradient(3px 3px at 20% 30%, white, transparent),
+        radial-gradient(2px 2px at 40% 70%, white, transparent),
+        radial-gradient(2px 2px at 50% 50%, white, transparent),
+        radial-gradient(3px 3px at 80% 10%, white, transparent),
+        radial-gradient(2px 2px at 90% 60%, white, transparent),
+        radial-gradient(2px 2px at 15% 80%, white, transparent),
+        radial-gradient(3px 3px at 70% 40%, white, transparent);
+    background-size: 100% 100%;
+    animation: snowfall 15s linear infinite;
+    opacity: 0.8;
+    z-index: -1;
+}
+
+/* Theme 10: Sunset Horizon */
+body[data-theme="sunset"] {
+    --theme-primary: #ff6b6b;
+    --theme-secondary: #ffd93d;
+    --theme-background: #1a1423;
+    --theme-text: #ffe5e5;
+}
+
+body[data-theme="sunset"]::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, 
+        rgba(255, 107, 107, 0.2) 0%,
+        rgba(255, 217, 61, 0.2) 50%,
+        rgba(255, 107, 107, 0.1) 100%);
+    animation: sunsetPulse 10s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes sunsetPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.9; }
+}
+
+/* Theme Selector Styles */
+.theme-selector {
+    position: relative;
+    display: inline-block;
+    margin: 0 15px;
+}
+
+.theme-selector select {
+    background: var(--theme-card-bg);
+    color: var(--theme-text);
+    border: 1px solid var(--theme-border);
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.theme-selector select:hover {
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 10px var(--theme-primary);
+}
+
+.theme-selector select:focus {
+    border-color: var(--theme-secondary);
+}
+
+/* Apply theme colors to existing elements */
+body {
+    background-color: var(--theme-background);
+    color: var(--theme-text);
+}
+
+.modal, .screen {
+    background: var(--theme-card-bg);
+    border: 1px solid var(--theme-border);
+}
+
+button, .btn {
+    background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+    color: var(--theme-text);
+    border: 1px solid var(--theme-primary);
+}
+
+button:hover, .btn:hover {
+    box-shadow: 0 0 20px var(--theme-primary);
+    transform: translateY(-2px);
+}
+
+input, select, textarea {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--theme-border);
+    color: var(--theme-text);
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 10px var(--theme-primary);
+}
+
+.achievement-item.unlocked,
+.ship-item.selected,
+.map-item.selected {
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 15px var(--theme-primary);
+}
+
+#xp-bar, .progress-bar {
+    background: linear-gradient(90deg, var(--theme-primary), var(--theme-secondary));
+}
+
+.level-up-notification, .achievement-toast {
+    background: var(--theme-card-bg);
+    border: 2px solid var(--theme-primary);
+    box-shadow: 0 0 20px var(--theme-primary);
+}
+
+/* Theme Preview Swatches */
+.theme-preview {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.theme-preview[data-theme="default"] {
+    background: linear-gradient(135deg, #00d4ff, #ff00ff);
+}
+
+.theme-preview[data-theme="nebula"] {
+    background: linear-gradient(135deg, #9d4edd, #ff6d00);
+}
+
+.theme-preview[data-theme="arctic"] {
+    background: linear-gradient(135deg, #4cc9f0, #ffffff);
+}
+
+.theme-preview[data-theme="cyber"] {
+    background: linear-gradient(135deg, #00ffff, #ff00ff);
+}
+
+.theme-preview[data-theme="ocean"] {
+    background: linear-gradient(135deg, #06ffa5, #4d908e);
+}
+
+.theme-preview[data-theme="desert"] {
+    background: linear-gradient(135deg, #ff9500, #ffdd00);
+}
+
+.theme-preview[data-theme="forest"] {
+    background: linear-gradient(135deg, #38b000, #70e000);
+}
+
+.theme-preview[data-theme="halloween"] {
+    background: linear-gradient(135deg, #ff6d00, #9d4edd);
+}
+
+.theme-preview[data-theme="winter"] {
+    background: linear-gradient(135deg, #e0f7fa, #80deea);
+}
+
+.theme-preview[data-theme="sunset"] {
+    background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+}

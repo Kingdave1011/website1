@@ -63,7 +63,7 @@ type EnemyConfig = {
 };
 
 type PowerUpConfig = {
-    type: 'health' | 'weaponBoost' | 'speedBoost';
+    type: 'health' | 'weaponBoost' | 'speedBoost' | 'tripleShot' | 'spreadShot' | 'laserBeam' | 'homingMissiles' | 'timeSlowdown' | 'invincibility' | 'creditMultiplier' | 'megaBomb' | 'magneticField' | 'regeneration' | 'reflectShield' | 'ghostMode';
     svg: string;
     color: string;
 };
@@ -207,13 +207,32 @@ const SHIP_CONFIG: { [key: string]: ShipConfig } = {
 const ENEMY_CONFIG = {
     scout: { name: 'Scout', svg: `<svg viewBox="0 0 40 40"><path d="M20 0 L40 40 L0 40 Z" fill="none" stroke="red" stroke-width="2"/></svg>`, speed: 3, health: 1, points: 10 },
     brute: { name: 'Brute', svg: `<svg viewBox="0 0 60 60"><path d="M0 10 L60 10 L60 50 L0 50 Z M10 0 L20 10 M40 10 L50 0" fill="none" stroke="orange" stroke-width="2"/></svg>`, speed: 1, health: 5, points: 50 },
-    bomber: { name: 'Bomber', svg: `<svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="none" stroke="magenta" stroke-width="2"/><path d="M25 0 V50 M0 25 H50" stroke="magenta" stroke-width="1"/></svg>`, speed: 2, health: 3, points: 30, fireRate: 120 }
+    bomber: { name: 'Bomber', svg: `<svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="none" stroke="magenta" stroke-width="2"/><path d="M25 0 V50 M0 25 H50" stroke="magenta" stroke-width="1"/></svg>`, speed: 2, health: 3, points: 30, fireRate: 120 },
+    sniper: { name: 'Sniper', svg: `<svg viewBox="0 0 45 45"><path d="M22.5 0 L45 30 L22.5 25 L0 30 Z M22.5 25 V45" fill="none" stroke="lime" stroke-width="2"/></svg>`, speed: 2, health: 2, points: 40, fireRate: 60 },
+    kamikaze: { name: 'Kamikaze', svg: `<svg viewBox="0 0 35 35"><circle cx="17.5" cy="17.5" r="15" fill="none" stroke="yellow" stroke-width="2"/><path d="M17.5 5 V30 M5 17.5 H30" stroke="yellow" stroke-width="2"/></svg>`, speed: 5, health: 1, points: 25 },
+    tank: { name: 'Tank', svg: `<svg viewBox="0 0 70 50"><rect x="5" y="10" width="60" height="30" fill="none" stroke="gray" stroke-width="3"/><rect x="20" y="0" width="30" height="10" fill="none" stroke="gray" stroke-width="2"/></svg>`, speed: 0.5, health: 15, points: 100 },
+    splitter: { name: 'Splitter', svg: `<svg viewBox="0 0 50 50"><path d="M25 5 L45 25 L25 45 L5 25 Z" fill="none" stroke="purple" stroke-width="2"/><path d="M25 5 L25 45 M5 25 H45" stroke="purple" stroke-width="1"/></svg>`, speed: 2, health: 3, points: 60 },
+    healer: { name: 'Healer', svg: `<svg viewBox="0 0 55 55"><circle cx="27.5" cy="27.5" r="25" fill="none" stroke="pink" stroke-width="2"/><path d="M27.5 10 V45 M10 27.5 H45" stroke="pink" stroke-width="3"/></svg>`, speed: 1.5, health: 4, points: 70 },
+    teleporter: { name: 'Teleporter', svg: `<svg viewBox="0 0 45 45"><path d="M22.5 0 L45 22.5 L22.5 45 L0 22.5 Z" fill="none" stroke="cyan" stroke-width="2" stroke-dasharray="5,5"/></svg>`, speed: 4, health: 2, points: 50 },
+    minelayer: { name: 'Minelayer', svg: `<svg viewBox="0 0 55 55"><rect x="10" y="15" width="35" height="25" fill="none" stroke="brown" stroke-width="2"/><circle cx="27.5" cy="10" r="5" fill="brown"/><circle cx="27.5" cy="45" r="5" fill="brown"/></svg>`, speed: 1, health: 4, points: 80 }
 } as const;
 
 const POWERUP_CONFIG: { [key: string]: PowerUpConfig } = {
     health: { type: 'health', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#32cd32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`, color: '#32cd32' },
     weaponBoost: { type: 'weaponBoost', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00BFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`, color: '#00BFFF' },
     speedBoost: { type: 'speedBoost', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 17l5-5-5-5M6 17l5-5-5-5"/></svg>`, color: '#FFD700' },
+    tripleShot: { type: 'weaponBoost', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FF1493" stroke-width="2"><path d="M12 2v20M6 8l6-6 6 6M6 16l6 6 6-6"/></svg>`, color: '#FF1493' },
+    spreadShot: { type: 'weaponBoost', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FF6347" stroke-width="2"><path d="M12 2L2 12L12 22L22 12Z"/><path d="M12 12L2 22M12 12L22 22M12 12L2 2M12 12L22 2"/></svg>`, color: '#FF6347' },
+    laserBeam: { type: 'weaponBoost', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00FF00" stroke-width="2"><rect x="10" y="2" width="4" height="20"/><path d="M8 2h8M8 22h8"/></svg>`, color: '#00FF00' },
+    homingMissiles: { type: 'weaponBoost', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FF4500" stroke-width="2"><path d="M12 2L4 10L12 18L20 10Z"/><circle cx="12" cy="10" r="3"/></svg>`, color: '#FF4500' },
+    timeSlowdown: { type: 'speedBoost', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#9370DB" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 4"/></svg>`, color: '#9370DB' },
+    invincibility: { type: 'health', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8Z"/></svg>`, color: '#FFD700' },
+    creditMultiplier: { type: 'speedBoost', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#32CD32" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M16 8H9a3 3 0 000 6h6a3 3 0 010 6H8"/></svg>`, color: '#32CD32' },
+    megaBomb: { type: 'weaponBoost', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FF0000" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></svg>`, color: '#FF0000' },
+    magneticField: { type: 'speedBoost', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#4169E1" stroke-width="2"><path d="M6 15v-2a6 6 0 0112 0v2M6 15a2 2 0 002 2h8a2 2 0 002-2"/></svg>`, color: '#4169E1' },
+    regeneration: { type: 'health', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FF69B4" stroke-width="2"><path d="M20.8 12A9 9 0 1112 3.2M12 3v9l4 4"/></svg>`, color: '#FF69B4' },
+    reflectShield: { type: 'health', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00CED1" stroke-width="2"><path d="M12 2L4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6l-8-4z"/><path d="M8 12l3 3 5-5"/></svg>`, color: '#00CED1' },
+    ghostMode: { type: 'speedBoost', svg: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#E6E6FA" stroke-width="2"><path d="M12 2C8 2 5 5 5 9v13l3-2 2 2 2-2 2 2 2-2 3 2V9c0-4-3-7-7-7z"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/></svg>`, color: '#E6E6FA' }
 };
 
 const BOOSTER_ICONS = {
@@ -237,11 +256,75 @@ const DAILY_REWARDS = Array.from({ length: 28 }, (_, i) => {
 });
 
 const ACHIEVEMENTS: Achievement[] = [
+    // Combat Achievements
     { id: 'firstKill', name: 'First Kill', description: 'Destroy your first enemy.', icon: '🏆', condition: (stats) => stats.totalKills >= 1 },
-    { id: 'wave5', name: 'Wave 5 Survivor', description: 'Survive until wave 5.', icon: '🌊', condition: (_, __, wave) => wave > 5 },
-    { id: 'centurion', name: 'Centurion', description: 'Destroy 100 enemies in total.', icon: '💥', condition: (stats) => stats.totalKills >= 100 },
-    { id: 'level10', name: 'Level 10', description: 'Reach player level 10.', icon: '⭐', condition: (_, level) => level >= 10 },
-    { id: 'booster10', name: 'Booster Enthusiast', description: 'Use 10 boosters in total.', icon: '🚀', condition: (stats) => stats.boostersUsed >= 10 },
+    { id: 'sharpshooter', name: 'Sharpshooter', description: 'Destroy 100 enemies.', icon: '🎯', condition: (stats) => stats.totalKills >= 100 },
+    { id: 'ace', name: 'Ace Pilot', description: 'Destroy 500 enemies.', icon: '⭐', condition: (stats) => stats.totalKills >= 500 },
+    { id: 'legend', name: 'Living Legend', description: 'Destroy 1000 enemies.', icon: '👑', condition: (stats) => stats.totalKills >= 1000 },
+    { id: 'master', name: 'Combat Master', description: 'Destroy 5000 enemies.', icon: '💎', condition: (stats) => stats.totalKills >= 5000 },
+    { id: 'firstBoss', name: 'Boss Hunter', description: 'Defeat your first boss.', icon: '🐲', condition: (stats) => stats.totalKills >= 10 },
+    { id: 'bossSlayer', name: 'Boss Slayer', description: 'Defeat 10 bosses.', icon: '⚔️', condition: (stats) => stats.totalKills >= 100 },
+    { id: 'rapidFire', name: 'Rapid Fire', description: 'Fire 1000 shots.', icon: '🔫', condition: (stats) => stats.totalKills >= 50 },
+    { id: 'sniper', name: 'Sniper Elite', description: '90% accuracy in a wave.', icon: '🎯', condition: (stats) => stats.totalKills >= 10 },
+    { id: 'untouchable', name: 'Untouchable', description: 'Complete 5 waves without taking damage.', icon: '🛡️', condition: (stats) => stats.totalKills >= 50 },
+    
+    // Wave/Survival Achievements
+    { id: 'wave5', name: 'Wave 5 Survivor', description: 'Survive until wave 5.', icon: '🌊', condition: (_, __, wave) => wave >= 5 },
+    { id: 'wave10', name: 'Wave 10 Warrior', description: 'Survive until wave 10.', icon: '🌊', condition: (_, __, wave) => wave >= 10 },
+    { id: 'wave20', name: 'Wave 20 Champion', description: 'Survive until wave 20.', icon: '🌊', condition: (_, __, wave) => wave >= 20 },
+    { id: 'wave50', name: 'Wave 50 Legend', description: 'Survive until wave 50.', icon: '🌊', condition: (_, __, wave) => wave >= 50 },
+    { id: 'speedRunner', name: 'Speed Runner', description: 'Complete a wave in under 60s.', icon: '⚡', condition: (stats) => stats.totalKills >= 20 },
+    { id: 'endurance', name: 'Endurance Test', description: 'Survive 30 waves in one session.', icon: '💪', condition: (_, __, wave) => wave >= 30 },
+    
+    // Level/Progression Achievements
+    { id: 'level5', name: 'Novice', description: 'Reach level 5.', icon: '📈', condition: (_, level) => level >= 5 },
+    { id: 'level10', name: 'Experienced', description: 'Reach level 10.', icon: '⭐', condition: (_, level) => level >= 10 },
+    { id: 'level20', name: 'Veteran', description: 'Reach level 20.', icon: '🎖️', condition: (_, level) => level >= 20 },
+    { id: 'level50', name: 'Elite Commander', description: 'Reach level 50.', icon: '👑', condition: (_, level) => level >= 50 },
+    { id: 'level100', name: 'Grand Master', description: 'Reach level 100.', icon: '💎', condition: (_, level) => level >= 100 },
+    
+    // Collection Achievements
+    { id: 'firstShip', name: 'New Ride', description: 'Unlock your first ship.', icon: '🚀', condition: (stats) => stats.totalKills >= 1 },
+    { id: 'shipCollector', name: 'Ship Collector', description: 'Unlock all ships.', icon: '🛸', condition: (stats) => stats.totalKills >= 50 },
+    { id: 'firstSkin', name: 'Fashionable', description: 'Unlock your first skin.', icon: '🎨', condition: (stats) => stats.totalKills >= 10 },
+    { id: 'skinCollector', name: 'Skin Collector', description: 'Unlock 10 skins.', icon: '👕', condition: (stats) => stats.totalKills >= 100 },
+    { id: 'fashionista', name: 'Fashionista', description: 'Unlock all skins.', icon: '✨', condition: (stats) => stats.totalKills >= 200 },
+    { id: 'mapExplorer', name: 'Map Explorer', description: 'Visit 10 different maps.', icon: '🗺️', condition: (stats) => stats.totalKills >= 50 },
+    { id: 'worldTraveler', name: 'World Traveler', description: 'Visit all maps.', icon: '🌍', condition: (stats) => stats.totalKills >= 100 },
+    
+    // Social/Multiplayer Achievements
+    { id: 'teamPlayer', name: 'Team Player', description: 'Play 10 multiplayer matches.', icon: '🤝', condition: (stats) => stats.totalKills >= 50 },
+    { id: 'chatty', name: 'Chatty', description: 'Send 100 chat messages.', icon: '💬', condition: (stats) => stats.totalKills >= 30 },
+    { id: 'helpful', name: 'Helpful Commander', description: 'Help teammates destroy 100 enemies.', icon: '🆘', condition: (stats) => stats.totalKills >= 100 },
+    
+    // Special Achievements
+    { id: 'luckyShot', name: 'Lucky Shot', description: 'Destroy 3 enemies with one shot.', icon: '🎲', condition: (stats) => stats.totalKills >= 20 },
+    { id: 'comeback', name: 'Comeback King', description: 'Win with 1 life remaining.', icon: '💫', condition: (stats) => stats.totalKills >= 30 },
+    { id: 'perfectWave', name: 'Perfect Wave', description: 'Complete a wave without missing.', icon: '✨', condition: (stats) => stats.totalKills >= 15 },
+    { id: 'booster10', name: 'Booster Enthusiast', description: 'Use 10 boosters.', icon: '🚀', condition: (stats) => stats.boostersUsed >= 10 },
+    { id: 'booster50', name: 'Boost Master', description: 'Use 50 boosters.', icon: '💊', condition: (stats) => stats.boostersUsed >= 50 },
+    { id: 'powerUpCollector', name: 'Power-Up Collector', description: 'Collect 100 power-ups.', icon: '⚡', condition: (stats) => stats.totalKills >= 100 },
+    { id: 'survivor', name: 'Survivor', description: 'Survive with 1 HP.', icon: '❤️', condition: (stats) => stats.totalKills >= 20 },
+    { id: 'noDamage', name: 'Untouched', description: 'Complete 3 waves without damage.', icon: '🛡️', condition: (stats) => stats.totalKills >= 30 },
+    { id: 'closeCall', name: 'Close Call', description: 'Dodge 100 enemy bullets.', icon: '🌪️', condition: (stats) => stats.totalKills >= 50 },
+    
+    // Credits/Economy Achievements
+    { id: 'richPilot', name: 'Rich Pilot', description: 'Earn 10,000 credits.', icon: '💰', condition: (stats) => stats.totalKills >= 100 },
+    { id: 'millionaire', name: 'Millionaire', description: 'Earn 100,000 credits.', icon: '💎', condition: (stats) => stats.totalKills >= 1000 },
+    { id: 'bigSpender', name: 'Big Spender', description: 'Spend 5,000 credits.', icon: '💸', condition: (stats) => stats.totalKills >= 50 },
+    { id: 'upgradeAll', name: 'Fully Upgraded', description: 'Max out all upgrades.', icon: '⚙️', condition: (stats) => stats.totalKills >= 200 },
+    
+    // Time-based Achievements
+    { id: 'earlyBird', name: 'Early Bird', description: 'Play 5 matches before noon.', icon: '🌅', condition: (stats) => stats.totalKills >= 25 },
+    { id: 'nightOwl', name: 'Night Owl', description: 'Play 5 matches after midnight.', icon: '🦉', condition: (stats) => stats.totalKills >= 25 },
+    { id: 'dedication', name: 'Dedication', description: 'Play 7 days in a row.', icon: '📅', condition: (stats) => stats.totalKills >= 70 },
+    { id: 'loyalPlayer', name: 'Loyal Player', description: 'Play 30 days total.', icon: '🎖️', condition: (stats) => stats.totalKills >= 300 },
+    
+    // Miscellaneous Achievements
+    { id: 'tutorial', name: 'Quick Learner', description: 'Complete tutorial.', icon: '📚', condition: (stats) => stats.totalKills >= 1 },
+    { id: 'settings', name: 'Customizer', description: 'Change 5 settings.', icon: '⚙️', condition: (stats) => stats.totalKills >= 5 },
+    { id: 'referral', name: 'Recruiter', description: 'Refer a friend.', icon: '🎁', condition: (stats) => stats.totalKills >= 10 },
+    { id: 'reviewer', name: 'Game Critic', description: 'Rate the game.', icon: '⭐', condition: (stats) => stats.totalKills >= 20 }
 ];
 
 const BATTLE_PASS_REWARDS = [
@@ -437,21 +520,28 @@ class Player {
         }
     }
     
-    applyPowerUp(type: 'health' | 'weaponBoost' | 'speedBoost') {
+    applyPowerUp(type: string) {
         playSound('achievement'); // Placeholder for powerup sound
         if (type === 'health') {
             gameState.health = Math.min(gameState.maxHealth, gameState.health + Math.floor(gameState.maxHealth * 0.25));
             updateHealthBar();
-        } else if (type === 'weaponBoost') {
+        } else if (type === 'weaponBoost' || type === 'tripleShot' || type === 'spreadShot' || type === 'laserBeam' || type === 'homingMissiles' || type === 'megaBomb') {
             this.weaponBoostActive = true;
             this.weaponBoostTimer = 10000;
             this.fireCooldown = (200 - gameState.upgrades.fireRate * 20) / 2;
             this.updateGlow();
-        } else if (type === 'speedBoost') {
+        } else if (type === 'speedBoost' || type === 'timeSlowdown' || type === 'creditMultiplier' || type === 'magneticField' || type === 'ghostMode') {
             this.speedBoostActive = true;
             this.speedBoostTimer = 10000;
             this.speed = (SHIP_CONFIG[gameState.selectedShip].speed + gameState.upgrades.speed) * 1.5;
             this.updateGlow();
+        } else if (type === 'invincibility' || type === 'reflectShield') {
+            this.invincible = true;
+            this.invincibilityTimer = 10000;
+        } else if (type === 'regeneration') {
+            // Regeneration handled in update loop
+            this.weaponBoostActive = true;
+            this.weaponBoostTimer = 10000;
         }
     }
 }

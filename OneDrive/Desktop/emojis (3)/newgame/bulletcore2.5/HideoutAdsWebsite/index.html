@@ -736,7 +736,7 @@
         canvas.height = window.innerHeight;
         
         const stars = [];
-        const numStars = 100; // Reduced from 200 for better performance
+        const numStars = 100;
         
         class Star {
             constructor() {
@@ -770,6 +770,53 @@
             stars.push(new Star());
         }
         
+        // Halloween floating objects
+        let halloweenObjects = [];
+        class HalloweenObject {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = 30 + Math.random() * 40;
+                this.speedX = (Math.random() - 0.5) * 0.8;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.5;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+                const types = ['👻', '🎃', '💀', '🦇', '🕷️', '🕸️', '🧛', '🧟'];
+                this.type = types[Math.floor(Math.random() * types.length)];
+                this.opacity = 0.4 + Math.random() * 0.4;
+                this.pulseSpeed = 0.02 + Math.random() * 0.03;
+                this.pulsePhase = Math.random() * Math.PI * 2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.5;
+                this.rotation += this.rotationSpeed;
+                this.pulsePhase += this.pulseSpeed;
+                this.opacity = 0.4 + Math.sin(this.pulsePhase) * 0.3;
+                
+                if (this.x < -100) this.x = canvas.width + 100;
+                if (this.x > canvas.width + 100) this.x = -100;
+                if (this.y < -100) this.y = canvas.height + 100;
+                if (this.y > canvas.height + 100) this.y = -100;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.font = `${this.size}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.type, 0, 0);
+                ctx.restore();
+            }
+        }
+        
+        for (let i = 0; i < 12; i++) {
+            halloweenObjects.push(new HalloweenObject());
+        }
+        
         function animate() {
             ctx.fillStyle = 'rgba(5, 5, 10, 0.1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -778,6 +825,14 @@
                 star.update();
                 star.draw();
             });
+            
+            // Show Halloween animations only when Halloween theme is active
+            if (currentTheme === 'halloween') {
+                halloweenObjects.forEach(obj => {
+                    obj.update();
+                    obj.draw();
+                });
+            }
             
             requestAnimationFrame(animate);
         }
