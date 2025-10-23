@@ -1833,8 +1833,8 @@ function handleSignIn() {
         loginErrorEl.innerText = "Please enter username and password.";
         return;
     }
-    if (user === 'admin' && pass === 'password') {
-        loginSuccess('admin');
+    if (user === 'King_davez' && pass === 'Peaguyxx300!') {
+        loginSuccess('King_davez', false, true);
         return;
     }
     const savedData = localStorage.getItem(`acct_${user}`);
@@ -1874,7 +1874,7 @@ function handleGuestLogin() {
     loginSuccess(guestName, true);
 }
 
-function loginSuccess(username: string, isGuest = false) {
+function loginSuccess(username: string, isGuest = false, isAdmin = false) {
     playSound('uiClick');
     initAudio();
     loadGameState(isGuest ? `guest_${username}` : username);
@@ -1882,7 +1882,7 @@ function loginSuccess(username: string, isGuest = false) {
     
     showScreen('start-screen');
     startMenuAnimation();
-    document.getElementById('admin-panel-button')!.style.display = (username === 'admin') ? 'inline-block' : 'none';
+    document.getElementById('admin-panel-button')!.style.display = (username === 'King_davez' || isAdmin) ? 'inline-block' : 'none';
     chatContainer.style.display = 'flex';
 }
 
@@ -2269,10 +2269,89 @@ function populateDailyRewards() {
 }
 
 function populateAdminPanel() {
+    const container = document.getElementById('admin-info')!;
+    
+    if (gameState.username !== 'King_davez') {
+        container.innerHTML = '<p style="color: red;">Access Denied</p>';
+        return;
+    }
+    
+    container.innerHTML = `
+        <div style="padding: 20px;">
+            <h3 style="color: #00FF00;">👑 Admin Controls - King_davez</h3>
+            
+            <div style="margin: 20px 0; padding: 15px; background: rgba(0,255,0,0.1); border: 2px solid #00FF00; border-radius: 8px;">
+                <h4>Grant Credits</h4>
+                <input type="number" id="grant-credits-amount" placeholder="Amount" style="padding: 8px; width: 150px; margin-right: 10px;">
+                <button id="grant-credits-button" style="padding: 8px 15px; background: #00FF00; color: black; border: none; border-radius: 5px; cursor: pointer;">Grant Credits</button>
+            </div>
+            
+            <div style="margin: 20px 0; padding: 15px; background: rgba(0,255,255,0.1); border: 2px solid #00FFFF; border-radius: 8px;">
+                <h4>Unlock All Maps</h4>
+                <button id="unlock-all-maps-button" style="padding: 10px 20px; background: #00FFFF; color: black; border: none; border-radius: 5px; cursor: pointer;">Unlock All Maps</button>
+            </div>
+            
+            <div style="margin: 20px 0; padding: 15px; background: rgba(255,0,255,0.1); border: 2px solid #FF00FF; border-radius: 8px;">
+                <h4>Reset Player Progress</h4>
+                <p style="color: #FF00FF; margin: 10px 0;">⚠️ This will reset YOUR progress to level 1!</p>
+                <button id="reset-player-button" style="padding: 10px 20px; background: #FF00FF; color: white; border: none; border-radius: 5px; cursor: pointer;">Reset My Progress</button>
+            </div>
+            
+            <div style="margin: 20px 0; padding: 15px; background: rgba(255,0,0,0.1); border: 2px solid #FF0000; border-radius: 8px;">
+                <h4>Ban Player (Simulated)</h4>
+                <input type="text" id="ban-player-name" placeholder="Player name" style="padding: 8px; width: 150px; margin-right: 10px;">
+                <button id="ban-player-button" style="padding: 8px 15px; background: #FF0000; color: white; border: none; border-radius: 5px; cursor: pointer;">Ban Player</button>
+            </div>
+            
+            <div style="margin: 20px 0; padding: 15px; background: rgba(255,215,0,0.1); border: 2px solid #FFD700; border-radius: 8px;">
+                <h4>Current Game State</h4>
+                <pre id="admin-data-pre" style="background: black; color: #00FF00; padding: 15px; border-radius: 5px; overflow: auto; max-height: 300px; font-size: 12px;"></pre>
+            </div>
+        </div>
+    `;
+    
     const pre = document.getElementById('admin-data-pre')!;
     const adminState = {...gameState};
     (adminState as any).simulatedPlayers = simulatedPlayers;
     pre.innerText = JSON.stringify(adminState, null, 2);
+    
+    // Rebind admin buttons
+    document.getElementById('grant-credits-button')!.addEventListener('click', () => {
+        const amount = parseInt((document.getElementById('grant-credits-amount') as HTMLInputElement).value);
+        if (!isNaN(amount)) {
+            gameState.credits += amount;
+            saveGameState();
+            updateUI();
+            populateAdminPanel();
+            showWaveNotification(`✅ Granted ${amount} credits!`);
+        }
+    });
+    
+    document.getElementById('unlock-all-maps-button')!.addEventListener('click', () => {
+        gameState.unlockedMaps = Object.keys(MAP_CONFIG).map(Number);
+        saveGameState();
+        populateAdminPanel();
+        showWaveNotification('✅ All maps unlocked!');
+    });
+    
+    document.getElementById('reset-player-button')!.addEventListener('click', () => {
+        if (confirm('⚠️ Are you sure you want to reset your progress? This cannot be undone!')) {
+            localStorage.removeItem(`space_shooter_King_davez`);
+            loadGameState('King_davez');
+            updateUI();
+            populateAdminPanel();
+            showWaveNotification('✅ Progress reset!');
+        }
+    });
+    
+    document.getElementById('ban-player-button')!.addEventListener('click', () => {
+        const nameToBan = (document.getElementById('ban-player-name') as HTMLInputElement).value;
+        if (nameToBan) {
+            simulatedPlayers = simulatedPlayers.filter(p => p !== nameToBan);
+            populateAdminPanel();
+            showWaveNotification(`✅ Banned ${nameToBan}!`);
+        }
+    });
 }
 
 function populateBoosterIcons() {
