@@ -104,6 +104,17 @@ let sfxVolume = 0.5;
 let musicVolume = 0.2;
 let effectsEnabled = true;
 
+// Special Ability System
+let specialAbilityCooldown = 0;
+let specialAbilityReady = true;
+const SPECIAL_ABILITY_COOLDOWN_MS = 15000; // 15 seconds
+let abilityButton: HTMLButtonElement;
+let abilityButtonMobile: HTMLButtonElement;
+let abilityCooldownOverlay: HTMLElement;
+let abilityCooldownOverlayMobile: HTMLElement;
+let abilityCooldownText: HTMLElement;
+let abilityCooldownTextMobile: HTMLElement;
+
 // DOM Elements (to be assigned in window.onload)
 let gameContainer: HTMLElement,
     loginScreen: HTMLElement,
@@ -146,6 +157,10 @@ let gameContainer: HTMLElement,
     bossHealthContainer: HTMLElement,
     bossHealthBar: HTMLElement,
     fullscreenToggleButton: HTMLButtonElement;
+
+// Assign ability button references after DOM loads
+let abilityButtonDesktop: HTMLButtonElement;
+let abilityButtonMob: HTMLButtonElement;
 
 
 const PLAYER_SIZE = 50;
@@ -938,6 +953,14 @@ window.onload = () => {
     bossHealthContainer = document.getElementById('boss-health-container')!;
     bossHealthBar = document.getElementById('boss-health-bar')!;
     fullscreenToggleButton = document.getElementById('fullscreen-toggle-button') as HTMLButtonElement;
+    
+    // Special Ability Button References
+    abilityButton = document.getElementById('special-ability-button') as HTMLButtonElement;
+    abilityButtonMobile = document.getElementById('special-ability-button-mobile') as HTMLButtonElement;
+    abilityCooldownOverlay = document.getElementById('ability-cooldown-overlay')!;
+    abilityCooldownOverlayMobile = document.getElementById('ability-cooldown-overlay-mobile')!;
+    abilityCooldownText = document.getElementById('ability-cooldown-text')!;
+    abilityCooldownTextMobile = document.getElementById('ability-cooldown-text-mobile')!;
 
     resizeCanvas();
     
@@ -977,6 +1000,9 @@ function gameLoop() {
         handleInput();
         player.update();
         player.draw();
+        
+        // Update special ability cooldown
+        updateAbilityCooldown();
 
         if (boss) {
             boss.update();
@@ -1194,6 +1220,7 @@ function setupEventListeners() {
     });
 
     setupMobileControls();
+    setupSpecialAbility();
     
     chatInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && chatInput.value.trim() !== '') {
@@ -1249,6 +1276,134 @@ function setupEventListeners() {
             playSound('uiClick');
         });
     });
+}
+
+function setupSpecialAbility() {
+    // Desktop keyboard control (Q key)
+    document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 'q' && gameRunning && specialAbilityReady) {
+            activateSpecialAbility();
+        }
+    });
+    
+    // Desktop button click
+    if (abilityButton) {
+        abilityButton.addEventListener('click', () => {
+            if (gameRunning && specialAbilityReady) {
+                activateSpecialAbility();
+            }
+        });
+    }
+    
+    // Mobile button touch
+    if (abilityButtonMobile) {
+        abilityButtonMobile.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (gameRunning && specialAbilityReady) {
+                activateSpecialAbility();
+            }
+        }, { passive: false });
+    }
+}
+
+function activateSpecialAbility() {
+    if (!specialAbilityReady) return;
+    
+    // Trigger special ability - Clear all enemies on screen!
+    const enemiesDestroyed = enemies.length;
+    
+    // Create massive explosion effect
+    enemies.forEach(enemy => {
+        createExplosion(enemy.x, enemy.y, '#FF00FF');
+        updateScore(enemy.config.points);
+        gameState.stats.totalKills++;
+    });
+    
+    // Clear all enemies
+    enemies = [];
+    
+    // Clear enemy projectiles too
+    enemyProjectiles = [];
+    
+    // Visual effects
+    createScreenShake(15, 0.5);
+    showWaveNotification('⚡ SPECIAL ABILITY ACTIVATED! ⚡');
+    playSound('explosion');
+    
+    // Particle burst from player
+    for (let i = 0; i < 50; i++) {
+        const angle = (Math.PI * 2 * i) / 50;
+        particles.push(new Particle(
+            player.x,
+            player.y,
+            '#FF00FF',
+            4,
+            Math.cos(angle) * 10,
+            Math.sin(angle) * 10,
+            true
+        ));
+    }
+    
+    // Set cooldown
+    specialAbilityReady = false;
+    specialAbilityCooldown = SPECIAL_ABILITY_COOLDOWN_MS;
+    
+    // Update button states
+    if (abilityButton) {
+        abilityButton.disabled = true;
+        abilityButton.style.opacity = '0.5';
+        abilityButton.style.cursor = 'not-allowed';
+    }
+    if (abilityButtonMobile) {
+        abilityButtonMobile.disabled = true;
+        abilityButtonMobile.style.opacity = '0.5';
+    }
+    
+    // Start cooldown display
+    updateAbilityCooldown();
+}
+
+function updateAbilityCooldown() {
+    if (!gameRunning) return;
+    
+    if (specialAbilityCooldown > 0) {
+        const secondsRemaining = Math.ceil(specialAbilityCooldown / 1000);
+        
+        // Show cooldown overlays
+        if (abilityCooldownOverlay) {
+            abilityCooldownOverlay.style.display = 'flex';
+            abilityCooldownText.innerText = secondsRemaining.toString();
+        }
+        if (abilityCooldownOverlayMobile) {
+            abilityCooldownOverlayMobile.style.display = 'flex';
+            abilityCooldownTextMobile.innerText = secondsRemaining.toString();
+        }
+        
+        specialAbilityCooldown -= 1000 / 60; // Decrease by frame time
+        
+        if (specialAbilityCooldown <= 0) {
+            specialAbilityReady = true;
+            
+            // Hide cooldown overlays
+            if (abilityCooldownOverlay) abilityCooldownOverlay.style.display = 'none';
+            if (abilityCooldownOverlayMobile) abilityCooldownOverlayMobile.style.display = 'none';
+            
+            // Re-enable buttons
+            if (abilityButton) {
+                abilityButton.disabled = false;
+                abilityButton.style.opacity = '1';
+                abilityButton.style.cursor = 'pointer';
+            }
+            if (abilityButtonMobile) {
+                abilityButtonMobile.disabled = false;
+                abilityButtonMobile.style.opacity = '1';
+            }
+            
+            // Notify player
+            showWaveNotification('⚡ Special Ability Ready! ⚡');
+            playSound('levelUp');
+        }
+    }
 }
 
 function setupMobileControls() {
@@ -1354,6 +1509,21 @@ function startGame() {
     currentWave = 0;
     gameState.health = gameState.maxHealth;
     enemies = []; projectiles = []; enemyProjectiles = []; powerUps = []; particles = []; boss = null; lasers = [];
+    
+    // Reset special ability
+    specialAbilityReady = true;
+    specialAbilityCooldown = 0;
+    if (abilityButton) {
+        abilityButton.disabled = false;
+        abilityButton.style.opacity = '1';
+        abilityButton.style.cursor = 'pointer';
+    }
+    if (abilityButtonMobile) {
+        abilityButtonMobile.disabled = false;
+        abilityButtonMobile.style.opacity = '1';
+    }
+    if (abilityCooldownOverlay) abilityCooldownOverlay.style.display = 'none';
+    if (abilityCooldownOverlayMobile) abilityCooldownOverlayMobile.style.display = 'none';
     
     player = new Player();
     

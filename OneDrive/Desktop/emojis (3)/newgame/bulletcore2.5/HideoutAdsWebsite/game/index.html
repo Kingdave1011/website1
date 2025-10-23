@@ -182,6 +182,19 @@
             </div>
             <div id="anti-cheat-indicator">Anti-Cheat Enabled ✅</div>
             <button id="ingame-menu-button" style="position: fixed; top: 10px; right: 10px; padding: 10px 15px; background: rgba(0, 198, 255, 0.3); border: 2px solid #00C6FF; border-radius: 8px; color: #00C6FF; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0, 198, 255, 0.5); transition: all 0.3s; z-index: 1000;">☰ Menu</button>
+            
+            <!-- Special Ability Button (Desktop) -->
+            <div id="special-ability-container" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000;">
+                <button id="special-ability-button" style="padding: 20px; width: 80px; height: 80px; background: linear-gradient(135deg, #FF00FF, #8B00FF); border: 3px solid #FF00FF; border-radius: 50%; color: white; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 2rem; backdrop-filter: blur(10px); box-shadow: 0 0 25px rgba(255, 0, 255, 0.8), 0 0 50px rgba(255, 0, 255, 0.4); transition: all 0.3s; position: relative;">
+                    ⚡
+                    <div id="ability-cooldown-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); border-radius: 50%; display: none; justify-content: center; align-items: center; font-size: 1.5rem;">
+                        <span id="ability-cooldown-text">5</span>
+                    </div>
+                </button>
+                <div style="text-align: center; margin-top: 8px; color: #FF00FF; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);">
+                    Press Q
+                </div>
+            </div>
         </div>
         
         <p id="level-up-notification" class="hidden">LEVEL UP!</p>
@@ -314,6 +327,34 @@
             </div>
         </div>
 
+
+        <!-- Mobile Controls (will be shown on touch devices) -->
+        <div id="mobile-controls" style="display: none; position: fixed; bottom: 20px; left: 0; right: 0; z-index: 999; pointer-events: none;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 0 20px; pointer-events: none;">
+                <!-- Joystick (left side) -->
+                <div id="joystick-container" style="position: relative; width: 120px; height: 120px; pointer-events: auto;">
+                    <div id="joystick-base" style="width: 100%; height: 100%; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; position: relative;">
+                        <div id="joystick-stick" style="width: 50px; height: 50px; background: rgba(0,200,255,0.8); border: 2px solid #00C6FF; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 15px rgba(0,200,255,0.6);"></div>
+                    </div>
+                </div>
+                
+                <!-- Right side buttons -->
+                <div style="display: flex; gap: 15px; pointer-events: auto;">
+                    <!-- Special Ability Button (Mobile) -->
+                    <button id="special-ability-button-mobile" style="width: 70px; height: 70px; background: linear-gradient(135deg, #FF00FF, #8B00FF); border: 3px solid #FF00FF; border-radius: 50%; color: white; font-size: 1.8rem; box-shadow: 0 0 20px rgba(255, 0, 255, 0.8); position: relative;">
+                        ⚡
+                        <div id="ability-cooldown-overlay-mobile" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); border-radius: 50%; display: none; justify-content: center; align-items: center; font-size: 1.2rem;">
+                            <span id="ability-cooldown-text-mobile">5</span>
+                        </div>
+                    </button>
+                    
+                    <!-- Shoot Button -->
+                    <button id="shoot-button-mobile" style="width: 80px; height: 80px; background: linear-gradient(135deg, #FF0000, #FF6600); border: 3px solid #FF0000; border-radius: 50%; color: white; font-size: 2rem; box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);">
+                        🔫
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <div id="chat-container">
             <div id="chat-messages"></div>
