@@ -222,10 +222,13 @@ CREATE TABLE friends (
 - Friend request buttons with hover effects
 - Chat channel tabs with active indicators
 - Language selector dropdown
+- **Enhanced game mode dropdown with improved visibility** (brighter background, white text, better contrast)
+- **Added 3-Player Co-op mode as first option in multiplayer lobby**
 - Improved mobile control visibility
 - Landscape orientation warning screen
 - Loading animations for matchmaking
 - Real-time player count updates
+- **Updated WebSocket server URL to correct Render deployment** (https://website-game-ix11.onrender.com)
 
 ---
 
