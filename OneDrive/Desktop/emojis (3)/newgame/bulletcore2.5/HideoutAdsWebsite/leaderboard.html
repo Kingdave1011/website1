@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+e!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -598,14 +598,38 @@
             content.innerHTML = '<div class="loading">Loading...</div>';
             
             try {
-                // Fetch real player data from your API endpoint
-                // const response = await fetch('YOUR_API_ENDPOINT/leaderboard');
-                // const data = await response.json();
+                // Initialize Supabase client
+                const SUPABASE_URL = 'https://flnbfizlfofqfbrdjttk.supabase.co';
+                const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsbmJmaXpsZm9mcWZicmRqdHRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk1NTMzNzUsImV4cCI6MjA0NTEyOTM3NX0.kQ9HoYOuVxoQNZAVTy1kpXH3l68kRTBdSbE5_pzI9ik';
                 
-                // For now, show empty until real API is connected
-                const data = [];
+                // Load Supabase library if not already loaded
+                if (!window.supabase) {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+                    document.head.appendChild(script);
+                    await new Promise((resolve) => script.onload = resolve);
+                }
                 
-                displayLeaderboard(data);
+                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                
+                // Fetch top 10 players ordered by score
+                const { data, error } = await supabase
+                    .from('leaderboard')
+                    .select('*')
+                    .order('score', { ascending: false })
+                    .limit(10);
+                
+                if (error) throw error;
+                
+                // Transform data to match display format
+                const leaderboardData = data.map(entry => ({
+                    name: entry.player_name,
+                    score: entry.score,
+                    kills: entry.kills,
+                    games: entry.wave
+                }));
+                
+                displayLeaderboard(leaderboardData);
                 
             } catch (error) {
                 content.innerHTML = `

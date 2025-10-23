@@ -1146,6 +1146,10 @@ function setupEventListeners() {
     document.getElementById('main-menu-button')!.addEventListener('click', () => {
         quitGame();
     });
+    
+    document.getElementById('ingame-menu-button')!.addEventListener('click', () => {
+        quitGame();
+    });
 
     document.querySelectorAll('.close-button').forEach(btn => btn.addEventListener('click', (e) => {
         (e.target as HTMLElement).closest('.modal')!.classList.remove('active');
@@ -1388,6 +1392,13 @@ function gameOver() {
     checkAchievements(true);
     saveGameState();
     updateUI();
+    
+    // Save score to Supabase leaderboard
+    if (typeof (window as any).savePlayerScore === 'function' && !gameState.username.startsWith('guest_')) {
+        (window as any).savePlayerScore(gameState.username, score, gameState.stats.totalKills, currentWave)
+            .then(() => console.log('Score saved to leaderboard'))
+            .catch((err: any) => console.error('Failed to save score:', err));
+    }
 }
 
 function quitGame() {

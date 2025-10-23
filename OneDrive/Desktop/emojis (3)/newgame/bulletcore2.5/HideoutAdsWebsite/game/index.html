@@ -8,6 +8,98 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://flnbfizlfofqfbrdjttk.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsbmJmaXpsZm9mcWZicmRqdHRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwOTg4MzQsImV4cCI6MjA3NjY3NDgzNH0.8lHxwyudvSJA7S-FDtj1XYVm6Zrpc0_myIzrUClzH4g';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        // Enhanced database functions
+        window.saveMatchHistory = async function(matchData) {
+            try {
+                const { data, error } = await supabase
+                    .from('match_history')
+                    .insert([{
+                        player_name: matchData.playerName,
+                        score: matchData.score,
+                        kills: matchData.kills,
+                        wave: matchData.wave,
+                        duration_seconds: matchData.duration || 0,
+                        ship_used: matchData.ship || 'ranger',
+                        map_played: matchData.map || 1,
+                        boosters_used: matchData.boostersUsed || 0,
+                        power_ups_collected: matchData.powerUpsCollected || 0,
+                        deaths: matchData.deaths || 0
+                    }]);
+                
+                if (error) throw error;
+                console.log('✅ Match history saved!', data);
+                return { success: true, data };
+            } catch (err) {
+                console.error('Failed to save match history:', err);
+                return { success: false, error: err };
+            }
+        };
+
+        window.savePlayerScore = async function(playerName, score, kills, wave) {
+            try {
+                const { data, error } = await supabase
+                    .from('leaderboard')
+                    .insert([{
+                        player_name: playerName,
+                        score: score,
+                        kills: kills,
+                        wave: wave
+                    }]);
+                
+                if (error) throw error;
+                console.log('✅ Score saved to Supabase!', data);
+                return { success: true, data };
+            } catch (err) {
+                console.error('Failed to save score:', err);
+                return { success: false, error: err };
+            }
+        };
+
+        window.saveAchievement = async function(playerName, achievementId, achievementName) {
+            try {
+                const { data, error } = await supabase
+                    .from('player_achievements')
+                    .insert([{
+                        player_name: playerName,
+                        achievement_id: achievementId,
+                        achievement_name: achievementName
+                    }]);
+                
+                if (error && error.code !== '23505') throw error; // Ignore duplicate errors
+                return { success: true, data };
+            } catch (err) {
+                console.error('Failed to save achievement:', err);
+                return { success: false, error: err };
+            }
+        };
+
+        window.updatePlayerProfile = async function(playerName, updates) {
+            try {
+                const { data, error } = await supabase
+                    .from('player_profiles')
+                    .upsert([{
+                        player_name: playerName,
+                        ...updates
+                    }], { onConflict: 'player_name' });
+                
+                if (error) throw error;
+                console.log('✅ Profile updated!', data);
+                return { success: true, data };
+            } catch (err) {
+                console.error('Failed to update profile:', err);
+                return { success: false, error: err };
+            }
+        };
+        
+        console.log('✅ Supabase initialized for leaderboard syncing!');
+    </script>
 </head>
 <body>
     <div id="login-screen">
@@ -89,6 +181,7 @@
                 </div>
             </div>
             <div id="anti-cheat-indicator">Anti-Cheat Enabled ✅</div>
+            <button id="ingame-menu-button" style="position: fixed; top: 10px; right: 10px; padding: 10px 15px; background: rgba(0, 198, 255, 0.3); border: 2px solid #00C6FF; border-radius: 8px; color: #00C6FF; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0, 198, 255, 0.5); transition: all 0.3s; z-index: 1000;">☰ Menu</button>
         </div>
         
         <p id="level-up-notification" class="hidden">LEVEL UP!</p>
