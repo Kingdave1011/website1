@@ -1,0 +1,20 @@
+{
+  "name": "space-shooter-multiplayer-server",
+  "version": "1.0.0",
+  "description": "24/7 multiplayer server for Space Shooter game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["websocket", "multiplayer", "game-server"],
+  "author": "King_davez",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.14.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
