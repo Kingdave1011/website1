@@ -223,7 +223,103 @@
             <h1>📋 Patch Notes</h1>
 
             <div class="version">
-                <h2>Version 7.0 <span class="badge new">LATEST</span></h2>
+                <h2>Version 7.1 <span class="badge new">LATEST</span></h2>
+                <p class="date">October 23, 2025</p>
+                
+                <h3>🌐 Multi-Language Support (8 Languages) <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Complete website translation system in 8 languages</li>
+                    <li>Supported: 🇺🇸 English, 🇪🇸 Spanish, 🇫🇷 French, 🇩🇪 German</li>
+                    <li>Also: 🇯🇵 Japanese, 🇨🇳 Chinese, 🇧🇷 Portuguese, 🇷🇺 Russian</li>
+                    <li>Language selector in game settings</li>
+                    <li>Automatic browser language detection</li>
+                    <li>Preference saved to cookies for persistence</li>
+                    <li>LanguageManager class for seamless translation</li>
+                    <li>All UI elements fully translatable</li>
+                </ul>
+
+                <h3>🍪 Cookie Management System <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Non-intrusive cookie banner (only shows once)</li>
+                    <li>Simple Accept/Decline options - not overly strict</li>
+                    <li>Saves user preferences (language, theme, login)</li>
+                    <li>Remember user login for 30 days</li>
+                    <li>365-day cookie expiry for preferences</li>
+                    <li>Animated slide-up banner with modern design</li>
+                    <li>SameSite=Lax security for better compatibility</li>
+                    <li>Cookie consent tracked properly</li>
+                </ul>
+
+                <h3>🏆 Live Leaderboard Widget <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Real-time leaderboard auto-updates every 5 seconds</li>
+                    <li>Displays: Player Name, Score, Kills, Wave, Playtime</li>
+                    <li>Top 3 players get gold/silver/bronze highlighting</li>
+                    <li>Live update indicator (green blinking dot)</li>
+                    <li>Animated entry transitions and hover effects</li>
+                    <li>Synced with Supabase database in real-time</li>
+                    <li>Shows formatted playtime (hours and minutes)</li>
+                    <li>Beautiful gradient design with pulsing glow</li>
+                    <li>Mobile-optimized responsive layout</li>
+                    <li>Custom scrollbar styling</li>
+                </ul>
+
+                <h3>📊 Enhanced Player Data Sync <span class="badge improved">IMPROVED</span></h3>
+                <ul>
+                    <li>Auto-sync every 5 seconds to Supabase database</li>
+                    <li>Real-time score updates visible on website</li>
+                    <li>Track playtime with hours and minutes display</li>
+                    <li>Display total kills and wave progress</li>
+                    <li>Match history with detailed game records</li>
+                    <li>Player profiles with comprehensive statistics</li>
+                    <li>Achievement unlocks with timestamps</li>
+                    <li>All data persists across sessions</li>
+                </ul>
+
+                <h3>🎮 Windows .EXE Multiplayer Support <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Windows standalone can now connect to online multiplayer!</li>
+                    <li>Updated Electron CSP to allow WebSocket connections</li>
+                    <li>Supports wss:// and ws:// protocols</li>
+                    <li>Compatible with Render.com cloud servers</li>
+                    <li>Full multiplayer features in desktop app</li>
+                    <li>Auto-connect to nearest regional server</li>
+                    <li>Seamless integration with browser version</li>
+                </ul>
+
+                <h3>📚 Comprehensive Documentation <span class="badge improved">IMPROVED</span></h3>
+                <ul>
+                    <li>LANGUAGE_AND_EXE_MULTIPLAYER_GUIDE.md - Complete setup guide</li>
+                    <li>Cookie system implementation guide</li>
+                    <li>Live leaderboard widget integration instructions</li>
+                    <li>Step-by-step language selection setup</li>
+                    <li>electron-main.cjs configuration for multiplayer</li>
+                    <li>Render.com deployment walkthrough</li>
+                </ul>
+
+                <h3>🎨 UI/UX Enhancements</h3>
+                <ul>
+                    <li>Language dropdown with flag emojis in settings</li>
+                    <li>Smooth cookie banner animations</li>
+                    <li>Live leaderboard with pulsing glow effects</li>
+                    <li>Rank emojis (🥇 🥈 🥉) for top 3 players</li>
+                    <li>Improved mobile touch targets</li>
+                    <li>Better responsive design for all screen sizes</li>
+                </ul>
+
+                <h3>🔧 Technical Improvements</h3>
+                <ul>
+                    <li>CookieManager class for easy cookie management</li>
+                    <li>LiveLeaderboard class with auto-refresh</li>
+                    <li>LanguageManager integration with game</li>
+                    <li>Fetch API for real-time Supabase queries</li>
+                    <li>localStorage sync with cookies</li>
+                    <li>Optimized database queries for performance</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 7.0</h2>
                 <p class="date">October 23, 2025</p>
                 
                 <h3>⚡ Special Ability System <span class="badge new">NEW</span></h3>
