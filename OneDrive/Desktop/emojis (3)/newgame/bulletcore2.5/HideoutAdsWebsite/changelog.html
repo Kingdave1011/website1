@@ -223,7 +223,63 @@
             <h1>📋 Patch Notes</h1>
 
             <div class="version">
-                <h2>Version 7.3 <span class="badge new">LATEST</span></h2>
+                <h2>Version 8.0 <span class="badge new">LATEST</span></h2>
+                <p class="date">October 23, 2025</p>
+                
+                <h3>⚔️ PvP Combat System <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Player-vs-Player shooting mechanics with real-time bullet synchronization</li>
+                    <li>Position and rotation sync for all players in match</li>
+                    <li>Basic hit detection with damage calculation (20 damage per hit)</li>
+                    <li>Player respawn system after death (100 health reset)</li>
+                    <li>Kill and death tracking for each player</li>
+                    <li>Match-based PvP system with unique match IDs</li>
+                    <li>Real-time game state updates via WebSocket</li>
+                    <li>FFA (Free-For-All) mode as default</li>
+                </ul>
+
+                <h3>👥 Admin System Updates <span class="badge improved">IMPROVED</span></h3>
+                <ul>
+                    <li>Added YourDailybrick as second admin (Username: YourDailybrick)</li>
+                    <li>Two admins now have full access: King_davez and YourDailybrick</li>
+                    <li>Admin panel button (⚡) appears for both administrators</li>
+                    <li>Developer badge displayed for both admin accounts</li>
+                </ul>
+
+                <h3>🎮 Multiplayer Server Enhancements <span class="badge improved">IMPROVED</span></h3>
+                <ul>
+                    <li>PvPMatch class for managing game state and player interactions</li>
+                    <li>Supports up to 100 concurrent players per server</li>
+                    <li>Real-time position broadcasting to all match players</li>
+                    <li>Bullet physics with velocity tracking</li>
+                    <li>Automatic bullet cleanup after 5 seconds</li>
+                    <li>Score tracking with kills/deaths statistics</li>
+                    <li>Random spawn positions for balanced gameplay</li>
+                </ul>
+
+                <h3>🔧 Technical Improvements</h3>
+                <ul>
+                    <li>WebSocket message types: position_update, fire_bullet, get_game_state</li>
+                    <li>Server-side hit detection algorithm using distance calculation</li>
+                    <li>Match state management with player/bullet arrays</li>
+                    <li>Efficient message broadcasting to match participants only</li>
+                    <li>Health system with automatic respawn mechanics</li>
+                    <li>Kill credit system with shooter identification</li>
+                </ul>
+
+                <h3>📚 Planned Features</h3>
+                <ul>
+                    <li>Multiple game modes: Team Deathmatch, 3v3, Capture the Flag, King of the Hill</li>
+                    <li>Lobby username display (registered vs guest names)</li>
+                    <li>Online status indicators with green dots</li>
+                    <li>Match type selection UI in multiplayer lobby</li>
+                    <li>Team assignment system for team-based modes</li>
+                    <li>Match scoring and win conditions</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 7.3</h2>
                 <p class="date">October 23, 2025</p>
                 
                 <h3>🤖 AI Helper Chatbot <span class="badge new">NEW</span></h3>

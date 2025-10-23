@@ -11,6 +11,124 @@ const MAX_PLAYERS = 100;
 
 let players = new Map();
 let matches = [];
+let activePvPMatches = new Map();
+
+// PvP Match Class
+class PvPMatch {
+    constructor(matchId) {
+        this.matchId = matchId;
+        this.players = new Map();
+        this.bullets = [];
+        this.scores = new Map();
+        this.startTime = Date.now();
+        this.gameMode = 'FFA'; // FFA, TDM, 3v3
+    }
+
+    addPlayer(playerId, playerData) {
+        this.players.set(playerId, {
+            id: playerId,
+            name: playerData.name,
+            x: Math.random() * 800,
+            y: Math.random() * 600,
+            health: 100,
+            kills: 0,
+            deaths: 0,
+            ...playerData
+        });
+        this.scores.set(playerId, { kills: 0, deaths: 0 });
+    }
+
+    removePlayer(playerId) {
+        this.players.delete(playerId);
+        this.scores.delete(playerId);
+    }
+
+    updatePlayerPosition(playerId, x, y, rotation) {
+        const player = this.players.get(playerId);
+        if (player) {
+            player.x = x;
+            player.y = y;
+            player.rotation = rotation;
+        }
+    }
+
+    addBullet(playerId, bulletData) {
+        this.bullets.push({
+            id: `${playerId}_${Date.now()}`,
+            ownerId: playerId,
+            x: bulletData.x,
+            y: bulletData.y,
+            velocityX: bulletData.velocityX,
+            velocityY: bulletData.velocityY,
+            damage: bulletData.damage || 20,
+            timestamp: Date.now()
+        });
+    }
+
+    checkHits() {
+        const hits = [];
+        this.bullets.forEach((bullet, bulletIndex) => {
+            this.players.forEach((player, playerId) => {
+                if (playerId === bullet.ownerId) return;
+                
+                const distance = Math.sqrt(
+                    Math.pow(bullet.x - player.x, 2) + 
+                    Math.pow(bullet.y - player.y, 2)
+                );
+                
+                if (distance < 30) {
+                    player.health -= bullet.damage;
+                    hits.push({
+                        bulletId: bullet.id,
+                        hitPlayerId: playerId,
+                        shooterId: bullet.ownerId,
+                        damage: bullet.damage,
+                        remainingHealth: player.health
+                    });
+                    
+                    if (player.health <= 0) {
+                        player.health = 100;
+                        player.x = Math.random() * 800;
+                        player.y = Math.random() * 600;
+                        player.deaths++;
+                        
+                        const shooter = this.players.get(bullet.ownerId);
+                        if (shooter) {
+                            shooter.kills++;
+                        }
+                        
+                        const shooterScore = this.scores.get(bullet.ownerId);
+                        if (shooterScore) {
+                            shooterScore.kills++;
+                        }
+                        
+                        const victimScore = this.scores.get(playerId);
+                        if (victimScore) {
+                            victimScore.deaths++;
+                        }
+                    }
+                    
+                    this.bullets.splice(bulletIndex, 1);
+                }
+            });
+        });
+        
+        this.bullets = this.bullets.filter(b => Date.now() - b.timestamp < 5000);
+        return hits;
+    }
+
+    getGameState() {
+        return {
+            matchId: this.matchId,
+            players: Array.from(this.players.values()),
+            bullets: this.bullets,
+            scores: Array.from(this.scores.entries()).map(([id, score]) => ({
+                playerId: id,
+                ...score
+            }))
+        };
+    }
+}
 
 console.log('🚀 Starting Space Shooter Multiplayer Server...');
 
@@ -125,11 +243,71 @@ wss.on('connection', (ws, req) => {
             
             // Handle matchmaking requests
             if (data.type === 'find_match') {
+                const matchId = `match_${Date.now()}`;
+                const match = new PvPMatch(matchId);
+                match.addPlayer(playerId, { name: playerName, ws });
+                activePvPMatches.set(matchId, match);
+                
                 ws.send(JSON.stringify({
                     type: 'match_found',
-                    matchId: `match_${Date.now()}`,
+                    matchId: matchId,
                     message: 'Match found! Starting game...'
                 }));
+            }
+            
+            // Handle PvP position updates
+            if (data.type === 'position_update') {
+                const match = activePvPMatches.get(data.matchId);
+                if (match) {
+                    match.updatePlayerPosition(playerId, data.x, data.y, data.rotation);
+                    
+                    // Broadcast position to all players in match
+                    match.players.forEach((player, pid) => {
+                        if (pid !== playerId && player.ws && player.ws.readyState === WebSocket.OPEN) {
+                            player.ws.send(JSON.stringify({
+                                type: 'player_moved',
+                                playerId: playerId,
+                                x: data.x,
+                                y: data.y,
+                                rotation: data.rotation
+                            }));
+                        }
+                    });
+                }
+            }
+            
+            // Handle bullet firing
+            if (data.type === 'fire_bullet') {
+                const match = activePvPMatches.get(data.matchId);
+                if (match) {
+                    match.addBullet(playerId, data);
+                    
+                    // Broadcast bullet to all players
+                    match.players.forEach((player, pid) => {
+                        if (player.ws && player.ws.readyState === WebSocket.OPEN) {
+                            player.ws.send(JSON.stringify({
+                                type: 'bullet_fired',
+                                bulletId: `${playerId}_${Date.now()}`,
+                                ownerId: playerId,
+                                x: data.x,
+                                y: data.y,
+                                velocityX: data.velocityX,
+                                velocityY: data.velocityY
+                            }));
+                        }
+                    });
+                }
+            }
+            
+            // Handle game state requests
+            if (data.type === 'get_game_state') {
+                const match = activePvPMatches.get(data.matchId);
+                if (match) {
+                    ws.send(JSON.stringify({
+                        type: 'game_state',
+                        state: match.getGameState()
+                    }));
+                }
             }
             
         } catch (error) {

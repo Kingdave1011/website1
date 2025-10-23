@@ -19,8 +19,8 @@
                     showUserProfile(auth);
                     showWelcomeNotification(auth);
                     
-                    // Show admin panel for developer
-                    if (auth.isAdmin) {
+                    // Show admin panel for developers
+                    if (auth.isAdmin || auth.username === 'King_davez' || auth.username === 'YourDailybrick') {
                         showAdminPanel();
                     }
                 } else {
