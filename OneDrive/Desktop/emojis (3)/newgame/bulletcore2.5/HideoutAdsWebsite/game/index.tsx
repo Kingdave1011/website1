@@ -150,10 +150,12 @@ let gameContainer: HTMLElement,
 
 const PLAYER_SIZE = 50;
 const PROJECTILE_SPEED = 7;
-const PARTICLE_COUNT = 30;
-const STAR_COUNT = 200;
+const PARTICLE_COUNT = 15; // Reduced from 30 for better performance
+const STAR_COUNT = 100; // Reduced from 200 for better performance
 const XP_PER_LEVEL = 1000;
 const BOSS_WAVE = 10;
+const MAX_PARTICLES = 200; // Cap total particles on screen
+const MAX_ENEMIES = 15; // Cap enemies per wave for performance
 
 // =================================================================================
 // Configurations
@@ -412,12 +414,12 @@ class Player {
         if (this.invincible && Math.floor(Date.now() / 100) % 2 === 0) {
             // Blink when invincible
         } else {
-            if (this.glowColor) {
-                ctx.shadowBlur = 20;
+            if (this.glowColor && effectsEnabled) {
+                ctx.shadowBlur = 15; // Reduced from 20
                 ctx.shadowColor = this.glowColor;
             }
             ctx.drawImage(this.img, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-            ctx.shadowBlur = 0;
+            if (this.glowColor && effectsEnabled) ctx.shadowBlur = 0;
         }
 
         if (this.shieldActive) {
@@ -462,7 +464,14 @@ class Player {
     }
 
     updateThruster() {
-        this.thrusterParticles.push(new Particle(this.x, this.y + this.height / 2, 'orange', 2, 0, 3));
+        // Reduce thruster particle frequency for performance
+        if (effectsEnabled && Math.random() < 0.5) { // Only 50% of frames
+            this.thrusterParticles.push(new Particle(this.x, this.y + this.height / 2, 'orange', 2, 0, 3));
+        }
+        // Limit thruster particles
+        if (this.thrusterParticles.length > 10) {
+            this.thrusterParticles = this.thrusterParticles.slice(-10);
+        }
         this.thrusterParticles = this.thrusterParticles.filter(p => p.life > 0);
         this.thrusterParticles.forEach(p => p.update());
     }
@@ -559,10 +568,8 @@ class Projectile {
     }
     draw() {
         ctx.fillStyle = 'cyan';
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = 'cyan';
+        // Removed shadow blur for performance
         ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height);
-        ctx.shadowBlur = 0;
     }
     update() {
         this.y -= PROJECTILE_SPEED;
@@ -702,10 +709,8 @@ class EnemyProjectile extends Projectile {
     }
     draw() {
         ctx.fillStyle = 'red';
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = 'red';
+        // Removed shadow blur for performance
         ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height);
-        ctx.shadowBlur = 0;
     }
     update() {
         this.y += this.speedY;
@@ -732,10 +737,13 @@ class PowerUp {
     }
 
     draw() {
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = this.config.color;
+        // Only apply glow effect if effects are enabled
+        if (effectsEnabled) {
+            ctx.shadowBlur = 10; // Reduced from 15
+            ctx.shadowColor = this.config.color;
+        }
         ctx.drawImage(this.img, this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
-        ctx.shadowBlur = 0;
+        if (effectsEnabled) ctx.shadowBlur = 0;
     }
 
     update() {
@@ -865,10 +873,13 @@ class Laser {
             ctx.fillRect(this.x - 2, this.y, 4, canvas.height - this.y);
         } else {
             ctx.fillStyle = 'red';
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = 'red';
+            // Only apply glow if effects enabled
+            if (effectsEnabled) {
+                ctx.shadowBlur = 15; // Reduced from 20
+                ctx.shadowColor = 'red';
+            }
             ctx.fillRect(this.x - this.width/2, this.y, this.width, canvas.height - this.y);
-            ctx.shadowBlur = 0;
+            if (effectsEnabled) ctx.shadowBlur = 0;
         }
     }
 
@@ -1011,25 +1022,67 @@ function handleInput() {
 
 function drawBackground() {
     const map = MAP_CONFIG[gameState.selectedMap];
-    if (map && map.type === 'nebula') {
+    const mapNum = gameState.selectedMap;
+    
+    // Enhanced visuals for all 20 maps
+    if (mapNum <= 7) {
+        // Space theme - different dark tones
+        const spaceColors = ['#000000', '#0a0a0f', '#050510', '#0f0a0a', '#0a0f0a', '#10050a', '#0a0510'];
+        ctx.fillStyle = spaceColors[(mapNum - 1) % spaceColors.length];
+    } else if (mapNum <= 14) {
+        // Nebula theme - colorful gradients
+        const colors = [
+            ['#1a0d33', '#3c1a66'], // Purple
+            ['#0d1a33', '#1a3c66'], // Blue
+            ['#330d1a', '#661a3c'], // Red
+            ['#1a330d', '#3c661a'], // Green
+            ['#33221a', '#66441a'], // Orange
+            ['#1a2233', '#1a4466'], // Cyan
+            ['#331a2d', '#661a5a']  // Magenta
+        ];
+        const colorIndex = (mapNum - 8) % colors.length;
         const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        gradient.addColorStop(0, '#1a0d33');
-        gradient.addColorStop(1, '#3c1a66');
+        gradient.addColorStop(0, colors[colorIndex][0]);
+        gradient.addColorStop(1, colors[colorIndex][1]);
         ctx.fillStyle = gradient;
-    } else if (map && map.type === 'asteroids') {
-         ctx.fillStyle = '#111118';
+    } else {
+        // Asteroid theme - darker with variety
+        const darkColors = ['#0a0a0a', '#111118', '#181820', '#1a1a22', '#14141c', '#1c1c28'];
+        const colorIndex = (mapNum - 15) % darkColors.length;
+        ctx.fillStyle = darkColors[colorIndex];
     }
-    else {
-        ctx.fillStyle = 'black';
-    }
+    
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Add animated nebula effects for nebula maps
+    if (mapNum > 7 && mapNum <= 14 && effectsEnabled) {
+        ctx.save();
+        ctx.globalAlpha = 0.15;
+        const nebulaX = Math.sin(Date.now() / 5000) * 100;
+        const nebulaY = Math.cos(Date.now() / 5000) * 100;
+        const nebulaGradient = ctx.createRadialGradient(
+            canvas.width/2 + nebulaX, canvas.height/2 + nebulaY, 0,
+            canvas.width/2 + nebulaX, canvas.height/2 + nebulaY, canvas.width/2
+        );
+        const nebulaColors = ['#ff00ff', '#00ffff', '#ff0066', '#00ff66', '#ff6600', '#0066ff', '#ff0099'];
+        const colorIndex = (mapNum - 8) % nebulaColors.length;
+        nebulaGradient.addColorStop(0, nebulaColors[colorIndex]);
+        nebulaGradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = nebulaGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.restore();
+    }
+    
     updateAndDraw(stars);
 }
 
 function createExplosion(x: number, y: number, color: string) {
     if(!effectsEnabled) return;
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-        particles.push(new Particle(x, y, color));
+    // Cap total particles for performance
+    if (particles.length < MAX_PARTICLES) {
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push(new Particle(x, y, color));
+        }
     }
     playSound('explosion');
     createScreenShake(3, 0.1);
@@ -1354,23 +1407,51 @@ function nextWave() {
     showWaveNotification(`Wave ${currentWave}`);
     playSound('waveStart');
     
+    console.log(`Starting wave ${currentWave}`);
+    
     if (currentWave % BOSS_WAVE === 0) {
         spawnBoss();
     } else {
+        // Clear any dead enemies first
+        enemies = enemies.filter(e => e.health > 0);
         spawnEnemies();
+        
+        // Safety check - ensure enemies were spawned
+        if (enemies.length === 0) {
+            console.warn('No enemies spawned! Adding fallback enemies.');
+            for (let i = 0; i < 5; i++) {
+                enemies.push(new Enemy(
+                    Math.random() * (canvas.width - 50) + 25,
+                    Math.random() * -200 - 50,
+                    'scout'
+                ));
+            }
+        }
     }
 }
 
 function spawnEnemies() {
-    const enemyCount = Math.min(5 + currentWave * 2, 20);
+    // Cap enemy count for better performance
+    const isMobile = 'ontouchstart' in window;
+    const maxEnemies = isMobile ? 10 : MAX_ENEMIES;
+    const enemyCount = Math.min(5 + currentWave * 2, maxEnemies);
+    
+    console.log(`Wave ${currentWave}: Spawning ${enemyCount} enemies`);
+    
     for (let i = 0; i < enemyCount; i++) {
         const x = Math.random() * (canvas.width - 50) + 25;
-        const y = Math.random() * -canvas.height;
+        const y = Math.random() * -canvas.height - 50; // Spawn further off-screen
         let type: keyof typeof ENEMY_CONFIG = 'scout';
-        if (currentWave > 2 && Math.random() > 0.7) type = 'brute';
-        if (currentWave > 4 && Math.random() > 0.6) type = 'bomber';
+        
+        // Fix for wave 3+ enemy variety
+        if (currentWave >= 3 && Math.random() > 0.7) type = 'brute';
+        if (currentWave >= 4 && Math.random() > 0.6) type = 'bomber';
+        if (currentWave >= 5 && Math.random() > 0.8) type = 'sniper';
+        
         enemies.push(new Enemy(x, y, type));
     }
+    
+    console.log(`Total enemies in array: ${enemies.length}`);
 }
 
 function spawnBoss() {
@@ -1726,17 +1807,60 @@ function playSound(sound: string) {
     source.start(0);
 }
 
+function createBackgroundMusic() {
+    if (!audioCtx) return;
+    
+    // Create ambient space music using oscillators
+    const oscillator1 = audioCtx.createOscillator();
+    const oscillator2 = audioCtx.createOscillator();
+    const oscillator3 = audioCtx.createOscillator();
+    
+    const gainNode1 = audioCtx.createGain();
+    const gainNode2 = audioCtx.createGain();
+    const gainNode3 = audioCtx.createGain();
+    
+    // Bass layer
+    oscillator1.type = 'sine';
+    oscillator1.frequency.value = 55;
+    gainNode1.gain.value = 0.15;
+    
+    // Mid layer
+    oscillator2.type = 'triangle';
+    oscillator2.frequency.value = 110;
+    gainNode2.gain.value = 0.1;
+    
+    // High layer
+    oscillator3.type = 'sine';
+    oscillator3.frequency.value = 220;
+    gainNode3.gain.value = 0.08;
+    
+    // Connect to music gain
+    oscillator1.connect(gainNode1);
+    oscillator2.connect(gainNode2);
+    oscillator3.connect(gainNode3);
+    
+    gainNode1.connect(musicGainNode);
+    gainNode2.connect(musicGainNode);
+    gainNode3.connect(musicGainNode);
+    
+    // Start oscillators
+    oscillator1.start();
+    oscillator2.start();
+    oscillator3.start();
+    
+    musicSource = oscillator1 as any; // Store reference
+}
+
 function playMusic(sound: string) {
-    if (!audioCtx || !decodedAudioBuffers[sound] || musicSource) return;
-    musicSource = audioCtx.createBufferSource();
-    musicSource.buffer = decodedAudioBuffers[sound];
-    musicSource.loop = true;
-    musicSource.connect(musicGainNode);
-    musicSource.start(0);
+    if (!audioCtx || musicSource) return;
+    createBackgroundMusic();
 }
 
 function stopMusic() {
-    if (musicSource) { musicSource.stop(); musicSource = null; }
+    if (musicSource) { 
+        try { musicSource.stop(); } catch(e) {}
+        musicSource = null; 
+    }
 }
 
 function updateScore(points: number) { 
