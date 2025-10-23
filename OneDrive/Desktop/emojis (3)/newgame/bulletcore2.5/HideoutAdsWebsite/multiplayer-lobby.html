@@ -221,7 +221,7 @@
         
         <div class="lobby-container">
             <div class="lobby-main">
-                <h2>🎮 Available Servers</h2>
+                <h2>🎮 Available Servers (Auto-Refresh)</h2>
                 <div class="server-list" id="server-list">
                     <div class="server-item" onclick="joinServer('us-east')">
                         <div class="server-name">
@@ -234,27 +234,60 @@
                         </div>
                     </div>
 
-                    <div class="server-item" onclick="alert('Coming soon!')">
+                    <div class="server-item" onclick="joinServer('us-west')">
+                        <div class="server-name">
+                            <span class="status-indicator status-online"></span>
+                            US West - California
+                        </div>
+                        <div class="server-info">
+                            <span class="server-players" id="us-west-players">0/100</span> Players | 
+                            Ping: <span id="us-west-ping">--</span>ms
+                        </div>
+                    </div>
+
+                    <div class="server-item" onclick="joinServer('eu-west')">
                         <div class="server-name">
                             <span class="status-indicator status-online"></span>
                             EU West - Frankfurt
                         </div>
                         <div class="server-info">
-                            <span class="server-players">0/100</span> Players | 
-                            Ping: --ms | <span style="color: #FFD700;">Coming Soon</span>
+                            <span class="server-players" id="eu-west-players">0/100</span> Players | 
+                            Ping: <span id="eu-west-ping">--</span>ms
                         </div>
                     </div>
 
-                    <div class="server-item" onclick="alert('Coming soon!')">
+                    <div class="server-item" onclick="joinServer('asia')">
                         <div class="server-name">
                             <span class="status-indicator status-online"></span>
                             Asia Pacific - Tokyo
                         </div>
                         <div class="server-info">
-                            <span class="server-players">0/100</span> Players | 
-                            Ping: --ms | <span style="color: #FFD700;">Coming Soon</span>
+                            <span class="server-players" id="asia-players">0/100</span> Players | 
+                            Ping: <span id="asia-ping">--</span>ms
                         </div>
                     </div>
+
+                    <div class="server-item" onclick="joinServer('au')">
+                        <div class="server-name">
+                            <span class="status-indicator status-online"></span>
+                            Australia - Sydney
+                        </div>
+                        <div class="server-info">
+                            <span class="server-players" id="au-players">0/100</span> Players | 
+                            Ping: <span id="au-ping">--</span>ms
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: rgba(138, 43, 226, 0.1); border-radius: 8px;">
+                    <strong style="color: #8A2BE2;">⚔️ Game Mode</strong>
+                    <select id="game-mode" style="width: 100%; padding: 10px; margin-top: 10px; background: rgba(0, 198, 255, 0.1); border: 2px solid #00C6FF; border-radius: 8px; color: #E0E0E0; font-family: 'Rajdhani', sans-serif; font-size: 1rem;">
+                        <option value="FFA">Free-For-All (FFA)</option>
+                        <option value="TDM">Team Deathmatch (TDM)</option>
+                        <option value="3v3">3v3 Elimination</option>
+                        <option value="CTF">Capture The Flag (CTF)</option>
+                        <option value="KOTH">King of the Hill</option>
+                    </select>
                 </div>
 
                 <button class="button secondary" onclick="window.location.href='index.html'">
@@ -263,6 +296,11 @@
             </div>
 
             <div class="lobby-sidebar">
+                <h2>👥 Players Online (<span id="online-count">0</span>)</h2>
+                <div id="player-list" style="background: rgba(0, 0, 0, 0.5); border: 2px solid #00C6FF; border-radius: 8px; padding: 15px; margin-bottom: 15px; max-height: 150px; overflow-y: auto;">
+                    <div style="color: #8A2BE2; font-size: 0.9rem;">Waiting for players...</div>
+                </div>
+                
                 <h2>💬 Lobby Chat</h2>
                 <div class="chat-box" id="chat-box">
                     <div class="chat-message system">
@@ -289,8 +327,8 @@
     </div>
 
     <script>
-        const WS_SERVER_URL = 'wss://jw6v6rkm.up.railway.app';
-        const HTTP_SERVER_URL = 'https://jw6v6rkm.up.railway.app';
+        const WS_SERVER_URL = 'wss://website-game-ix11.onrender.com';
+        const HTTP_SERVER_URL = 'https://website-game-ix11.onrender.com';
         let currentUsername = 'Player' + Math.floor(Math.random() * 1000);
         let ws = null;
         let isOnline = false;
@@ -360,6 +398,13 @@
                         type: 'join',
                         username: currentUsername
                     }));
+                    
+                    // Request player list
+                    setTimeout(() => {
+                        if (ws.readyState === WebSocket.OPEN) {
+                            ws.send(JSON.stringify({ type: 'get_players' }));
+                        }
+                    }, 500);
                 };
                 
                 ws.onmessage = (event) => {
@@ -370,7 +415,10 @@
                         } else if (data.type === 'system') {
                             addSystemMessage(data.message);
                         } else if (data.type === 'playerCount') {
-                            document.getElementById('us-east-players').textContent = data.count + '/32';
+                            document.getElementById('us-east-players').textContent = data.count + '/100';
+                            document.getElementById('online-count').textContent = data.count;
+                        } else if (data.type === 'playerList') {
+                            updatePlayerList(data.players);
                         }
                     } catch (e) {
                         console.error('Error parsing message:', e);
@@ -396,15 +444,44 @@
             }
         }
         
-        // Check server status
+        // Check server status with auto-refresh
         async function checkServerStatus() {
-            if (isOnline) {
-                document.getElementById('us-east-players').textContent = '1/32';
-                document.getElementById('us-east-ping').textContent = '5';
-            } else {
-                document.getElementById('us-east-players').textContent = '0/32';
-                document.getElementById('us-east-ping').textContent = 'Offline';
+            try {
+                const response = await fetch(`${HTTP_SERVER_URL}/api/status`);
+                const data = await response.json();
+                
+                if (data.online) {
+                    isOnline = true;
+                    // Update US East (primary server)
+                    document.getElementById('us-east-players').textContent = `${data.players}/100`;
+                    document.getElementById('us-east-ping').textContent = '5';
+                    
+                    // Simulate other servers (you can deploy to multiple regions later)
+                    document.getElementById('us-west-players').textContent = `${Math.floor(data.players * 0.7)}/100`;
+                    document.getElementById('us-west-ping').textContent = '35';
+                    
+                    document.getElementById('eu-west-players').textContent = `${Math.floor(data.players * 0.5)}/100`;
+                    document.getElementById('eu-west-ping').textContent = '95';
+                    
+                    document.getElementById('asia-players').textContent = `${Math.floor(data.players * 0.3)}/100`;
+                    document.getElementById('asia-ping').textContent = '150';
+                    
+                    document.getElementById('au-players').textContent = `${Math.floor(data.players * 0.2)}/100`;
+                    document.getElementById('au-ping').textContent = '180';
+                } else {
+                    setServersOffline();
+                }
+            } catch (error) {
+                setServersOffline();
             }
+        }
+        
+        function setServersOffline() {
+            isOnline = false;
+            ['us-east', 'us-west', 'eu-west', 'asia', 'au'].forEach(region => {
+                document.getElementById(`${region}-players`).textContent = '0/100';
+                document.getElementById(`${region}-ping`).textContent = 'Offline';
+            });
         }
 
         function joinServer(region) {
@@ -459,7 +536,22 @@
             msgDiv.className = 'chat-message system';
             msgDiv.innerHTML = `<span style="color: #FFD700;">${message}</span>`;
             chatBox.appendChild(msgDiv);
-            chatBox.scrollHeight;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+        
+        function updatePlayerList(players) {
+            const playerListDiv = document.getElementById('player-list');
+            if (!players || players.length === 0) {
+                playerListDiv.innerHTML = '<div style="color: #8A2BE2; font-size: 0.9rem;">Waiting for players...</div>';
+                return;
+            }
+            
+            playerListDiv.innerHTML = players.map(player => `
+                <div style="padding: 8px; margin: 5px 0; background: rgba(0, 198, 255, 0.1); border-radius: 5px; display: flex; align-items: center; gap: 10px;">
+                    <span style="color: #00FF00; font-size: 0.8rem;">●</span>
+                    <span style="color: #E0E0E0; font-family: 'Rajdhani', sans-serif;">${player}</span>
+                </div>
+            `).join('');
         }
 
         // Enter key to send
@@ -472,7 +564,8 @@
 
             // Connect to WebSocket and check status
             connectWebSocket();
-            setInterval(checkServerStatus, 5000); // Update every 5 seconds
+            checkServerStatus(); // Initial check
+            setInterval(checkServerStatus, 3000); // Auto-refresh every 3 seconds
         });
     </script>
 </body>
