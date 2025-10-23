@@ -241,6 +241,15 @@ wss.on('connection', (ws, req) => {
                 }));
             }
             
+            // Handle player list request
+            if (data.type === 'get_players') {
+                const playerNames = Array.from(players.values()).map(p => p.name);
+                ws.send(JSON.stringify({
+                    type: 'playerList',
+                    players: playerNames
+                }));
+            }
+            
             // Handle matchmaking requests
             if (data.type === 'find_match') {
                 const matchId = `match_${Date.now()}`;
