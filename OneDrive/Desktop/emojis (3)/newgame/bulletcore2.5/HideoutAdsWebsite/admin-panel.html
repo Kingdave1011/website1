@@ -324,6 +324,8 @@
                 <!-- System Controls Card -->
                 <div class="admin-card">
                     <h2>🔧 System Controls</h2>
+                    <button class="admin-btn" onclick="refreshServer()">🔄 Refresh Server</button>
+                    <button class="admin-btn" onclick="checkServerStatus()">📡 Check Server Status</button>
                     <button class="admin-btn" onclick="window.location.href='leaderboard.html'">View Leaderboards</button>
                     <button class="admin-btn" onclick="window.location.href='index.html'">Go to Homepage</button>
                     <button class="admin-btn" onclick="viewSystemLogs()">View System Logs</button>
@@ -620,6 +622,53 @@
             sessionStorage.clear();
             alert('✅ All data has been cleared');
             location.reload();
+        }
+
+        // Server Management Functions
+        async function refreshServer() {
+            const SERVER_URL = 'https://website-game-ix11.onrender.com';
+            
+            if (!confirm('🔄 Refresh the multiplayer server?\n\nThis will ping the server to wake it up if it\'s sleeping.')) return;
+            
+            try {
+                const response = await fetch(`${SERVER_URL}/api/status`);
+                const data = await response.json();
+                
+                if (data.online) {
+                    alert(`✅ Server is online and responsive!\n\nPlayers: ${data.players}\nUptime: Running on Render.com`);
+                } else {
+                    alert('⚠️ Server responded but reported offline status.');
+                }
+            } catch (error) {
+                alert('❌ Could not reach server.\n\nServer may be starting up. Please wait 30 seconds and try again.');
+            }
+        }
+
+        async function checkServerStatus() {
+            const SERVER_URL = 'https://website-game-ix11.onrender.com';
+            
+            try {
+                const startTime = Date.now();
+                const response = await fetch(`${SERVER_URL}/api/status`);
+                const latency = Date.now() - startTime;
+                const data = await response.json();
+                
+                const status = `
+🌐 Server Status Report
+
+✅ Status: ${data.online ? 'ONLINE' : 'OFFLINE'}
+👥 Players: ${data.players || 0}
+⏱️ Latency: ${latency}ms
+🔗 URL: ${SERVER_URL}
+📡 Hosted on: Render.com (24/7 Uptime)
+
+${data.online ? '✅ Server is healthy and operational!' : '⚠️ Server may be starting up...'}
+                `.trim();
+                
+                alert(status);
+            } catch (error) {
+                alert(`❌ Server Check Failed\n\nError: ${error.message}\n\nThe server may be starting up. Render.com typically takes 30-60 seconds to wake up a sleeping instance.`);
+            }
         }
 
         // Check auth on load
