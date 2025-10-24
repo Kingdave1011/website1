@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patch Notes - Space Shooter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #05050A;
+            color: #E0E0E0;
+            overflow-x: hidden;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 100px 20px 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            text-shadow: 0 0 20px #00C6FF, 0 0 40px #00C6FF;
+            margin-bottom: 40px;
+            font-size: 3rem;
+            text-align: center;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .version {
+            background: rgba(0, 198, 255, 0.1);
+            border-left: 4px solid #00C6FF;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .version:nth-child(2) { animation-delay: 0.1s; }
+        .version:nth-child(3) { animation-delay: 0.2s; }
+        .version:nth-child(4) { animation-delay: 0.3s; }
+        .version:nth-child(5) { animation-delay: 0.4s; }
+        .version:nth-child(6) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .version h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00C6FF;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .version .date {
+            color: #8A2BE2;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .version h3 {
+            color: #FFD700;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .version ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .version li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .version li:before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: #00C6FF;
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid #00C6FF;
+            color: #00C6FF;
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px #00C6FF;
+        }
+
+        .back-link:hover {
+            transform: scale(1.05);
+            border-color: #FF007F;
+            box-shadow: 0 0 25px #FF007F, 0 0 50px #8A2BE2;
+            text-shadow: 0 0 8px #FF007F;
+            background: rgba(255, 0, 127, 0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .badge.new {
+            background: #00FF00;
+            color: #000;
+        }
+
+        .badge.fixed {
+            background: #FF6B6B;
+            color: #FFF;
+        }
+
+        .badge.improved {
+            background: #4ECDC4;
+            color: #000;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(0, 198, 255, 0.3);
+            margin-top: 100px;
+        }
+
+        footer p {
+            color: #8A2BE2;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .version h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starfield"></canvas>
+    
+    <!-- Navigation Header -->
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5, 5, 10, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 198, 255, 0.3); padding: 15px 0;">
+        <nav style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; flex-wrap: wrap;">
+            <a href="index.html" style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #00C6FF; text-decoration: none; text-shadow: 0 0 10px #00C6FF;">SPACE SHOOTER</a>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+                <button id="theme-toggle" onclick="cycleTheme()" style="padding: 8px 15px; background: rgba(0, 198, 255, 0.2); border: 2px solid #00C6FF; border-radius: 8px; color: #E0E0E0; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; transition: all 0.3s;">🎨 Theme</button>
+                <a href="about.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">About</a>
+                <a href="features.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Features</a>
+                <a href="controls.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Controls</a>
+                <a href="how-to-play.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">How to Play</a>
+                <a href="screenshots.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">Screenshots</a>
+                <a href="faq.html" style="color: #E0E0E0; text-decoration: none; transition: color 0.3s;">FAQ</a>
+                <a href="changelog.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">Changelog</a>
+                <a href="leaderboard.html" style="color: #FFD700; text-decoration: none; transition: color 0.3s;">🏆 Leaderboard</a>
+                <a href="profile.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">📊 Profile</a>
+                <a href="bug-report.html" style="color: #FF007F; text-decoration: none; transition: color 0.3s;">Report Bug</a>
+                <a href="user-auth.html" style="color: #00FF00; text-decoration: none; transition: color 0.3s;">👤 Sign In</a>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="content">
+        <div class="container">
+            <h1>📋 Patch Notes</h1>
+
+            <div class="version">
+                <h2>Version 7.4 <span class="badge new">LATEST</span></h2>
+                <p class="date">October 23, 2025</p>
+                
+                <h3>🐳 Docker & Deployment Infrastructure <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Created production-ready Dockerfile for multiplayer server</li>
+                    <li>Node.js 18-alpine base image for optimal performance</li>
+                    <li>Multi-stage build process with npm install --production</li>
+                    <li>Automated dependency management with package-lock.json</li>
+                    <li>Port 3001 configuration for WebSocket connections</li>
+                    <li>Environment variable support for PORT configuration</li>
+                    <li>Ready for container orchestration (Docker, Kubernetes)</li>
+                    <li>Deployed to Render.com with automatic SSL/HTTPS</li>
+                </ul>
+
+                <h3>🌐 Multiplayer Server Enhancements <span class="badge improved">IMPROVED</span></h3>
+                <ul>
+                    <li>Complete multiplayer-server/ directory pushed to GitHub</li>
+                    <li>Server URL: wss://website-game-ix11.onrender.com</li>
+                    <li>24/7 uptime on Render.com free tier</li>
+                    <li>Supports up to 32 concurrent players per instance</li>
+                    <li>Real-time WebSocket communication</li>
+                    <li>PvP game modes: Free-For-All, Team Deathmatch, 3v3</li>
+                    <li>Full matchmaking system with rating-based pairing</li>
+                    <li>Bullet synchronization and hit detection</li>
+                </ul>
+
+                <h3>👥 Social Features <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Members List - Shows all online players in lobby</li>
+                    <li>Live player count display updates in real-time</li>
+                    <li>Friend System - Add players as friends with "+ Friend" button</li>
+                    <li>Friend indicators (⭐ icon) next to friends in player list</li>
+                    <li>localStorage persistence for friends list</li>
+                    <li>Player identification (You) marker in player list</li>
+                    <li>Prevent adding yourself as a friend</li>
+                    <li>Duplicate friend prevention system</li>
+                </ul>
+
+                <h3>💬 Enhanced Lobby Chat <span class="badge improved">IMPROVED</span></h3>
+                <ul>
+                    <li>Real-time message synchronization via WebSocket</li>
+                    <li>Player join/leave notifications</li>
+                    <li>System message styling with gold highlighting</li>
+                    <li>200-character message limit</li>
+                    <li>Enter key to send messages</li>
+                    <li>Auto-scroll to newest messages</li>
+                    <li>Connection status indicators</li>
+                </ul>
+
+                <h3>🔧 Technical Improvements</h3>
+                <ul>
+                    <li>Git repository optimization with .vercelignore</li>
+                    <li>Excluded large files (1.6GB of game directories)</li>
+                    <li>Vercel deployment size optimization (under 100MB limit)</li>
+                    <li>Force-pushed with --force flag to resolve conflicts</li>
+                    <li>package-lock.json added despite .gitignore restrictions</li>
+                    <li>Render root directory configuration guide created</li>
+                </ul>
+
+                <h3>📚 New Documentation</h3>
+                <ul>
+                    <li>RENDER_24_7_UPTIME_GUIDE.md - Complete Render setup instructions</li>
+                    <li>FIX_RENDER_ROOT_DIRECTORY_NOW.md - Root directory troubleshooting</li>
+                    <li>CONNECT_RENDER_TO_VERCEL_WITHOUT_GITHUB.md - CLI deployment guide</li>
+                    <li>Docker deployment best practices and configuration</li>
+                </ul>
+
+                <h3>🐛 Bug Fixes</h3>
+                <ul>
+                    <li>Fixed Dockerfile to use package*.json wildcard for flexibility</li>
+                    <li>Resolved git push conflicts with remote repository</li>
+                    <li>Fixed package-lock.json gitignore exclusion</li>
+                    <li>Corrected Render root directory path configuration</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 7.3</h2>
+                <p class="date">October 23, 2025</p>
+                
+                <h3>🤖 AI Helper Chatbot <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Intelligent chatbot assistant in bottom-right corner (🤖 icon)</li>
+                    <li>Answer questions about game controls, features, and mechanics</li>
+                    <li>Help with website navigation and account management</li>
+                    <li>Troubleshooting support for common issues</li>
+                    <li>Quick action buttons for common questions</li>
+                    <li>Comprehensive knowledge base covering all game aspects</li>
+                    <li>Instant responses - no waiting for support</li>
+                    <li>Beautiful chat UI with animations and styling</li>
+                    <li>Mobile-optimized responsive design</li>
+                    <li>Topics: controls, special ability, multiplayer, upgrades, ships, power-ups, boss battles, maps, achievements, account, leaderboard, languages, downloads, and more</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 7.2</h2>
+                <p class="date">October 23, 2025</p>
+                
+                <h3>🕒 Local Time & Date Display <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Real-time clock displays user's local time in top-right corner</li>
+                    <li>Toggle between 12-hour and 24-hour formats with one click</li>
+                    <li>Shows current date (e.g., "Mon, Oct 23")</li>
+                    <li>Based on user's device/computer time zone automatically</li>
+                    <li>Updates every second with zero performance impact</li>
+                    <li>Lightweight implementation - no lag or slowdowns</li>
+                    <li>Beautiful minimalist design with subtle styling</li>
+                    <li>Hover effects with cyan glow animations</li>
+                    <li>Mobile-responsive with smaller font size</li>
+                    <li>Preference saved to localStorage</li>
+                    <li>Positioned below header at 70px from top</li>
+                    <li>Blends perfectly with site theme</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 7.1</h2>
+                <p class="date">October 23, 2025</p>
+                
+                <h3>🌐 Multi-Language Support (8 Languages) <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Complete website translation system in 8 languages</li>
+                    <li>Supported: 🇺🇸 English, 🇪🇸 Spanish, 🇫🇷 French, 🇩🇪 German</li>
+                    <li>Also: 🇯🇵 Japanese, 🇨🇳 Chinese, 🇧🇷 Portuguese, 🇷🇺 Russian</li>
+                    <li>Language selector in game settings</li>
+                    <li>Automatic browser language detection</li>
+                    <li>Preference saved to cookies for persistence</li>
+                    <li>LanguageManager class for seamless translation</li>
+                    <li>All UI elements fully translatable</li>
+                </ul>
+
+                <h3>🍪 Cookie Management System <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Non-intrusive cookie banner (only shows once)</li>
+                    <li>Simple Accept/Decline options - not overly strict</li>
+                    <li>Saves user preferences (language, theme, login)</li>
+                    <li>Remember user login for 30 days</li>
+                    <li>365-day cookie expiry for preferences</li>
+                    <li>Animated slide-up banner with modern design</li>
+                    <li>SameSite=Lax security for better compatibility</li>
+                    <li>Cookie consent tracked properly</li>
+                </ul>
+
+                <h3>🏆 Live Leaderboard Widget <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Real-time leaderboard auto-updates every 5 seconds</li>
+                    <li>Displays: Player Name, Score, Kills, Wave, Playtime</li>
+                    <li>Top 3 players get gold/silver/bronze highlighting</li>
+                    <li>Live update indicator (green blinking dot)</li>
+                    <li>Animated entry transitions and hover effects</li>
+                    <li>Synced with Supabase database in real-time</li>
+                    <li>Shows formatted playtime (hours and minutes)</li>
+                    <li>Beautiful gradient design with pulsing glow</li>
+                    <li>Mobile-optimized responsive layout</li>
+                    <li>Custom scrollbar styling</li>
+                </ul>
+
+                <h3>📊 Enhanced Player Data Sync <span class="badge improved">IMPROVED</span></h3>
+                <ul>
+                    <li>Auto-sync every 5 seconds to Supabase database</li>
+                    <li>Real-time score updates visible on website</li>
+                    <li>Track playtime with hours and minutes display</li>
+                    <li>Display total kills and wave progress</li>
+                    <li>Match history with detailed game records</li>
+                    <li>Player profiles with comprehensive statistics</li>
+                    <li>Achievement unlocks with timestamps</li>
+                    <li>All data persists across sessions</li>
+                </ul>
+
+                <h3>🎮 Windows .EXE Multiplayer Support <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Windows standalone can now connect to online multiplayer!</li>
+                    <li>Updated Electron CSP to allow WebSocket connections</li>
+                    <li>Supports wss:// and ws:// protocols</li>
+                    <li>Compatible with Render.com cloud servers</li>
+                    <li>Full multiplayer features in desktop app</li>
+                    <li>Auto-connect to nearest regional server</li>
+                    <li>Seamless integration with browser version</li>
+                </ul>
+
+                <h3>📚 Comprehensive Documentation <span class="badge improved">IMPROVED</span></h3>
+                <ul>
+                    <li>LANGUAGE_AND_EXE_MULTIPLAYER_GUIDE.md - Complete setup guide</li>
+                    <li>Cookie system implementation guide</li>
+                    <li>Live leaderboard widget integration instructions</li>
+                    <li>Step-by-step language selection setup</li>
+                    <li>electron-main.cjs configuration for multiplayer</li>
+                    <li>Render.com deployment walkthrough</li>
+                </ul>
+
+                <h3>🎨 UI/UX Enhancements</h3>
+                <ul>
+                    <li>Language dropdown with flag emojis in settings</li>
+                    <li>Smooth cookie banner animations</li>
+                    <li>Live leaderboard with pulsing glow effects</li>
+                    <li>Rank emojis (🥇 🥈 🥉) for top 3 players</li>
+                    <li>Improved mobile touch targets</li>
+                    <li>Better responsive design for all screen sizes</li>
+                </ul>
+
+                <h3>🔧 Technical Improvements</h3>
+                <ul>
+                    <li>CookieManager class for easy cookie management</li>
+                    <li>LiveLeaderboard class with auto-refresh</li>
+                    <li>LanguageManager integration with game</li>
+                    <li>Fetch API for real-time Supabase queries</li>
+                    <li>localStorage sync with cookies</li>
+                    <li>Optimized database queries for performance</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 7.0</h2>
+                <p class="date">October 23, 2025</p>
+                
+                <h3>⚡ Special Ability System <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Ultimate power-up that clears ALL enemies on screen instantly</li>
+                    <li>Desktop Controls: Press Q key or click purple ⚡ button (bottom-right)</li>
+                    <li>Mobile Controls: Tap purple ⚡ button (bottom-right corner)</li>
+                    <li>15-second cooldown with visual timer</li>
+                    <li>Massive purple explosions and screen shake effects</li>
+                    <li>50-particle burst animation from player</li>
+                    <li>Full points awarded for each enemy destroyed</li>
+                    <li>"⚡ Special Ability Ready!" notification when recharged</li>
+                    <li>Cooldown overlay with countdown display on button</li>
+                </ul>
+
+                <h3>💻 Windows Standalone (.EXE) Build <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Play the game without a browser - fully offline capable</li>
+                    <li>Professional desktop application with auto-updater support</li>
+                    <li>Local save/load system with cloud sync option</li>
+                    <li>Desktop notifications for game events</li>
+                    <li>All game features included (special ability, database sync)</li>
+                    <li>Professional installer with desktop shortcuts</li>
+                    <li>Built with Electron framework for native performance</li>
+                    <li>Download available: SpaceShooter-Complete-v7.0-AdminPanel.zip</li>
+                </ul>
+
+                <h3>🗄️ Complete Database Integration <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Full Supabase PostgreSQL database setup with 8 tables</li>
+                    <li>Leaderboard - Global high scores with rankings</li>
+                    <li>Player Profiles - Comprehensive user statistics tracking</li>
+                    <li>Match History - Detailed game records and performance data</li>
+                    <li>Player Achievements - Unlock tracking with timestamps</li>
+                    <li>Daily Leaderboard - Auto-reset competitions each day</li>
+                    <li>Weekly Leaderboard - Seasonal rankings with weekly resets</li>
+                    <li>Player Stats - Aggregate data and calculated metrics</li>
+                    <li>Clans - Team/Clan system with member management</li>
+                    <li>Auto-profile creation and stats updates via triggers</li>
+                    <li>Row Level Security (RLS) for data protection</li>
+                </ul>
+
+                <h3>👑 Enhanced Admin Panel <span class="badge improved">IMPROVED</span></h3>
+                <ul>
+                    <li>Admin access: King_davez (password: Peaguyxx300!)</li>
+                    <li>Grant Credits button - Award credits to any player</li>
+                    <li>Unlock All Maps button - Instantly unlock all game maps</li>
+                    <li>Reset Player Progress button - Full account reset with confirmation</li>
+                    <li>Ban Player button - Account suspension capabilities</li>
+                    <li>Current Game State JSON viewer - Real-time data inspection</li>
+                    <li>Enhanced UI with better organization and controls</li>
+                    <li>Admin-only visibility (King_davez exclusive access)</li>
+                </ul>
+
+                <h3>🎨 UI/UX Enhancements</h3>
+                <ul>
+                    <li>Special ability buttons on both desktop and mobile</li>
+                    <li>Visual cooldown overlays with countdown timers</li>
+                    <li>Ready notifications with purple glow effects</li>
+                    <li>Optimized mobile button layout (dual buttons)</li>
+                    <li>Better touch targets for mobile gameplay</li>
+                    <li>Landscape mode optimizations</li>
+                    <li>Smooth cooldown animations and transitions</li>
+                </ul>
+
+                <h3>⚙️ Performance Optimizations</h3>
+                <ul>
+                    <li>Reduced particle count (30 → 15) for better FPS</li>
+                    <li>Optimized star count (200 → 100) for smoother animations</li>
+                    <li>Capped max enemies per wave (15) to prevent lag</li>
+                    <li>Limited thruster particles (10 max) for mobile performance</li>
+                    <li>Conditional effects based on device capabilities</li>
+                    <li>Mobile-specific optimizations for battery life</li>
+                </ul>
+
+                <h3>🐛 Bug Fixes</h3>
+                <ul>
+                    <li>Fixed wave 3+ enemy spawning issues</li>
+                    <li>Fixed mobile control stuck keys bug</li>
+                    <li>Fixed special ability cooldown synchronization</li>
+                    <li>Fixed database auto-trigger execution</li>
+                    <li>Improved button hover states and animations</li>
+                    <li>Enhanced error messages and debugging</li>
+                </ul>
+
+                <h3>📚 Documentation Updates</h3>
+                <ul>
+                    <li>HOW_TO_BUILD_EXE_STANDALONE.md - Complete Windows build guide</li>
+                    <li>RUN_SQL_IN_SUPABASE_INSTRUCTIONS.md - 5-minute database setup</li>
+                    <li>CHANGELOG_UPDATE_V7.0.md - Comprehensive version documentation</li>
+                    <li>Special ability usage instructions in README</li>
+                    <li>Build troubleshooting and testing guides</li>
+                </ul>
+
+                <h3>🌍 24/7 Cloud Multiplayer Server <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>FREE cloud hosting on Render.com - runs 24/7 forever</li>
+                    <li>Never shuts down - online even when your PC is off</li>
+                    <li>Automatic SSL/HTTPS support with wss:// protocol</li>
+                    <li>Auto-restart on crashes - zero downtime</li>
+                    <li>Built-in logging and monitoring dashboard</li>
+                    <li>Supports up to 100 concurrent players per server</li>
+                    <li>Complete server package in GitHub (multiplayer-server/)</li>
+                    <li>Deploy in 5 minutes with zero configuration</li>
+                </ul>
+
+                <h3>🌐 Multi-Regional Server Support <span class="badge new">NEW</span></h3>
+                <ul>
+                    <li>Deploy to multiple regions for better latency worldwide</li>
+                    <li>Supported Regions: US East, US West, Europe, Asia, Australia</li>
+                    <li>Players automatically connect to nearest server</li>
+                    <li>Each region supports 100 players (500+ total capacity)</li>
+                    <li>Same server code deployed to all regions</li>
+                    <li>Regional server browser in multiplayer lobby</li>
+                    <li>Low-latency gameplay for all global players</li>
+                </ul>
+
+                <h3>🔮 Planned Features - Inventory & Trading System</h3>
+                <ul>
+                    <li>Ship Collection & Management - Multiple ships with unique stats</li>
+                    <li>Expanded Inventory System - Store power-ups and resources</li>
+                    <li>Online Trading System - Player-to-player item trading</li>
+                    <li>Global Marketplace - Auction house with bidding system</li>
+                    <li>Dynamic Economy - Supply/demand pricing algorithm</li>
+                    <li>Ship Trading - Buy/sell ships based on rarity and upgrades</li>
+                    <li>Resource Management - Credits, materials, and consumables</li>
+                    <li>Coming in Version 7.1 and beyond!</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 6.2</h2>
+                <p class="date">October 22, 2025</p>
+                
+                <h3>🎁 Reward Systems Planned</h3>
+                <ul>
+                    <li>Playtime reward system with 6 tiers (30min to 20 hours)</li>
+                    <li>Daily rewards with weekly reset (7-day cycle, resets every Monday)</li>
+                    <li>Automatic reward tracking via localStorage</li>
+                    <li>Streak bonuses for consecutive logins</li>
+                    <li>Complete reward system implementation guide created</li>
+                </ul>
+
+                <h3>🌐 Multiplayer Improvements</h3>
+                <ul>
+                    <li>Fixed WebSocket connection for real-time chat</li>
+                    <li>Removed "Server offline" message spam</li>
+                    <li>Added proper ping display (shows 5ms instead of "Offlinems")</li>
+                    <li>Real-time player count updates via WebSocket</li>
+                    <li>Automatic reconnection if disconnected</li>
+                    <li>Chat messages now work in real-time</li>
+                </ul>
+
+                <h3>📈 Server Capacity Planning</h3>
+                <ul>
+                    <li>Planned upgrade from 32 to 400 players per server</li>
+                    <li>Performance optimizations for high player counts</li>
+                    <li>Message batching to reduce server load</li>
+                    <li>Efficient data structures (Map instead of Array)</li>
+                    <li>Regional server support ready for US East Ohio</li>
+                </ul>
+
+                <h3>📚 Documentation Updates</h3>
+                <ul>
+                    <li>REWARD_SYSTEM_IMPLEMENTATION.md - Complete reward system guide</li>
+                    <li>AWS_SSM_PENDING_FIX.md - AWS Systems Manager troubleshooting</li>
+                    <li>Detailed implementation instructions for all planned features</li>
+                    <li>Server optimization guidelines for 400+ players</li>
+                </ul>
+
+                <h3>🔧 Technical Updates</h3>
+                <ul>
+                    <li>WebSocket message handlers for chat, player count, and system messages</li>
+                    <li>Improved error handling and connection stability</li>
+                    <li>Silent reconnection without spamming chat</li>
+                    <li>All documentation pushed to GitHub</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 6.1</h2>
+                <p class="date">October 22, 2025</p>
+                
+                <h3>🔧 Bug Fixes & Improvements</h3>
+                <ul>
+                    <li>Fixed stuck spacebar bug - keys now properly clear when window loses focus</li>
+                    <li>Fixed online chat showing "offline" - now connects to local WebSocket server (localhost:3001)</li>
+                    <li>Fixed git push errors with Godot cache files - added comprehensive .gitignore</li>
+                    <li>Improved multiplayer lobby connection stability</li>
+                </ul>
+
+                <h3>🖥️ Server Infrastructure</h3>
+                <ul>
+                    <li>Matchmaking server now running 24/7 via PM2 process manager</li>
+                    <li>WebSocket server on port 3001 for real-time multiplayer</li>
+                    <li>Automatic server restart on crashes</li>
+                    <li>Server health monitoring and status updates</li>
+                    <li>Rating-based matchmaking system (ELO)</li>
+                    <li>Player queue management with match creation</li>
+                </ul>
+
+                <h3>⚡ Admin System</h3>
+                <ul>
+                    <li>Confirmed admin account: King_davez (password: Peaguyxx300!)</li>
+                    <li>Admin panel button (⚡) appears on all pages when logged in as admin</li>
+                    <li>Developer badge with gold lightning bolt displayed in profile</li>
+                    <li>Access to user management, leaderboard admin, and system controls</li>
+                </ul>
+
+                <h3>🌐 Online Multiplayer Updates</h3>
+                <ul>
+                    <li>Updated server URL to connect to local matchmaking server</li>
+                    <li>Real-time lobby chat with WebSocket connection</li>
+                    <li>Player join/leave notifications in chat</li>
+                    <li>Quick Match functionality for instant game finding</li>
+                    <li>Server browser with live player counts</li>
+                </ul>
+
+                <h3>📝 Documentation</h3>
+                <ul>
+                    <li>COMPREHENSIVE_GAME_ENHANCEMENTS.md - Complete feature roadmap</li>
+                    <li>All planned features documented with implementation guides</li>
+                    <li>Created guides for Halloween event, unique ship weapons, and more</li>
+                </ul>
+
+                <h3>🔐 Technical Improvements</h3>
+                <ul>
+                    <li>Account data persistence verified and working via localStorage</li>
+                    <li>Session management with 24-hour authentication</li>
+                    <li>All changes successfully pushed to GitHub</li>
+                    <li>.gitignore excludes Godot cache, node_modules, and build artifacts</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 6.0 <span class="badge new">LATEST</span></h2>
+                <p class="date">October 22, 2025</p>
+                
+                <h3>🔐 Authentication & User System</h3>
+                <ul>
+                    <li>Complete sign-in/sign-up system with secure authentication</li>
+                    <li>Users stay on website after signing in - no auto-redirect to game</li>
+                    <li>Profile display in top-right corner with user menu dropdown</li>
+                    <li>Automatic game authentication - sign in once for both website and game</li>
+                    <li>Welcome notification: "Welcome to the game!" appears on successful login</li>
+                    <li>Sign-up rewards: 1000 Credits + Exclusive Boosters for new players</li>
+                    <li>Session persistence with localStorage/sessionStorage</li>
+                    <li>Profile menu shows username, level, and quick access options</li>
+                </ul>
+
+                <h3>⚡ Admin Panel (Developer Only)</h3>
+                <ul>
+                    <li>Hidden admin panel accessible only to King_davez account</li>
+                    <li>Admin button (⚡) appears in top-right when developer is logged in</li>
+                    <li>Secure login: Username: King_davez | Password: Peaguyxx300!</li>
+                    <li>User management dashboard with real-time statistics</li>
+                    <li>View all registered users and their activity</li>
+                    <li>Export user data functionality</li>
+                    <li>Server health monitoring</li>
+                    <li>Ban/unban user capabilities</li>
+                </ul>
+
+                <h3>🌐 Multi-Language Support</h3>
+                <ul>
+                    <li>Website and game now support 8 languages</li>
+                    <li>Languages: English, Spanish, French, German, Portuguese, Chinese, Japanese, Russian</li>
+                    <li>LanguageManager class for seamless translation switching</li>
+                    <li>Translation keys for all UI elements</li>
+                    <li>Language preference saved per user account</li>
+                    <li>Automatic language detection based on browser settings</li>
+                </ul>
+
+                <h3>🎮 Online Multiplayer System</h3>
+                <ul>
+                    <li>New "🌐 Online Multiplayer" button on homepage with green gradient</li>
+                    <li>Multiplayer lobby with server browser interface</li>
+                    <li>AWS EC2 dedicated server integration (18.116.64.173)</li>
+                    <li>Real-time server browser showing US East - Ohio region</li>
+                    <li>Live player count display (e.g., "12/32 Players")</li>
+                    <li>Quick Match functionality for instant matchmaking</li>
+                    <li>Lobby chat system with real-time messaging</li>
+                    <li>Player join/leave notifications in chat</li>
+                    <li>System messages for game events</li>
+                    <li>Chat synchronization across all connected players</li>
+                    <li>Mobile-optimized chat interface</li>
+                </ul>
+
+                <h3>💬 Enhanced Chat System</h3>
+                <ul>
+                    <li>Real-time chat synchronization using WebSocket</li>
+                    <li>Player join announcements: "[SYSTEM] PlayerName joined the game"</li>
+                    <li>Player leave announcements: "[SYSTEM] PlayerName left the game"</li>
+                    <li>Profanity filter and chat moderation</li>
+                    <li>Anti-spam measures with rate limiting</li>
+                    <li>System messages for important game events</li>
+                    <li>Chat history persistence</li>
+                    <li>Responsive design for mobile and desktop</li>
+                </ul>
+
+                <h3>⚙️ Performance Optimization</h3>
+                <ul>
+                    <li>Complete performance optimization guide created</li>
+                    <li>Object pooling system for bullets, enemies, and explosions</li>
+                    <li>Entity limits to prevent lag (max enemies, bullets, particles)</li>
+                    <li>Visibility culling - only render what's on screen</li>
+                    <li>Mobile-specific optimizations (reduced particles, lower quality effects)</li>
+                    <li>Desktop optimizations for high-end devices</li>
+                    <li>Web build optimizations for browser performance</li>
+                    <li>Reduced memory footprint</li>
+                    <li>Smooth 60 FPS on all devices</li>
+                </ul>
+
+                <h3>🖥️ AWS Server Integration</h3>
+                <ul>
+                    <li>AWS EC2 Windows Server 2025 deployed</li>
+                    <li>Instance: i-0b45bbd8105d85e19</li>
+                    <li>Public IP: 18.116.64.173</li>
+                    <li>Region: US East (Ohio) - us-east-2</li>
+                    <li>Node.js + Express matchmaking server</li>
+                    <li>PM2 process management for 24/7 uptime</li>
+                    <li>Firewall configured for ports 3000, 3001, 7777</li>
+                    <li>Real-time player tracking and lobby management</li>
+                    <li>Complete deployment guide in AWS_EC2_MULTIPLAYER_SERVER_SETUP.md</li>
+                </ul>
+
+                <h3>🎨 Homepage Updates</h3>
+                <ul>
+                    <li>Redesigned homepage with three main action buttons</li>
+                    <li>"🌐 Online Multiplayer" - Green gradient button to multiplayer lobby</li>
+                    <li>"🎮 Single Player" - Play game in solo mode</li>
+                    <li>"💻 Download for PC" - Download Windows standalone version</li>
+                    <li>Professional button styling with hover effects</li>
+                    <li>Improved mobile responsiveness</li>
+                </ul>
+
+                <h3>📚 Documentation</h3>
+                <ul>
+                    <li>AUTH_SYSTEM_GUIDE.md - Complete authentication documentation</li>
+                    <li>ONLINE_MULTIPLAYER_SPECIFICATION.md - Full multiplayer architecture</li>
+                    <li>GAME_PERFORMANCE_OPTIMIZATION_GUIDE.md - Performance tuning guide</li>
+                    <li>AWS_EC2_MULTIPLAYER_SERVER_SETUP.md - Server deployment steps</li>
+                    <li>Comprehensive code examples and implementation details</li>
+                </ul>
+
+                <h3>🔧 Technical Improvements</h3>
+                <ul>
+                    <li>JWT token-based authentication</li>
+                    <li>Secure password hashing</li>
+                    <li>Anti-cheat system foundation</li>
+                    <li>Rate limiting on all API endpoints</li>
+                    <li>CORS configuration for secure cross-origin requests</li>
+                    <li>Session management with automatic refresh</li>
+                    <li>Git push optimization (excluded .godot cache files)</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 5.2</h2>
+                <p class="date">October 22, 2025</p>
+                
+                <h3>🎃 Halloween Theme Enhancements</h3>
+                <ul>
+                    <li>Added animated floating Halloween objects (ghosts, pumpkins, bats, spiders, vampires, zombies)</li>
+                    <li>Objects rotate, pulse, and float across screen with realistic physics</li>
+                    <li>12 floating objects with random types and movements</li>
+                    <li>Halloween animations only appear when Halloween theme is active</li>
+                    <li>Smooth transitions and opacity effects for spooky atmosphere</li>
+                </ul>
+
+                <h3>🎨 Navigation & UI Updates</h3>
+                <ul>
+                    <li>Enhanced navigation header with emoji icons for all menu items</li>
+                    <li>Added styled "Refer a Friend" button with orange border and background</li>
+                    <li>Added styled "Sign In" button with green border and background</li>
+                    <li>Updated Changelog link with 📋 icon</li>
+                    <li>Added Leaderboard link with 🏆 icon to navigation</li>
+                    <li>Improved font consistency across navigation (Rajdhani)</li>
+                    <li>Better mobile responsiveness for navigation menu</li>
+                </ul>
+
+                <h3>📢 Promotional Banners</h3>
+                <ul>
+                    <li>Added Halloween theme announcement banner with orange gradient</li>
+                    <li>Added "Space Shooter V5 is OUT NOW!" banner with blue gradient</li>
+                    <li>Animated pulse effects on promotional banners</li>
+                    <li>Professional gradient styling and shadows</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 5.1</h2>
+                <p class="date">October 22, 2025</p>
+                
+                <h3>🎮 Windows Standalone Game</h3>
+                <ul>
+                    <li>Created Windows .exe standalone game with Electron</li>
+                    <li>Auto-update system - game checks for updates automatically</li>
+                    <li>Professional installer with desktop shortcuts</li>
+                    <li>Offline gameplay support</li>
+                </ul>
+
+                <h3>🎃 Halloween Event</h3>
+                <ul>
+                    <li>New "The Haunted Nebula" special event level</li>
+                    <li>Pumpkin Drones with candy explosion effects</li>
+                    <li>Ghost Ships that phase in/out of visibility</li>
+                    <li>Witch Boss with green plasma attacks</li>
+                    <li>Fog of Fear mechanic with lantern beacons</li>
+                    <li>Candy Corn Blaster and Pumpkin Shield power-ups</li>
+                    <li>Halloween-specific achievements and rewards</li>
+                </ul>
+
+                <h3>⚙️ Difficulty System</h3>
+                <ul>
+                    <li>4 difficulty levels: Easy, Normal, Hard, Nightmare</li>
+                    <li>Dynamic enemy speed, health, and count adjustments</li>
+                    <li>Reward multipliers based on difficulty</li>
+                    <li>Professional difficulty selector UI</li>
+                </ul>
+
+                <h3>☁️ Cloud Save & Database</h3>
+                <ul>
+                    <li>Supabase integration for cloud saves</li>
+                    <li>Cross-device progress syncing</li>
+                    <li>Real-time leaderboard with database backend</li>
+                    <li>Player data persistence and statistics tracking</li>
+                </ul>
+
+                <h3>🎨 Game Polish</h3>
+                <ul>
+                    <li>Cleaner, minimalist UI design</li>
+                    <li>Better organized menus and navigation</li>
+                    <li>Professional color scheme and gradients</li>
+                    <li>Improved mobile controls and touch optimization</li>
+                    <li>Performance optimizations</li>
+                </ul>
+
+                <h3>🔧 Technical Additions</h3>
+                <ul>
+                    <li>Backend API server (Express.js)</li>
+                    <li>Fixed all website 404 errors</li>
+                    <li>Added missing pages (screenshots, features, controls, how-to-play)</li>
+                    <li>Comprehensive documentation for all features</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 5.0</h2>
+                <p class="date">October 22, 2025</p>
+                
+                <h3>🎨 Website & UI Overhaul</h3>
+                <ul>
+                    <li>Complete website redesign with animated starfield backgrounds on all pages</li>
+                    <li>Added user profile dropdown in header showing username and level</li>
+                    <li>Dropdown menu with quick access to Profile, Stats, Refer Friends, Game Settings, and Logout</li>
+                    <li>Added "Refer a Friend" button to main navigation</li>
+                    <li>All pages now match homepage design (changelog, leaderboard, profile)</li>
+                    <li>Consistent Orbitron fonts and gradient buttons across entire site</li>
+                </ul>
+
+                <h3>🎃 Halloween Special</h3>
+                <ul>
+                    <li>New Halloween theme with orange and purple color scheme</li>
+                    <li>Floating aliens and ghosts animation on all pages when Halloween theme active</li>
+                    <li>Halloween announcement banner on homepage</li>
+                    <li>6 total themes now available (Cosmic, Neon, Sunset, Matrix, Purple, Halloween)</li>
+                </ul>
+
+                <h3>🎁 Referral System</h3>
+                <ul>
+                    <li>Unique referral codes for each player</li>
+                    <li>Tiered rewards: 1 friend (500 credits + skin), 3 friends (1500 credits + skin)</li>
+                    <li>5 friends (3000 credits + skin), 10 friends (10000 credits + all exclusive skins)</li>
+                    <li>Track referred friends and total rewards earned</li>
+                    <li>Copy referral code with one click</li>
+                </ul>
+
+                <h3>📊 Profile & Stats</h3>
+                <ul>
+                    <li>Comprehensive player profile page with detailed statistics</li>
+                    <li>Track total kills, waves survived, boosters used, and XP</li>
+                    <li>Visual level progress bar showing XP to next level</li>
+                    <li>Achievement display with unlocked badges</li>
+                    <li>Real-time stat syncing between game and website</li>
+                </ul>
+
+                <h3>🏆 Leaderboard Enhancements</h3>
+                <ul>
+                    <li>Real-time global leaderboard (no fake data, only real players)</li>
+                    <li>Auto-refresh every 30 seconds</li>
+                    <li>Special gold, silver, bronze highlighting for top 3 players</li>
+                    <li>Displays player kills and games played alongside scores</li>
+                </ul>
+
+                <h3>✨ New Ship Skins</h3>
+                <ul>
+                    <li>Added 9 NEW ship skins - 3 for each ship type</li>
+                    <li>Ranger new skins: Neon Green, Violet Storm, Arctic Blue</li>
+                    <li>Interceptor new skins: Ruby Red, Amethyst, Topaz</li>
+                    <li>Bruiser new skins: Titanium, Chrome, Obsidian</li>
+                    <li>Total of 18 ship skins available (6 per ship type)</li>
+                </ul>
+
+                <h3>🔧 Technical Improvements</h3>
+                <ul>
+                    <li>Optimized starfield animation performance (reduced stars from 200 to 100)</li>
+                    <li>Improved theme system with localStorage persistence across pages</li>
+                    <li>Enhanced mobile responsiveness for all pages</li>
+                    <li>Better error handling for API connections</li>
+                    <li>Improved navigation menu with better visual hierarchy</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 2.5.2</h2>
+                <p class="date">October 21, 2025</p>
+                
+                <h3>✨ New Features</h3>
+                <ul>
+                    <li>Added 9 NEW ship skins - 3 for each ship type!</li>
+                    <li>Ranger new skins: Neon Green, Violet Storm, Arctic Blue</li>
+                    <li>Interceptor new skins: Ruby Red, Amethyst, Topaz</li>
+                    <li>Bruiser new skins: Titanium, Chrome, Obsidian</li>
+                </ul>
+
+                <h3>🎨 Customization</h3>
+                <ul>
+                    <li>Total of 18 ship skins available (6 per ship)</li>
+                    <li>Unlock skins through Battle Pass, achievements, and daily rewards</li>
+                    <li>Skins change your ship's color during gameplay</li>
+                    <li>Access skin selector in Hangar menu</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 2.5.1</h2>
+                <p class="date">October 21, 2025</p>
+                
+                <h3>✨ New Features</h3>
+                <ul>
+                    <li>Added Global Leaderboard page showing real-time player rankings</li>
+                    <li>Leaderboard auto-refreshes every 30 seconds for live updates</li>
+                    <li>Top 3 players get special gold, silver, and bronze highlighting</li>
+                    <li>Leaderboard accessible from main navigation menu</li>
+                </ul>
+
+                <h3>🔧 Improvements</h3>
+                <ul>
+                    <li>Updated Windows download to version 2.5 (SpaceShooter-Windows-v2.5.zip)</li>
+                    <li>Improved website structure with organized HideoutAdsWebsite folder</li>
+                    <li>Enhanced navigation with leaderboard link in header</li>
+                    <li>Better mobile responsiveness for leaderboard page</li>
+                </ul>
+
+                <h3>📦 Downloads</h3>
+                <ul>
+                    <li>Windows Version 2.5 now available for download</li>
+                    <li>Direct download link added to homepage</li>
+                </ul>
+
+                <h3>🐛 Bug Fixes</h3>
+                <ul>
+                    <li>Fixed leaderboard to only show real players (removed mock data)</li>
+                    <li>Improved error handling for leaderboard API connection</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 2.5 Beta</h2>
+                <p class="date">October 2025</p>
+                
+                <h3>✨ New Features</h3>
+                <ul>
+                    <li>20 unlockable maps including asteroid fields, nebula clouds, ice fields, and debris zones</li>
+                    <li>Multiplayer battles supporting up to 32 players</li>
+                    <li>Achievement system with unlockable rewards</li>
+                    <li>Daily challenges for bonus rewards</li>
+                    <li>Boss battles with unique mechanics</li>
+                    <li>Power-up collection system</li>
+                    <li>Multiple game modes (Campaign, Survival, Multiplayer)</li>
+                </ul>
+
+                <h3>🔧 Improvements</h3>
+                <ul>
+                    <li>Enhanced graphics and visual effects</li>
+                    <li>Improved enemy AI behavior</li>
+                    <li>Better performance optimization</li>
+                    <li>Smoother controls and gameplay</li>
+                    <li>Updated UI/UX design</li>
+                </ul>
+
+                <h3>🎮 Gameplay</h3>
+                <ul>
+                    <li>New weapon types and upgrades</li>
+                    <li>Ship customization options</li>
+                    <li>Difficulty progression system</li>
+                    <li>Wave-based enemy spawning</li>
+                    <li>Score multiplier mechanics</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 2.0</h2>
+                <p class="date">September 2025</p>
+                
+                <h3>✨ New Features</h3>
+                <ul>
+                    <li>Complete game redesign with modern graphics</li>
+                    <li>Introduced map system with multiple environments</li>
+                    <li>Added multiplayer functionality</li>
+                    <li>Player progression and leveling system</li>
+                </ul>
+
+                <h3>🔧 Improvements</h3>
+                <ul>
+                    <li>Rewritten game engine for better performance</li>
+                    <li>Improved collision detection</li>
+                    <li>Enhanced audio system with dynamic music</li>
+                </ul>
+            </div>
+
+            <div class="version">
+                <h2>Version 1.0</h2>
+                <p class="date">August 2025</p>
+                
+                <h3>✨ Initial Release</h3>
+                <ul>
+                    <li>Basic space shooter gameplay</li>
+                    <li>Single-player mode</li>
+                    <li>5 enemy types</li>
+                    <li>Simple scoring system</li>
+                    <li>Basic power-ups</li>
+                </ul>
+            </div>
+
+            <a href="index.html" class="back-link">← Back to Home</a>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <p>© 2025 Space Shooter | Version 2.5 Beta</p>
+            <p style="margin-top: 10px;">Developed by <span style="color: #00C6FF; text-shadow: 0 0 10px #00C6FF;">NEXO GAMES</span> | Made with 💜 by King_davezz</p>
+            <p style="margin-top: 15px;">
+                <a href="privacy-policy.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                <a href="terms.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Terms of Service</a> | 
+                <a href="faq.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">FAQ</a> |
+                <a href="controls.html" style="color: #8A2BE2; text-decoration: none; margin: 0 10px;">Controls</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Theme System
+        const themes = {
+            cosmic: {
+                name: 'Cosmic Blue',
+                primary: '#00C6FF',
+                secondary: '#8A2BE2',
+                accent: '#FF007F',
+                bg: '#05050A'
+            },
+            neon: {
+                name: 'Neon Green',
+                primary: '#00FF00',
+                secondary: '#FF00FF',
+                accent: '#FFFF00',
+                bg: '#000000'
+            },
+            sunset: {
+                name: 'Sunset Orange',
+                primary: '#FF6B35',
+                secondary: '#F7931E',
+                accent: '#FDC830',
+                bg: '#1A0A00'
+            },
+            matrix: {
+                name: 'Matrix Green',
+                primary: '#00FF41',
+                secondary: '#00D936',
+                accent: '#39FF14',
+                bg: '#000000'
+            },
+            purple: {
+                name: 'Purple Galaxy',
+                primary: '#9D4EDD',
+                secondary: '#C77DFF',
+                accent: '#E0AAFF',
+                bg: '#10002B'
+            },
+            halloween: {
+                name: 'Halloween Spooky',
+                primary: '#FF6600',
+                secondary: '#8B00FF',
+                accent: '#FFD700',
+                bg: '#1A0A00'
+            }
+        };
+
+        let currentTheme = localStorage.getItem('siteTheme') || 'cosmic';
+
+        function applyTheme(themeName) {
+            const theme = themes[themeName];
+            if (!theme) return;
+
+            document.body.style.background = theme.bg;
+            const canvas = document.getElementById('starfield');
+            if (canvas) canvas.style.background = theme.bg;
+
+            document.querySelectorAll('h1, h2').forEach(el => {
+                el.style.color = theme.primary;
+                el.style.textShadow = `0 0 20px ${theme.primary}`;
+            });
+
+            document.querySelectorAll('.version').forEach(el => {
+                el.style.background = `rgba(${hexToRgb(theme.primary)}, 0.1)`;
+                el.style.borderLeftColor = theme.primary;
+            });
+
+            document.querySelectorAll('.version .date').forEach(el => {
+                el.style.color = theme.secondary;
+            });
+
+            document.querySelectorAll('.version li:before').forEach(el => {
+                el.style.color = theme.primary;
+            });
+
+            const backLink = document.querySelector('.back-link');
+            if (backLink) {
+                backLink.style.borderColor = theme.primary;
+                backLink.style.color = theme.primary;
+                backLink.style.boxShadow = `0 0 10px ${theme.primary}`;
+            }
+
+            const logo = document.querySelector('nav a[href="index.html"]');
+            if (logo) {
+                logo.style.color = theme.primary;
+                logo.style.textShadow = `0 0 10px ${theme.primary}`;
+            }
+
+            const themeBtn = document.getElementById('theme-toggle');
+            if (themeBtn) {
+                themeBtn.style.background = `rgba(${hexToRgb(theme.primary)}, 0.2)`;
+                themeBtn.style.borderColor = theme.primary;
+            }
+
+            const header = document.querySelector('header');
+            if (header) {
+                header.style.background = `rgba(${hexToRgb(theme.bg)}, 0.95)`;
+                header.style.borderBottomColor = `rgba(${hexToRgb(theme.primary)}, 0.3)`;
+            }
+
+            const footer = document.querySelector('footer');
+            if (footer) {
+                footer.style.borderTopColor = `rgba(${hexToRgb(theme.primary)}, 0.3)`;
+            }
+
+            document.querySelectorAll('footer p span').forEach(el => {
+                el.style.color = theme.primary;
+                el.style.textShadow = `0 0 10px ${theme.primary}`;
+            });
+
+            localStorage.setItem('siteTheme', themeName);
+            currentTheme = themeName;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? 
+                `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+                '0, 198, 255';
+        }
+
+        function cycleTheme() {
+            const themeKeys = Object.keys(themes);
+            const currentIndex = themeKeys.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themeKeys.length;
+            const nextTheme = themeKeys[nextIndex];
+            
+            applyTheme(nextTheme);
+            
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: rgba(0, 198, 255, 0.9);
+                color: #fff;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-family: 'Orbitron', sans-serif;
+                z-index: 10002;
+                box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+            `;
+            notification.textContent = `Theme: ${themes[nextTheme].name}`;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        applyTheme(currentTheme);
+
+        // Starfield Animation
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const stars = [];
+        const numStars = 100;
+        
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * canvas.width;
+                this.speed = 0.5;
+            }
+            
+            update() {
+                this.z -= this.speed;
+                if (this.z <= 0) {
+                    this.z = canvas.width;
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                }
+            }
+            
+            draw() {
+                const x = (this.x - canvas.width / 2) * (canvas.width / this.z) + canvas.width / 2;
+                const y = (this.y - canvas.height / 2) * (canvas.width / this.z) + canvas.height / 2;
+                const size = (1 - this.z / canvas.width) * 2;
+                const brightness = (1 - this.z / canvas.width) * 255;
+                
+                ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness}, ${1 - this.z / canvas.width})`;
+                ctx.fillRect(x, y, size, size);
+            }
+        }
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+        
+        // Halloween floating objects
+        let halloweenObjects = [];
+        class HalloweenObject {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = 30 + Math.random() * 40;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
+                this.type = Math.random() > 0.5 ? '👽' : '👻';
+                this.opacity = 0.3 + Math.random() * 0.4;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedY = Math.sin(Date.now() * 0.001 + this.x) * 0.3;
+                if (this.x < -100) this.x = canvas.width + 100;
+                if (this.x > canvas.width + 100) this.x = -100;
+                if (this.y < -100) this.y = canvas.height + 100;
+                if (this.y > canvas.height + 100) this.y = -100;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px Arial`;
+                ctx.fillText(this.type, this.x, this.y);
+                ctx.restore();
+            }
+        }
+        
+        for (let i = 0; i < 8; i++) {
+            halloweenObjects.push(new HalloweenObject());
+        }
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 10, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            
+            if (currentTheme === 'halloween') {
+                halloweenObjects.forEach(obj => {
+                    obj.update();
+                    obj.draw();
+                });
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
